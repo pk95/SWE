@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Main Menu Colors -->
+    <color name="color_Primary">#02b2ab</color>
+    <color name="color_Primary_dark">#FF018786</color>
+    <color name="color_TabTitle">#FFFFFF</color>
+    <color name="color_icons">#35e9e1</color>
 </resources>

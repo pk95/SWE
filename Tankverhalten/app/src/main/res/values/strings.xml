@@ -10,4 +10,11 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_edit_vehicle">EditVehicle</string>
+
+    <!-- Main Menu Strings -->
+    <string name="fahrzeuguebersicht">Fahrzeugübersicht</string>
+    <string name="gefahrene_strecken">gefahrene Strecken</string>
+    <string name="tankvorgang">tankvorgang</string>
+    <string name="statistik">statistik</string>
+    <string name="streckenprognose">Streckenprognose</string>
 </resources>
