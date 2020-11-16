@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tankverhalten.EditVehicle;
+import com.example.tankverhalten.MainActivity_Menu;
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.RecyclerviewVehicles;
 import com.example.tankverhalten.Vehicle;
 import com.example.tankverhalten.VehicleType;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Vector;
 
@@ -25,7 +26,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
 
     RecyclerView recyclerView;
     RecyclerviewVehicles rows;
-    Vector<Vehicle> v = new Vector<Vehicle>();
+    static Vector<Vehicle> vehicles = new Vector<Vehicle>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -39,24 +40,29 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                Intent intent = new Intent(view.getContext(),EditVehicle.class);
+                startActivity(intent);
             }
         });
 
+        vehicles = Vehicle.load(this);
 
         /*
             Creaate new Vehicle
          */
-        Vehicle r = new Vehicle("Test1","123", 0, 0, 0, 0, 0, 0, VehicleType.CAR);
-        v.add(r);
-        v.add(r);
+        Vehicle r = new Vehicle("Test1", "123", 0, 0, 0, 0, 0, 0, VehicleType.CAR);
+        vehicles.add(r);
+        vehicles.add(r);
+
 
         /*
             Show Buttons for vehicles
          */
         recyclerView = findViewById(R.id.vehicleButtons);
-        rows = new RecyclerviewVehicles(this, v, this);
+        rows = new RecyclerviewVehicles(this, vehicles, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(rows);
 
@@ -65,15 +71,16 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
-        rows = new RecyclerviewVehicles(this, v, this);
+        rows = new RecyclerviewVehicles(this, vehicles, this);
         recyclerView.setAdapter(rows);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Vehicle.save(vehicles, this);
         super.onResume();
     }
 
     @Override
     public void onVehicleClick(int position) {
-        Intent intent = new Intent(this, EditVehicle.class);
+        Intent intent = new Intent(this, MainActivity_Menu.class);
         intent.putExtra("VehiclePosition", position);
         startActivity(intent);
     }

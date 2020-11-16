@@ -18,6 +18,8 @@ public class MainActivity_Menu extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
 
+//    int vehiclePos = getIntent().getExtras();
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
