@@ -1,35 +1,22 @@
 package com.example.tankverhalten;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 
-import androidx.annotation.IntDef;
 import androidx.annotation.RequiresApi;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.Vector;
 
-
-/**
- * Type of vehicle to represent different properties of vehicles.
- * <p>
- * Alternative for an Enum for VehicleTypes.
- * Reason: In Android enums blow up the app, so this is a common way of avoiding DEX space while running.
- * Link to video: https://www.youtube.com/watch?v=Hzs6OBcvNQE
- * <p>
- *
- * @author Stephan de Gavarelli
- * @version 1.0
- * @see java.lang.annotation.Annotation
- */
-@IntDef({VehicleType.CAR, VehicleType.MOTORCYCLE, VehicleType.TRANSPORTER})
-@Retention(RetentionPolicy.SOURCE)
-@interface VehicleType {
-    int CAR = 0;
-    int MOTORCYCLE = 1;
-    int TRANSPORTER = 2;
-}
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -44,17 +31,19 @@ import java.util.Vector;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Vehicle {
     private final LocalDate creationDate = java.time.LocalDate.now();
+    LocalDate inspection = null;
+    LocalDate permission = null;
+    String name = "";
+    String licensePlate = "";
+    int vehicleType = VehicleType.CAR;
     int averageConsumption = 0;
     int mileAge = 0;
-    float fuelLevel = 100;
     int remainingRange = 0;
-    int volume = 20;
-    int co2emissions = 0;
-    @VehicleType
-    int vehicleType = VehicleType.CAR;
+    int volume = 0;
+    float fuelLevel = 100;
+    float co2emissions = 0;
     private Vector<Ride> rides;
     private Vector<Refuel> refuels;
-
 
     /**
      * Default-Constructor
@@ -74,7 +63,8 @@ public class Vehicle {
      * @param fuelLevel          right now
      * @param averageConsumption calculated with data
      */
-    public Vehicle(int volume, int co2emissions, int remainingRange, int mileAge, float fuelLevel, int averageConsumption, @VehicleType int vehicleType) {
+    public Vehicle(String name, String licensePlate, int volume, float co2emissions, int remainingRange, int mileAge, float fuelLevel, int averageConsumption, @VehicleType int vehicleType) {
+        this.name = name;
         this.volume = volume;
         this.co2emissions = co2emissions;
         this.remainingRange = remainingRange;
@@ -87,13 +77,81 @@ public class Vehicle {
     }
 
     /**
+     * Loads a Vector of Article.
+     * The file is used from the app's directory /file
+     * <p>
+     * Trys to load a existing file, else create a new Vector
+     *
+     * @param context Activity starts this procedure
+     * @return Vector<Vehicle> that contains all Vehicles with data
+     */
+    @SuppressWarnings("unchecked")
+    public static Vector<Vehicle> load(Context context) {
+        FileInputStream fis = null;
+        ObjectInputStream os = null;
+        Vector<Vehicle> articles = null;
+        try {
+            Log.d("File", "File found in: " + context.getFilesDir().getAbsoluteFile().toString());
+            fis = context.openFileInput("Articles.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new Vector<Vehicle>();
+        }
+        try {
+            os = new ObjectInputStream(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+            articles = new Vector<Vehicle>();
+        }
+        if (os != null) {
+            try {
+                articles = (Vector<Vehicle>) os.readObject();
+                Log.d("File", "File not found in: " + context.getFilesDir().getAbsoluteFile().toString());
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+                articles = new Vector<Vehicle>();
+            }
+        }
+        return articles;
+    }
+
+    /**
+     * Try to save a Vector of Vehicles in a file.
+     *
+     * @param articles Vector of Article to save
+     * @param context  Activity that calls the function
+     */
+    public static void save(Vector<Vehicle> articles, Context context) {
+        FileOutputStream fos = null;
+        ObjectOutputStream os = null;
+        try {
+            fos = context.openFileOutput("Articles.txt", MODE_PRIVATE);
+            Log.d("File", context.getFilesDir().getAbsoluteFile().toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            os = new ObjectOutputStream(fos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (os != null) {
+            try {
+                os.writeObject(articles);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Clones a vehicle
      *
      * @return a new Vehicle with copied values
      */
     @Override
     public Vehicle clone() {
-        Vehicle v = new Vehicle(this.volume, this.co2emissions, this.remainingRange, this.mileAge, this.fuelLevel, this.averageConsumption, this.vehicleType);
+        Vehicle v = new Vehicle(this.name, this.licensePlate, this.volume, this.co2emissions, this.remainingRange, this.mileAge, this.fuelLevel, this.averageConsumption, this.vehicleType);
         v.refuels = new Vector<Refuel>(this.refuels);
         v.rides = new Vector<Ride>(this.rides);
         return v;
@@ -115,25 +173,6 @@ public class Vehicle {
      */
     public Refuel getLastRefuel() {
         return refuels.lastElement();
-    }
-
-    /**
-     * Adds a ride to the vector rides
-     *
-     * @param ride to add
-     */
-    public void add(Ride ride) {
-        rides.add(ride);
-    }
-
-    /**
-     * Adds the refueled percents to this vehicles fuelLevel
-     *
-     * @param refuel to add
-     */
-    public void add(Refuel refuel) {
-        refuels.add(refuel);
-        this.fuelLevel += ((float) refuel.refueled / (float) volume) * 100;
     }
 
 //    /**
@@ -164,6 +203,24 @@ public class Vehicle {
 //        r.costImageSrc = costImageSrc;
 //    }
 
+    /**
+     * Adds a ride to the vector rides
+     *
+     * @param ride to add
+     */
+    public void add(Ride ride) {
+        rides.add(ride);
+    }
+
+    /**
+     * Adds the refueled percents to this vehicles fuelLevel
+     *
+     * @param refuel to add
+     */
+    public void add(Refuel refuel) {
+        refuels.add(refuel);
+        this.fuelLevel += (refuel.refueled / (float) volume) * 100;
+    }
 
     /**
      * Compares two vehicles.
@@ -178,7 +235,29 @@ public class Vehicle {
         return (sameAttr && this.rides.equals(vehicle.rides) && this.refuels.equals(vehicle.refuels));
     }
 
-    public LocalDate getCreationDateDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
+    }
+
+    /**
+     *
+     * @param context
+     * @return int for Resscource
+     */
+    public int getDrawIdOfVehicleType(Context context) {
+        int icon =0;
+        switch (this.vehicleType) {
+            case VehicleType.CAR:
+                icon = R.drawable.ic_car_white;
+                break;
+            case VehicleType.MOTORCYCLE:
+                icon = R.drawable.ic_motorcycle_white;
+                break;
+            case VehicleType.TRANSPORTER:
+                icon = R.drawable.ic_car_white;
+        }
+        return icon;
+//        final int resourceId = context.getResources().getIdentifier(resourceName, "drawable", null);
+//        return ResourcesCompat.getDrawable(context.getResources(),resourceId,null) ;
     }
 }
