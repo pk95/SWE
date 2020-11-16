@@ -45,6 +45,6 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/white"
         android:tintMode="multiply"
-        app:backgroundTint="@color/FHGruen" />
+        app:backgroundTint="@color/FHGreen" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

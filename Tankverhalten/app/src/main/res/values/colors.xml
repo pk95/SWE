@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="FHGruen">#2E919A</color>
-    <color name="FHSystem">#206266</color>
+    <color name="FHGreen">#0c9a9a</color> <!-- official value of FH-->
+    <color name="FHSystem">#206266</color><!--freesyle for darker FH-color-->
+    <color name="FHGruen_alt">#2E919A</color>
+    <color name="color_icons">#35e9e1</color>
 </resources>

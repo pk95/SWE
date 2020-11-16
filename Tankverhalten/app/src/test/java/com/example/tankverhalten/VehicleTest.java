@@ -6,7 +6,7 @@ public class VehicleTest extends TestCase {
 
 
     public void testVehicleTypeCahnges() {
-        Vehicle v = new Vehicle(1,1,1,1,100,1,VehicleType.CAR);
+        Vehicle v = new Vehicle("hallo","dm",1,1,1,1,100,1,VehicleType.CAR);
         // Tests if vehicleType is set up right and value is readable as int and VehicleType
         assertEquals(0,v.vehicleType);
         assertEquals(VehicleType.CAR,v.vehicleType);
@@ -58,7 +58,7 @@ public class VehicleTest extends TestCase {
      *Tests, whether vehicles are equal, when cloned
      */
     public void testEqualVehicles(){
-        Vehicle v1 = new Vehicle(1,1,1,1,1,1,VehicleType.CAR);
+        Vehicle v1 = new Vehicle("hallo","dm",1,1,1,1,100,1,VehicleType.CAR);
         Vehicle v2 = v1;
         assertTrue(v2.equals(v2));
 
@@ -67,7 +67,7 @@ public class VehicleTest extends TestCase {
     }
 
     public void testUnequalVehicles(){
-        Vehicle v1 = new Vehicle(1,1,1,1,1,1,VehicleType.CAR);
+        Vehicle v1 = new Vehicle("hallo","dm",1,1,1,1,100,1,VehicleType.CAR);
         Vehicle v2 = v1.clone();
         v1.mileAge=1000000;
         assertFalse(v1.equals(v2));
