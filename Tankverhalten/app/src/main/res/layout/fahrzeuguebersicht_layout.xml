@@ -1,17 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fahrzeuguebersicht"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="40sp">
-    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/show_averageConsumption"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/FHGreen"
+                android:gravity="center"
+                android:text="show_averageConsumption"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/text_averageConsumption"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/verbrauch"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/show_mileAge"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/FHGreen"
+                android:gravity="center"
+                android:text="show_mileAge"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_mileAge"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/kilometerstand"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/show_fuelLevel"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/FHGreen"
+                android:gravity="center"
+                android:text="show_fuelLevel"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_fuelLevel"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/tankstand"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/show_remainingRange"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/FHGreen"
+                android:gravity="center"
+                android:text="show_remainingRange"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_remainingRange"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/reichweite"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/show_co2emissions"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/FHGreen"
+                android:gravity="center"
+                android:text="show_co2emissions"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_co2emissions"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/co2_ausstoß"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
