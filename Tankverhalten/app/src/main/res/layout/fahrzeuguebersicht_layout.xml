@@ -22,21 +22,23 @@
                 android:id="@+id/show_averageConsumption"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:text="show_averageConsumption"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_averageConsumption"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:gravity="center"
                 android:text="@string/verbrauch"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,21 +52,23 @@
                 android:id="@+id/show_mileAge"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:text="show_mileAge"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_mileAge"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:gravity="center"
                 android:text="@string/kilometerstand"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -86,21 +90,23 @@
                 android:id="@+id/show_fuelLevel"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:text="show_fuelLevel"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_fuelLevel"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:gravity="center"
                 android:text="@string/tankstand"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,21 +120,23 @@
                 android:id="@+id/show_remainingRange"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:text="show_remainingRange"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_remainingRange"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:gravity="center"
                 android:text="@string/reichweite"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -150,21 +158,23 @@
                 android:id="@+id/show_co2emissions"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:text="show_co2emissions"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_co2emissions"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:padding="5dp"
                 android:gravity="center"
                 android:text="@string/co2_ausstoß"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
