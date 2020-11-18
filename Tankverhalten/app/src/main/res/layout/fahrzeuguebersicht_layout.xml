@@ -22,7 +22,7 @@
             <TextView
                 android:id="@+id/show_averageConsumption"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:padding="5dp"
@@ -34,7 +34,7 @@
             <TextView
                 android:id="@+id/text_averageConsumption"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/verbrauch"
@@ -52,7 +52,7 @@
             <TextView
                 android:id="@+id/show_mileAge"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:padding="5dp"
@@ -64,7 +64,7 @@
             <TextView
                 android:id="@+id/text_mileAge"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/kilometerstand"
@@ -91,7 +91,7 @@
             <TextView
                 android:id="@+id/show_fuelLevel"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:padding="5dp"
@@ -103,7 +103,7 @@
             <TextView
                 android:id="@+id/text_fuelLevel"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/tankstand"
@@ -121,7 +121,7 @@
             <TextView
                 android:id="@+id/show_remainingRange"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:padding="5dp"
@@ -133,7 +133,7 @@
             <TextView
                 android:id="@+id/text_remainingRange"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/reichweite"
@@ -160,7 +160,7 @@
             <TextView
                 android:id="@+id/show_co2emissions"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:padding="5dp"
@@ -172,7 +172,7 @@
             <TextView
                 android:id="@+id/text_co2emissions"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/co2_ausstoß"
