@@ -115,6 +115,7 @@ public class Vehicle {
         return articles;
     }
 
+
     /**
      * Try to save a Vector of Vehicles in a file.
      *

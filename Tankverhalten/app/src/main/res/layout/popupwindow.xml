@@ -10,6 +10,7 @@
         android:id="@+id/text_delete"
         android:layout_width="276dp"
         android:layout_height="81dp"
+        android:gravity="center_horizontal"
         android:text="Wollen Sie das Fahrzeug wirklich löschen?"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -44,6 +44,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
 //                        .setAction("Action", null).show();
 
                 Intent intent = new Intent(view.getContext(),EditVehicle.class);
+                intent.putExtra("pos", -1);
                 startActivity(intent);
             }
         });
@@ -81,7 +82,11 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
     @Override
     public void onVehicleClick(int position) {
         Intent intent = new Intent(this, MainActivity_Menu.class);
-        intent.putExtra("VehiclePosition", position);
+        intent.putExtra("pos", position);
         startActivity(intent);
+    }
+
+    public Vector<Vehicle> getVehicle() {
+        return vehicles;
     }
 }
