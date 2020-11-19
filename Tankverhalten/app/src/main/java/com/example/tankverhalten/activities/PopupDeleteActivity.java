@@ -21,6 +21,9 @@ public class PopupDeleteActivity extends Activity {
 
         setContentView(R.layout.popupwindow);
 
+        /**
+         * Get Display Size and set the popup window to fullscreen
+         */
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getRealMetrics(dm);
 
@@ -33,20 +36,29 @@ public class PopupDeleteActivity extends Activity {
         Button confirmButton = (Button) findViewById(R.id.confim_button);
 
 
+        /**
+         * Confirm button to delete the current vehicle
+         *
+         */
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //Get current vector position
                 Bundle bundle = getIntent().getExtras();
                 if (bundle.getInt("pos") >= 0) {
                     GarageActivity.vehicles.remove(bundle.getInt("pos"));
                     System.gc();
                 }
-
+                
+                //go back to garage
                 startActivity(new Intent(PopupDeleteActivity.this, GarageActivity.class));
             }
         });
 
+        /**
+         * cancel button closes popup window and gi back to last activity
+         */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

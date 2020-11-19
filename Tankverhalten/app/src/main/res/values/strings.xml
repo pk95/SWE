@@ -19,9 +19,9 @@
     <string name="streckenprognose">Streckenprognose</string>
 
     <!-- fahrzeuguebersicht_layout Strings -->
-    <string name="verbrauch">Verbrauch<br></br>[l(kWh) / 100km]</string>
-    <string name="kilometerstand">Kilometerstand<br></br>[km]</string>
-    <string name="tankstand">Tankstand<br></br>[%]</string>
-    <string name="reichweite">Reichweite<br></br>[km]</string>
-    <string name="co2_ausstoß">CO<sub>2</sub>-Ausstoß<br></br>[g]</string>
+    <string name="verbrauch">Verbrauch\n[l(kWh) / 100km]</string>
+    <string name="kilometerstand">Kilometerstand\n[km]</string>
+    <string name="tankstand">Tankstand\n[%]</string>
+    <string name="reichweite">Reichweite\n[km]</string>
+    <string name="co2_ausstoß">CO<sub><small>2</small></sub>-Ausstoß\n[g]</string>
 </resources>
