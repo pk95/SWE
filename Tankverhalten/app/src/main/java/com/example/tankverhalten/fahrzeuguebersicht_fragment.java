@@ -37,11 +37,10 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         DecimalFormat df = new DecimalFormat("#.##");
         DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
         dfs.setDecimalSeparator(',');
-        dfs.setGroupingSeparator('.');
         df.setDecimalFormatSymbols(dfs);
 
         licensePlate = (TextView) view.findViewById(R.id.show_licensePlate);
-        licensePlate.setText(df.format(r.licensePlate));
+        licensePlate.setText(r.licensePlate);
 
         consumption = (TextView) view.findViewById(R.id.show_averageConsumption);
         consumption.setText(df.format(r.averageConsumption));
