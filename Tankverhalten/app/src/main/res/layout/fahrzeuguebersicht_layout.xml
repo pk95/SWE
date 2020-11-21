@@ -194,7 +194,6 @@
                 android:background="@color/FHGreen"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="show_licensePlate"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
