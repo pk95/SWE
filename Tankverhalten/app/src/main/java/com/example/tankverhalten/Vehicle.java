@@ -65,6 +65,7 @@ public class Vehicle {
      */
     public Vehicle(String name, String licensePlate, int volume, float co2emissions, int remainingRange, int mileAge, float fuelLevel, int averageConsumption, @VehicleType int vehicleType) {
         this.name = name;
+        this.licensePlate = licensePlate;
         this.volume = volume;
         this.co2emissions = co2emissions;
         this.remainingRange = remainingRange;
