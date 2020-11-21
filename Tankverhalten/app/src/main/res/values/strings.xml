@@ -24,4 +24,5 @@
     <string name="tankstand">Tankstand\n[%]</string>
     <string name="reichweite">Reichweite\n[km]</string>
     <string name="co2_ausstoß">CO<sub><small>2</small></sub>-Ausstoß\n[g]</string>
+    <string name="licensePlate">Kennzeichen</string>
 </resources>
