@@ -38,6 +38,7 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
         dfs.setDecimalSeparator(',');
         dfs.setGroupingSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
 
         licensePlate = (TextView) view.findViewById(R.id.show_licensePlate);
         licensePlate.setText(df.format(r.licensePlate));
