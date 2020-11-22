@@ -32,13 +32,20 @@ public class fahrzeuguebersicht_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fahrzeuguebersicht_layout, container, false);
 
-        Vehicle r = new Vehicle("Test1", "123", 0, 500, 250, 35000, 75, (float) 7.5, VehicleType.CAR);
+        Vehicle r = new Vehicle("Test1", "123", 0, (float) 1500.69, 250, 35000, (float) 75.3, (float) 7.5, VehicleType.CAR);
 
-        DecimalFormat df = new DecimalFormat("#.##");
+        // Format of displayed Number
+        DecimalFormat df = new DecimalFormat("#,###.##");
         DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
         dfs.setDecimalSeparator(',');
+        dfs.setGroupingSeparator('.');
         df.setDecimalFormatSymbols(dfs);
 
+        // int to float for NumberFormat
+        float fRange = (float) r.remainingRange;
+        float miles = (float) r.mileAge;
+
+        // lock TextView object with TextView(id) from xml, then setText
         licensePlate = (TextView) view.findViewById(R.id.show_licensePlate);
         licensePlate.setText(r.licensePlate);
 
@@ -49,13 +56,13 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         co2.setText(df.format(r.co2emissions));
 
         range = (TextView) view.findViewById(R.id.show_remainingRange);
-        range.setText(df.format(r.remainingRange));
+        range.setText(df.format(fRange));
 
         fuel = (TextView) view.findViewById(R.id.show_fuelLevel);
         fuel.setText(df.format(r.fuelLevel));
 
         mileAge = (TextView) view.findViewById(R.id.show_mileAge);
-        mileAge.setText(df.format(r.mileAge));
+        mileAge.setText(df.format(miles));
 
         return view;
     }
