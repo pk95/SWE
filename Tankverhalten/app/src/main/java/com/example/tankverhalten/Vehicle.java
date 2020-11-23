@@ -90,7 +90,7 @@ public class Vehicle {
     public static Vector<Vehicle> load(Context context) {
         FileInputStream fis = null;
         ObjectInputStream os = null;
-        Vector<Vehicle> articles = null;
+        Vector<Vehicle> vehicles = null;
         try {
             Log.d("File", "File found in: " + context.getFilesDir().getAbsoluteFile().toString());
             fis = context.openFileInput("Articles.txt");
@@ -102,18 +102,23 @@ public class Vehicle {
             os = new ObjectInputStream(fis);
         } catch (IOException e) {
             e.printStackTrace();
-            articles = new Vector<Vehicle>();
+            vehicles = new Vector<Vehicle>();
         }
         if (os != null) {
             try {
-                articles = (Vector<Vehicle>) os.readObject();
+                vehicles = (Vector<Vehicle>) os.readObject();
                 Log.d("File", "File not found in: " + context.getFilesDir().getAbsoluteFile().toString());
             } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
-                articles = new Vector<Vehicle>();
+                vehicles = new Vector<Vehicle>();
             }
         }
-        return articles;
+
+        if (vehicles == null) {
+            vehicles = new Vector<Vehicle>();
+        }
+
+        return vehicles;
     }
 
 

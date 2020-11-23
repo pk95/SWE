@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +25,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
 
     RecyclerView recyclerView;
     RecyclerviewVehicles rows;
-    static Vector<Vehicle> vehicles = new Vector<Vehicle>();
+    static Vector<Vehicle> vehicles;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -36,15 +35,14 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        vehicles = Vehicle.load(this);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
-                Intent intent = new Intent(view.getContext(),EditVehicle.class);
-                intent.putExtra("pos", -1);
+                Intent intent = new Intent(view.getContext(),AddVehicleActivity.class);
+                //intent.putExtra("pos", -1);
                 startActivity(intent);
             }
         });
@@ -54,19 +52,17 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         /*
             Creaate new Vehicle
          */
+        recyclerView = findViewById(R.id.garage_add_vehicle);
         Vehicle r = new Vehicle("Test1", "123", 0, 0, 0, 0, 0, 0, VehicleType.CAR);
-        vehicles.add(r);
         vehicles.add(r);
 
 
         /*
             Show Buttons for vehicles
          */
-        recyclerView = findViewById(R.id.vehicleButtons);
         rows = new RecyclerviewVehicles(this, vehicles, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(rows);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

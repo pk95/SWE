@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EditVehicle"
-            android:label="@string/title_activity_edit_vehicle"
+            android:name=".activities.AddVehicleActivity"
+            android:label="AddVehicle"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity android:name=".MainActivity2" />
         <activity
