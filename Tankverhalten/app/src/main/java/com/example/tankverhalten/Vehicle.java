@@ -36,7 +36,7 @@ public class Vehicle {
     String name = "";
     String licensePlate = "";
     int vehicleType = VehicleType.CAR;
-    int averageConsumption = 0;
+    float averageConsumption = 0;
     int mileAge = 0;
     int remainingRange = 0;
     int volume = 0;
@@ -63,8 +63,9 @@ public class Vehicle {
      * @param fuelLevel          right now
      * @param averageConsumption calculated with data
      */
-    public Vehicle(String name, String licensePlate, int volume, float co2emissions, int remainingRange, int mileAge, float fuelLevel, int averageConsumption, @VehicleType int vehicleType) {
+    public Vehicle(String name, String licensePlate, int volume, float co2emissions, int remainingRange, int mileAge, float fuelLevel, float averageConsumption, @VehicleType int vehicleType) {
         this.name = name;
+        this.licensePlate = licensePlate;
         this.volume = volume;
         this.co2emissions = co2emissions;
         this.remainingRange = remainingRange;

@@ -183,7 +183,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/show_licensePlate"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="@color/FHGreen"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="show_licensePlate"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_licensePlate"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/licensePlate"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
