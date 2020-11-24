@@ -1,6 +1,5 @@
 package com.example.tankverhalten.activities;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,14 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.customview.widget.ViewDragHelper;
 
-import com.example.tankverhalten.MainActivity_Menu;
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.Vehicle;
 import com.example.tankverhalten.VehicleType;
@@ -24,9 +20,12 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     String name = "";
     String license = "";
-    double urban = -1, outside = -1, combined = -1;
+    double urban = -1, outside = -1;
+    float combined = -1;
     int mile = -1, volume = -1, vehicleType;
     float co2 = -1, fuel = -1;
+    boolean error = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,91 +62,141 @@ public class AddVehicleActivity extends AppCompatActivity {
         RadioButton motorcycle = (RadioButton) findViewById(R.id.motorcycle_radio_btn);
         RadioButton transporter = (RadioButton) findViewById(R.id.transporter_radio_btn);
 
-
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                boolean error = false;
+
+
+//                //LIst all parses from editText to Vehicle
+//                ArrayList<VehicleParseItem<EditText, String, String, TextView>> vehicleValues = new ArrayList<>();
+//                vehicleValues.add(new VehicleParseItem(consumptionCombined, "float", "averageConsumption", consumptionCombinedTxt));
+//                vehicleValues.add(new VehicleParseItem(consumptionUrban, "float", "averageConsumption", consumptionUrbanTxt));
+//                vehicleValues.add(new VehicleParseItem(consumptionOutside, "float", "averageConsumption", consumptionOutsideTxt));
+
 
                 if (displayName.getText().length() > 0) {
                     name = displayName.getText().toString();
+                    markOk(displayName, displayNameTxt);
                 } else {
-                    error = true;
-                    displayName.setError("erforderlich");
-                    displayNameTxt.setTextColor(Color.RED);
+                    markError(displayName, displayNameTxt);
                 }
 
                 if (licensePlate.getText().length() > 0) {
                     license = licensePlate.getText().toString();
+                    markOk(licensePlate, licensePlateTxt);
                 } else {
-                    error = true;
-                    licensePlate.setError("erforderlich");
-                    licensePlateTxt.setTextColor(Color.RED);
+                    markError(licensePlate, licensePlateTxt);
                 }
 
-                if (consumptionUrban.getText().toString().length() > 0 && Double.parseDouble(consumptionUrban.getText().toString()) >= 0) {
-                    urban = Double.parseDouble(consumptionUrban.getText().toString());
-                } else{
-                    error = true;
-                    consumptionUrban.setError("erforderlich");
-                    consumptionUrbanTxt.setTextColor(Color.RED);
+                if (consumptionUrban.getText().toString().length() > 0) {
+                    try {
+                        urban = Double.parseDouble(consumptionUrban.getText().toString());
+                        markOk(consumptionUrban, consumptionUrbanTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(consumptionUrban, consumptionUrbanTxt);
+                    }
+                } else {
+                    markError(consumptionUrban, consumptionUrbanTxt);
                 }
 
-                if (consumptionOutside.getText().length() >= 0 && Double.parseDouble(consumptionOutside.getText().toString()) >= 0) {
-                    outside = Double.parseDouble(consumptionOutside.getText().toString());
+                if (consumptionOutside.getText().length() >= 0) {
+                    try {
+                        outside = Double.parseDouble(consumptionOutside.getText().toString());
+                        markOk(consumptionOutside, consumptionOutsideTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(consumptionOutside, consumptionOutsideTxt);
+                    }
                 } else {
-                    error = true;
-                    consumptionOutside.setError("erforderlich");
-                    consumptionOutsideTxt.setTextColor(Color.RED);
+                    markError(consumptionOutside, consumptionOutsideTxt);
                 }
 
-                if (consumptionCombined.getText().length() >= 0 && Double.parseDouble(consumptionCombined.getText().toString()) >= 0) {
-                    combined = Double.parseDouble(consumptionCombined.getText().toString());
+                if (consumptionCombined.getText().toString().length() > 0) {
+                    try {
+                        combined = Float.parseFloat(consumptionCombined.getText().toString());
+                        markOk(consumptionCombined, consumptionCombinedTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(consumptionCombined, consumptionCombinedTxt);
+                    }
                 } else {
-                    error = true;
-                    consumptionCombined.setError("erforderlich");
-                    consumptionCombinedTxt.setTextColor(Color.RED);
+                    markError(consumptionCombined, consumptionCombinedTxt);
                 }
 
-                if (mileage.getText().length() >= 0 && Integer.parseInt(mileage.getText().toString()) >= 0) {
-                    mile = Integer.parseInt(mileage.getText().toString());
+                if (mileage.getText().length() >= 0) {
+                    try {
+                        mile = Integer.parseInt(mileage.getText().toString());
+                        markOk(mileage, mileageTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(mileage, mileageTxt);
+                    }
                 } else {
-                    error = true;
-                    mileage.setError("erforderlich");
-                    mileageTxt.setTextColor(Color.RED);
+                    markError(mileage, mileageTxt);
                 }
 
-                if (fuelLevel.getText().length() >= 0 && Float.parseFloat(fuelLevel.getText().toString()) >= 0 ) {
-                    fuel = Float.parseFloat(fuelLevel.getText().toString());
+                if (fuelLevel.getText().length() >= 0) {
+                    try {
+                        fuel = Float.parseFloat(fuelLevel.getText().toString());
+                        markOk(fuelLevel, fuelLevelTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(fuelLevel, fuelLevelTxt);
+                    }
                 } else {
-                    error = true;
-                    fuelLevel.setError("erforderlich");
-                    fuelLevelTxt.setTextColor(Color.RED);
+                    markError(fuelLevel, fuelLevelTxt);
                 }
 
-                if (tankVolume.getText().length() >= 0 && Integer.parseInt(tankVolume.getText().toString()) >= 0) {
-                    volume = Integer.parseInt(tankVolume.getText().toString());
+                if (tankVolume.getText().length() >= 0) {
+                    try {
+                        volume = Integer.parseInt(tankVolume.getText().toString());
+                        markOk(tankVolume, tankVolumeTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(tankVolume, tankVolumeTxt);
+                    }
                 } else {
-                    error = true;
-                    tankVolume.setError("erforderlich");
-                    tankVolumeTxt.setTextColor(Color.RED);
+                    markError(tankVolume, tankVolumeTxt);
                 }
 
-                if (emissions.getText().length() >= 0 && Float.parseFloat(emissions.getText().toString()) >= 0) {
-                    co2 = Float.parseFloat(emissions.getText().toString());
+                if (emissions.getText().length() >= 0) {
+                    try {
+                        co2 = Float.parseFloat(emissions.getText().toString());
+                        markOk(emissions, emissionsTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(emissions, emissionsTxt);
+                    }
                 } else {
-                    error = true;
-                    emissions.setError("erforderlich");
-                    emissionsTxt.setTextColor(Color.RED);
+                    markError(emissions, emissionsTxt);
                 }
 
                 if (car.isChecked()) {
                     vehicleType = VehicleType.CAR;
+                    selectVehicleTypeTxt.setTextColor(Color.BLACK);
+                    car.setTextColor(Color.BLACK);
+                    motorcycle.setTextColor(Color.BLACK);
+                    transporter.setTextColor(Color.BLACK);
+                    transporter.setError("");
+
                 } else if (motorcycle.isChecked()) {
                     vehicleType = VehicleType.MOTORCYCLE;
+                    vehicleType = VehicleType.CAR;
+                    selectVehicleTypeTxt.setTextColor(Color.BLACK);
+                    car.setTextColor(Color.BLACK);
+                    motorcycle.setTextColor(Color.BLACK);
+                    transporter.setTextColor(Color.BLACK);
+                    transporter.setError("");
                 } else if (transporter.isChecked()) {
                     vehicleType = VehicleType.TRANSPORTER;
+                    vehicleType = VehicleType.CAR;
+                    selectVehicleTypeTxt.setTextColor(Color.BLACK);
+                    car.setTextColor(Color.BLACK);
+                    motorcycle.setTextColor(Color.BLACK);
+                    transporter.setTextColor(Color.BLACK);
+                    transporter.setError("");
                 } else {
                     error = true;
                     selectVehicleTypeTxt.setTextColor(Color.RED);
@@ -157,18 +206,18 @@ public class AddVehicleActivity extends AppCompatActivity {
                     transporter.setError("erforderlich");
                 }
 
+
                 if (error) {
                     return;
                 }
-
-                Vehicle newVehicle = new Vehicle();
+                Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, combined, vehicleType);
                 GarageActivity.vehicles.add(newVehicle);
 
-                int pos = GarageActivity.vehicles.indexOf(newVehicle);
-
-                Intent intent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
-                intent.putExtra("pos", pos);
-                startActivity(intent);
+                finish();
+//                int pos = GarageActivity.vehicles.indexOf(newVehicle);
+//                Intent intent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
+//                intent.putExtra("pos", pos);
+//                startActivity(intent);
             }
         });
 
@@ -179,4 +228,91 @@ public class AddVehicleActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void markError(EditText input, TextView description) {
+        error = true;
+        input.setError("erforderlich");
+        description.setTextColor(Color.RED);
+
+    }
+
+    private void markOk(EditText input, TextView description) {
+        input.setError("");
+        description.setTextColor(Color.BLACK);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+//
+///**
+// * Container for three variables to handle at once
+// *
+// * @param <First>
+// * @param <Second>
+// * @param <Third>
+// * @param <Fourth>
+// */
+//class VehicleParseItem<First, Second, Third, Fourth> {
+//    public First variable;
+//    public Second type;
+//    public Third variableToAssign;
+//    public Fourth textObject;
+//
+//    VehicleParseItem(First variable, Second type, Third variableToAssign, Fourth textObject) {
+//        this.variable = variable;
+//        this.type = type;
+//        this.variableToAssign = variableToAssign;
+//        this.textObject = textObject;
+//    }
+//
+//}
+
+
+
+//    /**
+//     * @param vehicleValues
+//     * @param vehicle
+//     */
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    private void parseToVehicle(ArrayList<VehicleParseItem<EditText, String, String, TextView>> vehicleValues, Vehicle vehicle) {
+//        for (VehicleParseItem<EditText, String, String, TextView> triple : vehicleValues) {
+//            double doubleValue;
+//            int intValue;
+//            float floatValue;
+//            String stringValue;
+//            Object value;
+//
+//            if (triple.type.equals("double"))
+//                try {
+//                    value = Double.parseDouble(triple.variable.getText().toString());
+//                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
+//                }
+//            else if (triple.type.equals("float")) {
+//                try {
+//                    value = Float.parseFloat(triple.variable.getText().toString());
+//                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
+//                }
+//            } else if (triple.type.equals("String")) {
+//                value = triple.variable.getText().toString();
+//            }
+//
+//            switch (triple.variableToAssign) {
+//                case "mileAge":
+//                    vehicle.mileAge = value;
+//            }
+//            error = true;
+//            triple.textObject.setError("erforderlich");
+//            triple.textObject.setTextColor(Color.RED);
+//        }
+//    }

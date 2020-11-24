@@ -1,18 +1,17 @@
 package com.example.tankverhalten;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Vector;
 
@@ -29,19 +28,19 @@ import static android.content.Context.MODE_PRIVATE;
  * @see Refuel
  */
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class Vehicle {
+public class Vehicle implements Serializable {
     private final LocalDate creationDate = java.time.LocalDate.now();
-    LocalDate inspection = null;
-    LocalDate permission = null;
-    String name = "";
-    String licensePlate = "";
-    int vehicleType = VehicleType.CAR;
-    float averageConsumption = 0;
-    int mileAge = 0;
-    int remainingRange = 0;
-    int volume = 0;
-    float fuelLevel = 100;
-    float co2emissions = 0;
+    public LocalDate inspection = null;
+    public LocalDate permission = null;
+    public String name = "";
+    public String licensePlate = "";
+    public int vehicleType = VehicleType.CAR;
+    public float averageConsumption = 0;
+    public int mileAge = 0;
+    public int remainingRange = 0;
+    public int volume = 0;
+    public float fuelLevel = 100;
+    public float co2emissions = 0;
     private Vector<Ride> rides;
     private Vector<Refuel> refuels;
 
@@ -93,30 +92,29 @@ public class Vehicle {
         Vector<Vehicle> vehicles = null;
         try {
             Log.d("File", "File found in: " + context.getFilesDir().getAbsoluteFile().toString());
-            fis = context.openFileInput("Articles.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return new Vector<Vehicle>();
-        }
-        try {
+            fis = context.openFileInput("Vehicles.txt");
             os = new ObjectInputStream(fis);
-        } catch (IOException e) {
+            if (os != null) {
+                vehicles = (Vector<Vehicle>) os.readObject();
+            }
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             vehicles = new Vector<Vehicle>();
         }
-        if (os != null) {
-            try {
-                vehicles = (Vector<Vehicle>) os.readObject();
-                Log.d("File", "File not found in: " + context.getFilesDir().getAbsoluteFile().toString());
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-                vehicles = new Vector<Vehicle>();
-            }
-        }
-
-        if (vehicles == null) {
-            vehicles = new Vector<Vehicle>();
-        }
+//
+//        if (os != null) {
+//            try {
+//                vehicles = (Vector<Vehicle>) os.readObject();
+//                Log.d("File", "File not found in: " + context.getFilesDir().getAbsoluteFile().toString());
+//            } catch (ClassNotFoundException | IOException e) {
+//                e.printStackTrace();
+//                vehicles = new Vector<Vehicle>();
+//            }
+//        }
+//
+//        if (vehicles == null) {
+//            vehicles = new Vector<Vehicle>();
+//        }
 
         return vehicles;
     }
@@ -125,29 +123,22 @@ public class Vehicle {
     /**
      * Try to save a Vector of Vehicles in a file.
      *
-     * @param articles Vector of Article to save
+     * @param vehicles Vector of Article to save
      * @param context  Activity that calls the function
      */
-    public static void save(Vector<Vehicle> articles, Context context) {
+    public static void save(Vector<Vehicle> vehicles, Context context) {
         FileOutputStream fos = null;
         ObjectOutputStream os = null;
         try {
-            fos = context.openFileOutput("Articles.txt", MODE_PRIVATE);
+            fos = context.openFileOutput("Vehicles.txt", MODE_PRIVATE);
             Log.d("File", context.getFilesDir().getAbsoluteFile().toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
             os = new ObjectOutputStream(fos);
+            os.writeObject(vehicles);
+            os.close();
+            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        if (os != null) {
-            try {
-                os.writeObject(articles);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Log.d("File", "File not saved");
         }
     }
 
@@ -247,12 +238,11 @@ public class Vehicle {
     }
 
     /**
-     *
      * @param context
      * @return int for Resscource
      */
     public int getDrawIdOfVehicleType(Context context) {
-        int icon =0;
+        int icon = 0;
         switch (this.vehicleType) {
             case VehicleType.CAR:
                 icon = R.drawable.ic_car_white;
