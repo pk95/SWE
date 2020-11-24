@@ -38,7 +38,6 @@ public class PopupDeleteActivity extends Activity {
 
         /**
          * Confirm button to delete the current vehicle
-         *
          */
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +56,7 @@ public class PopupDeleteActivity extends Activity {
         });
 
         /**
-         * cancel button closes popup window and gi back to last activity
+         * cancel button closes popup window and go back to last activity
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
