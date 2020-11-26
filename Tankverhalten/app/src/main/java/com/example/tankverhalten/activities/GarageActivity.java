@@ -75,14 +75,15 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         super.onResume();
     }
 
+    public static Intent vIntent;
     @Override
     public void onVehicleClick(int position) {
-        Intent intent = new Intent(this, MainActivity_Menu.class);
-        intent.putExtra("pos", position);
-        startActivity(intent);
+        vIntent = new Intent(this, MainActivity_Menu.class);
+        vIntent.putExtra("pos", position);
+        startActivity(vIntent);
     }
 
-    public Vector<Vehicle> getVehicle() {
+    public static Vector<Vehicle> getVehicle() {
         return vehicles;
     }
 }

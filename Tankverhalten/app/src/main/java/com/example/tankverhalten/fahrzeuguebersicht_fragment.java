@@ -12,10 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.tankverhalten.activities.GarageActivity;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static com.example.tankverhalten.activities.GarageActivity.vIntent;
 
 public class fahrzeuguebersicht_fragment extends Fragment {
 
@@ -36,9 +40,8 @@ public class fahrzeuguebersicht_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fahrzeuguebersicht_layout, container, false);
 
-        Vehicle r = new Vehicle("Test1", "123", 0, (float) 1500.69, 250, 35000, (float) 75.3, (float) 7.5, VehicleType.CAR);
-        r.inspection = LocalDate.of(2020, 12, 21);
-        r.permission = LocalDate.of(2021, 2, 10);
+        // get the selected vehicle
+        Vehicle v = GarageActivity.getVehicle().get(vIntent.getExtras().getInt("pos"));
 
         // Format of displayed Number
         DecimalFormat df = new DecimalFormat("#,###.##");
@@ -48,28 +51,36 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         df.setDecimalFormatSymbols(dfs);
 
         // int to float for NumberFormat
-        float fRange = (float) r.remainingRange;
-        float miles = (float) r.mileAge;
+        float fRange = (float) v.remainingRange;
+        float miles = (float) v.mileAge;
 
         // Date to String
-        String strInspection = r.inspection.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        String strPermission = r.permission.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        String strInspection;
+        String strPermission;
+        if(v.inspection == null)
+            strInspection = "-";
+        else
+            strInspection = v.inspection.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        if(v.permission == null)
+            strPermission = "-";
+        else
+            strPermission = v.permission.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
         // lock TextView object with TextView(id) from xml, then setText
         licensePlate = (TextView) view.findViewById(R.id.show_licensePlate);
-        licensePlate.setText(r.licensePlate);
+        licensePlate.setText(v.licensePlate);
 
         consumption = (TextView) view.findViewById(R.id.show_averageConsumption);
-        consumption.setText(df.format(r.averageConsumption));
+        consumption.setText(df.format(v.averageConsumption));
 
         co2 = (TextView) view.findViewById(R.id.show_co2emissions);
-        co2.setText(df.format(r.co2emissions));
+        co2.setText(df.format(v.co2emissions));
 
         range = (TextView) view.findViewById(R.id.show_remainingRange);
         range.setText(df.format(fRange));
 
         fuel = (TextView) view.findViewById(R.id.show_fuelLevel);
-        fuel.setText(df.format(r.fuelLevel));
+        fuel.setText(df.format(v.fuelLevel));
 
         mileAge = (TextView) view.findViewById(R.id.show_mileAge);
         mileAge.setText(df.format(miles));
