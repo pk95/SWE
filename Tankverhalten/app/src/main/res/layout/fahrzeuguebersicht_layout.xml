@@ -1,282 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="10dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp">
 
-            <TextView
-                android:id="@+id/show_averageConsumption"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_averageConsumption"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_averageConsumption"
+                <TextView
+                    android:id="@+id/show_averageConsumption"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_averageConsumption"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_averageConsumption"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/verbrauch"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/verbrauch"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/show_mileAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_mileAge"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_mileAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/kilometerstand"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp">
 
-            <TextView
-                android:id="@+id/show_mileAge"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_mileAge"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_mileAge"
+                <TextView
+                    android:id="@+id/show_fuelLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_fuelLevel"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_fuelLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/tankstand"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/kilometerstand"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/show_remainingRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_remainingRange"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_remainingRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/reichweite"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/show_co2emissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_co2emissions"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_co2emissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/co2_ausstoß"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/show_licensePlate"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_licensePlate"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_licensePlate"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/licensePlate"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/show_nextInspection"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_nextInspection"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_nextInspection"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/inspection"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/show_nextPermission"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/FHGreen"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="show_nextPermission"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_nextPermission"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/permission"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/show_fuelLevel"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_fuelLevel"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_fuelLevel"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/tankstand"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/show_remainingRange"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_remainingRange"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_remainingRange"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/reichweite"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/show_co2emissions"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_co2emissions"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_co2emissions"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/co2_ausstoß"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/show_licensePlate"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_licensePlate"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_licensePlate"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/licensePlate"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/show_nextInspection"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_nextInspection"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_nextInspection"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/inspection"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/show_nextPermission"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@color/FHGreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="show_nextPermission"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_nextPermission"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/permission"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>
