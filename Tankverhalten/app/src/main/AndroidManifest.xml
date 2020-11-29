@@ -15,6 +15,7 @@
             android:theme="@style/Theme.Tankverhalten.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,17 +27,19 @@
         <activity
             android:name=".MainActivity_Menu"
             android:label="@string/title_activity_edit_vehicle"
-            android:theme="@style/Theme.Tankverhalten.NoActionBar"
-            android:parentActivityName=".activities.GarageActivity"/>
+            android:parentActivityName=".activities.GarageActivity"
+            android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Tankverhalten.NoActionBar">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

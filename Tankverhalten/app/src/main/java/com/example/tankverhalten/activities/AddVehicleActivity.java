@@ -1,5 +1,6 @@
 package com.example.tankverhalten.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tankverhalten.MainActivity_Menu;
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.Vehicle;
 import com.example.tankverhalten.VehicleType;
@@ -25,6 +27,7 @@ public class AddVehicleActivity extends AppCompatActivity {
     int mile = -1, volume = -1, vehicleType;
     float co2 = -1, fuel = -1;
     boolean error = false;
+    public static Intent vIntent;
 
 
     @Override
@@ -61,6 +64,7 @@ public class AddVehicleActivity extends AppCompatActivity {
         RadioButton car = (RadioButton) findViewById(R.id.car_radio_btn);
         RadioButton motorcycle = (RadioButton) findViewById(R.id.motorcycle_radio_btn);
         RadioButton transporter = (RadioButton) findViewById(R.id.transporter_radio_btn);
+
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -179,7 +183,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     car.setTextColor(Color.BLACK);
                     motorcycle.setTextColor(Color.BLACK);
                     transporter.setTextColor(Color.BLACK);
-                    transporter.setError("");
+                    selectVehicleTypeTxt.setError(null);
 
                 } else if (motorcycle.isChecked()) {
                     vehicleType = VehicleType.MOTORCYCLE;
@@ -188,7 +192,8 @@ public class AddVehicleActivity extends AppCompatActivity {
                     car.setTextColor(Color.BLACK);
                     motorcycle.setTextColor(Color.BLACK);
                     transporter.setTextColor(Color.BLACK);
-                    transporter.setError("");
+                    selectVehicleTypeTxt.setError(null);
+
                 } else if (transporter.isChecked()) {
                     vehicleType = VehicleType.TRANSPORTER;
                     vehicleType = VehicleType.CAR;
@@ -196,16 +201,16 @@ public class AddVehicleActivity extends AppCompatActivity {
                     car.setTextColor(Color.BLACK);
                     motorcycle.setTextColor(Color.BLACK);
                     transporter.setTextColor(Color.BLACK);
-                    transporter.setError("");
+                    selectVehicleTypeTxt.setError(null);
+
                 } else {
                     error = true;
                     selectVehicleTypeTxt.setTextColor(Color.RED);
+                    selectVehicleTypeTxt.setError("erforderlich");
                     car.setTextColor(Color.RED);
                     motorcycle.setTextColor(Color.RED);
                     transporter.setTextColor(Color.RED);
-                    transporter.setError("erforderlich");
                 }
-
 
                 if (error) {
                     return;
@@ -214,10 +219,22 @@ public class AddVehicleActivity extends AppCompatActivity {
                 GarageActivity.vehicles.add(newVehicle);
 
                 finish();
-//                int pos = GarageActivity.vehicles.indexOf(newVehicle);
-//                Intent intent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
-//                intent.putExtra("pos", pos);
-//                startActivity(intent);
+
+                int pos = GarageActivity.vehicles.indexOf(newVehicle);
+
+/*
+                vIntent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
+                vIntent.putExtra("pos", pos);
+                startActivity(vIntent);
+
+ */
+
+                /*
+                Intent intent = new Intent(this, MainActivity_Menu.class);
+                intent.putExtra("pos", pos);
+                startActivity(intent);
+                 */
+
             }
         });
 
@@ -229,17 +246,15 @@ public class AddVehicleActivity extends AppCompatActivity {
         });
     }
 
-
     private void markError(EditText input, TextView description) {
         error = true;
-        input.setError("erforderlich");
+        description.setError("erforderlich");
         description.setTextColor(Color.RED);
-
     }
 
     private void markOk(EditText input, TextView description) {
-        input.setError("");
         description.setTextColor(Color.BLACK);
+        description.setError(null);
     }
 }
 
