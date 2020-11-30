@@ -1,6 +1,5 @@
 package com.example.tankverhalten;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.tankverhalten.activities.GarageActivity;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.format.DateTimeFormatter;
 
-import static android.content.Intent.*;
-import static com.example.tankverhalten.activities.GarageActivity.*;
-
 public class fahrzeuguebersicht_fragment extends Fragment {
 
-    View view;
-    public fahrzeuguebersicht_fragment() {}
     public TextView licensePlate;
     public TextView consumption;
     public TextView co2;
@@ -31,10 +27,11 @@ public class fahrzeuguebersicht_fragment extends Fragment {
     public TextView mileAge;
     public TextView inspection;
     public TextView permission;
-    public Intent test = getIntent();
+    View view;
     Vehicle v;
-    Bundle extras = getIntent().getExtras();
-
+    Bundle extras = getActivity().getIntent().getExtras();
+    public fahrzeuguebersicht_fragment() {
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -44,7 +41,7 @@ public class fahrzeuguebersicht_fragment extends Fragment {
 
         // get the selected vehicle
 
-                //vehicles.elementAt(test.getExtras().getInt("pos"));
+        v = GarageActivity.vehicles.elementAt(extras.getInt("pos"));
 
         // Format of displayed Number
         DecimalFormat df = new DecimalFormat("#,###.##");
@@ -60,11 +57,11 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         // Date to String
         String strInspection;
         String strPermission;
-        if(v.inspection == null)
+        if (v.inspection == null)
             strInspection = "-";
         else
             strInspection = v.inspection.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        if(v.permission == null)
+        if (v.permission == null)
             strPermission = "-";
         else
             strPermission = v.permission.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));

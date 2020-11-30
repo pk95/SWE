@@ -1,7 +1,6 @@
 package com.example.tankverhalten.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +21,7 @@ import com.example.tankverhalten.VehicleType;
 
 public class AddVehicleActivity extends AppCompatActivity {
 
+    Intent vIntent;
     String name = "";
     String license = "";
     double urban = -1, outside = -1;
@@ -29,7 +29,6 @@ public class AddVehicleActivity extends AppCompatActivity {
     int mile = -1, volume = -1, vehicleType;
     float co2 = -1, fuel = -1;
     boolean error = false;
-    public Intent vIntent;
     Activity c = this;
 
     @Override
@@ -39,33 +38,33 @@ public class AddVehicleActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_edit_vehicle);
 
-        TextView displayNameTxt = (TextView) findViewById(R.id.displayname_txt);
-        TextView licensePlateTxt = (TextView) findViewById(R.id.licenseplate_txt);
-        TextView consumptionUrbanTxt = (TextView) findViewById(R.id.consumption_urban_txt);
-        TextView consumptionOutsideTxt = (TextView) findViewById(R.id.consumption_outside_txt);
-        TextView consumptionCombinedTxt = (TextView) findViewById(R.id.consumption_combined_txt);
-        TextView mileageTxt = (TextView) findViewById(R.id.mileage_txt);
-        TextView fuelLevelTxt = (TextView) findViewById(R.id.fuel_level_txt);
-        TextView tankVolumeTxt = (TextView) findViewById(R.id.tank_volume_txt);
-        TextView emissionsTxt = (TextView) findViewById(R.id.emissions_txt);
-        TextView selectVehicleTypeTxt = (TextView) findViewById(R.id.select_vehicle_type_txt);
+        TextView displayNameTxt = findViewById(R.id.displayname_txt);
+        TextView licensePlateTxt = findViewById(R.id.licenseplate_txt);
+        TextView consumptionUrbanTxt = findViewById(R.id.consumption_urban_txt);
+        TextView consumptionOutsideTxt = findViewById(R.id.consumption_outside_txt);
+        TextView consumptionCombinedTxt = findViewById(R.id.consumption_combined_txt);
+        TextView mileageTxt = findViewById(R.id.mileage_txt);
+        TextView fuelLevelTxt = findViewById(R.id.fuel_level_txt);
+        TextView tankVolumeTxt = findViewById(R.id.tank_volume_txt);
+        TextView emissionsTxt = findViewById(R.id.emissions_txt);
+        TextView selectVehicleTypeTxt = findViewById(R.id.select_vehicle_type_txt);
 
-        EditText displayName = (EditText) findViewById(R.id.display_name_vehicle_edit);
-        EditText licensePlate = (EditText) findViewById(R.id.license_plate_edit_vehicle);
-        EditText consumptionUrban = (EditText) findViewById(R.id.consumption_urban_vehicle_edit);
-        EditText consumptionOutside = (EditText) findViewById(R.id.consumption_outside_vehicle_edit);
-        EditText consumptionCombined = (EditText) findViewById(R.id.consumption_combined_vehicle_edit);
-        EditText mileage = (EditText) findViewById(R.id.mileage_vehicle_edit);
-        EditText fuelLevel = (EditText) findViewById(R.id.fuel_level_vehicle_edit);
-        EditText tankVolume = (EditText) findViewById(R.id.tank_volume_vehicle_edit);
-        EditText emissions = (EditText) findViewById(R.id.emissions_vehicle_edit);
+        EditText displayName = findViewById(R.id.display_name_vehicle_edit);
+        EditText licensePlate = findViewById(R.id.license_plate_edit_vehicle);
+        EditText consumptionUrban = findViewById(R.id.consumption_urban_vehicle_edit);
+        EditText consumptionOutside = findViewById(R.id.consumption_outside_vehicle_edit);
+        EditText consumptionCombined = findViewById(R.id.consumption_combined_vehicle_edit);
+        EditText mileage = findViewById(R.id.mileage_vehicle_edit);
+        EditText fuelLevel = findViewById(R.id.fuel_level_vehicle_edit);
+        EditText tankVolume = findViewById(R.id.tank_volume_vehicle_edit);
+        EditText emissions = findViewById(R.id.emissions_vehicle_edit);
 
-        Button confirmButton = (Button) findViewById(R.id.confirm_editing_vehicle);
-        Button cancelButton = (Button) findViewById(R.id.cancel_editing_vehicle);
+        Button confirmButton = findViewById(R.id.confirm_editing_vehicle);
+        Button cancelButton = findViewById(R.id.cancel_editing_vehicle);
 
-        RadioButton car = (RadioButton) findViewById(R.id.car_radio_btn);
-        RadioButton motorcycle = (RadioButton) findViewById(R.id.motorcycle_radio_btn);
-        RadioButton transporter = (RadioButton) findViewById(R.id.transporter_radio_btn);
+        RadioButton car = findViewById(R.id.car_radio_btn);
+        RadioButton motorcycle = findViewById(R.id.motorcycle_radio_btn);
+        RadioButton transporter = findViewById(R.id.transporter_radio_btn);
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +188,6 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                 } else if (motorcycle.isChecked()) {
                     vehicleType = VehicleType.MOTORCYCLE;
-                    vehicleType = VehicleType.CAR;
                     selectVehicleTypeTxt.setTextColor(Color.BLACK);
                     car.setTextColor(Color.BLACK);
                     motorcycle.setTextColor(Color.BLACK);
@@ -198,7 +196,6 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                 } else if (transporter.isChecked()) {
                     vehicleType = VehicleType.TRANSPORTER;
-                    vehicleType = VehicleType.CAR;
                     selectVehicleTypeTxt.setTextColor(Color.BLACK);
                     car.setTextColor(Color.BLACK);
                     motorcycle.setTextColor(Color.BLACK);
@@ -223,20 +220,17 @@ public class AddVehicleActivity extends AppCompatActivity {
                 //finish();
 
                 int pos = GarageActivity.vehicles.indexOf(newVehicle);
-
-
-                vIntent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
-                vIntent.putExtra("pos", pos);
-                startActivity(vIntent);
-
-
+                if (pos >= 0) {
+                    vIntent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
+                    vIntent.putExtra("pos", pos);
+                    startActivity(vIntent);
+                }
 
                 /*
                 Intent intent = new Intent(this, MainActivity_Menu.class);
                 intent.putExtra("pos", pos);
                 startActivity(intent);
                  */
-
             }
         });
 

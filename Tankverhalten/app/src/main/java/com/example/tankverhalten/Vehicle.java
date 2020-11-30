@@ -251,7 +251,7 @@ public class Vehicle implements Serializable {
                 icon = R.drawable.ic_motorcycle_white;
                 break;
             case VehicleType.TRANSPORTER:
-                icon = R.drawable.ic_transporter_white;
+                icon = R.drawable.ic_transporter2_white;
         }
         return icon;
 //        final int resourceId = context.getResources().getIdentifier(resourceName, "drawable", null);

@@ -39,12 +39,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/AddVehicle_Button_description"
         android:foreground="@drawable/ic_add_white"
         android:foregroundTintMode="multiply"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/white"
         android:tintMode="multiply"
-        app:backgroundTint="@color/FHGreen" />
+        app:backgroundTint="@color/FHGreen"
+        app:elevation="20dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -27,4 +27,35 @@
     <string name="licensePlate">Kennzeichen</string>
     <string name="inspection">Nächste Hauptuntersuchung</string>
     <string name="permission">Nächste TÜV Inspektion</string>
+
+    <!--  Add vehicle header and hints  -->
+    <string name="displayname">Anzeigename...</string>
+    <string name="license_plate_header">Kennzeichen</string>
+    <string name="license_plate_hint">Kennzeichen...</string>
+    <string name="consumption_city_header">Herstellerangabe zum Verbrauch innerorts [l(kWh) / 100km]</string>
+    <string name="consumption_city_hint">Verbrauch innerorts...</string>
+    <string name="consumption_combined_header">Herstellerangabe zum Verbrauch kombiniert [l(kWh) / 100km]</string>
+    <string name="consumption_combined_hint">Verbrauch kombiniert...</string>
+    <string name="consumption_country_header">Herstellerangabe zum Verbrauch außerorts [l(kWh) / 100km]</string>
+    <string name="consumption_country_hint">Verbrauch außerorts...</string>
+    <string name="mileage_header">Kilometerstand [km]</string>
+    <string name="mileage_hint">Kilometerstand...</string>
+    <string name="fuelLevel_header">Tankstand [%]</string>
+    <string name="fuelLevel_hint">Tankstand...</string>
+    <string name="volume_header">Tankvolumen [l(kWh)]</string>
+    <string name="volume_hint">Tankvolumen...</string>
+    <string name="co2_header">Herstellerangabe zum CO2-Ausstoß [kg / 100km]</string>
+    <string name="co2_hint">CO2-Ausstoß...</string>
+    <string name="vehicleType_header">Fahrzeugart wählen</string>
+    <string name="vehicleType_car">Auto</string>
+    <string name="vehicleType_motorcycle">Motorrad</string>
+    <string name="vehicleType_transporter">Transporter / LKW</string>
+
+    <string name="save_Text">Speichern</string>
+    <string name="cancel_Text">Abbrechen</string>
+
+    <!-- GarageActivity descriptions -->
+    <string name="AddVehicle_Button_description">Add a new Vehicle</string>
+
+
 </resources>
