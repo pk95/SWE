@@ -1,6 +1,6 @@
 package com.example.tankverhalten;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,14 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.tankverhalten.activities.GarageActivity;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static com.example.tankverhalten.activities.GarageActivity.vIntent;
+import static android.content.Intent.*;
+import static com.example.tankverhalten.activities.GarageActivity.*;
 
 public class fahrzeuguebersicht_fragment extends Fragment {
 
@@ -33,6 +31,10 @@ public class fahrzeuguebersicht_fragment extends Fragment {
     public TextView mileAge;
     public TextView inspection;
     public TextView permission;
+    public Intent test = getIntent();
+    Vehicle v;
+    Bundle extras = getIntent().getExtras();
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -41,7 +43,8 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         view = inflater.inflate(R.layout.fahrzeuguebersicht_layout, container, false);
 
         // get the selected vehicle
-        Vehicle v = GarageActivity.getVehicle().get(vIntent.getExtras().getInt("pos"));
+
+                //vehicles.elementAt(test.getExtras().getInt("pos"));
 
         // Format of displayed Number
         DecimalFormat df = new DecimalFormat("#,###.##");

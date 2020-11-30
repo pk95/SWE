@@ -25,7 +25,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
 
     RecyclerView recyclerView;
     RecyclerviewVehicles rows;
-    static Vector<Vehicle> vehicles;
+    public static Vector<Vehicle> vehicles;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
