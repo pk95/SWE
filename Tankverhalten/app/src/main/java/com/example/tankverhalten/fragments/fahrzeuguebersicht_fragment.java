@@ -1,4 +1,4 @@
-package com.example.tankverhalten;
+package com.example.tankverhalten.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.tankverhalten.R;
+import com.example.tankverhalten.datastructure.Vehicle;
 import com.example.tankverhalten.activities.GarageActivity;
 
 import java.text.DecimalFormat;

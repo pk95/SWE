@@ -1,10 +1,12 @@
-package com.example.tankverhalten;
+package com.example.tankverhalten.datastructure;
 
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+
+import com.example.tankverhalten.R;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

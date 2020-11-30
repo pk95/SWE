@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tankverhalten.datastructure.Vehicle;
+
 import java.util.Vector;
 
 /**
@@ -20,7 +22,7 @@ import java.util.Vector;
  *
  * @see RecyclerView.Adapter
  */
-public class RecyclerviewVehicles extends RecyclerView.Adapter<RecyclerviewVehicles.RowHolder> {
+public class RecyclerviewVehiclesAdapter extends RecyclerView.Adapter<RecyclerviewVehiclesAdapter.RowHolder> {
 
     private final Context context;
     private final OnVehicleListener mOnVehicleListener;
@@ -35,7 +37,7 @@ public class RecyclerviewVehicles extends RecyclerView.Adapter<RecyclerviewVehic
      * @param vehicles          Vector of vehicles to create Rows for
      * @param onVehicleListener Listener for clickHandling
      */
-    public RecyclerviewVehicles(Context ct, Vector<Vehicle> vehicles, OnVehicleListener onVehicleListener) {
+    public RecyclerviewVehiclesAdapter(Context ct, Vector<Vehicle> vehicles, OnVehicleListener onVehicleListener) {
         this.context = ct;
         this.vehicles = vehicles;
         this.mOnVehicleListener = onVehicleListener;
@@ -49,7 +51,7 @@ public class RecyclerviewVehicles extends RecyclerView.Adapter<RecyclerviewVehic
      * @param parent
      * @param viewType
      * @return RowHolder a Row of a Vehicle
-     * @see RecyclerviewVehicles
+     * @see RecyclerviewVehiclesAdapter
      * @see RecyclerView.Adapter
      */
     @NonNull

@@ -1,8 +1,4 @@
-package com.example.tankverhalten;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
+package com.example.tankverhalten.activities;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -10,9 +6,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.tankverhalten.R;
+import com.example.tankverhalten.fragments.fahrzeuguebersicht_fragment;
+import com.example.tankverhalten.fragments.gefahrene_strecke_fragment;
+import com.example.tankverhalten.fragments.statistik_fragment;
+import com.example.tankverhalten.fragments.streckenprognose_fragment;
+import com.example.tankverhalten.fragments.tankvorgang_fragment;
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity_Menu extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TabLayout tabLayout;
@@ -71,9 +77,9 @@ public class MainActivity_Menu extends AppCompatActivity {
 
         adapter.addFragment(new fahrzeuguebersicht_fragment(), "");
         adapter.addFragment(new gefahrene_strecke_fragment(), "");
-        adapter.addFragment(new com.example.tankverhalten.tankvorgang_fragment(), "");
-        adapter.addFragment(new com.example.tankverhalten.statistik_fragment(), "");
-        adapter.addFragment(new com.example.tankverhalten.streckenprognose_fragment(), "");
+        adapter.addFragment(new tankvorgang_fragment(), "");
+        adapter.addFragment(new statistik_fragment(), "");
+        adapter.addFragment(new streckenprognose_fragment(), "");
 
         viewPager.setAdapter(adapter);
 

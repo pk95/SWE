@@ -11,20 +11,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tankverhalten.EditVehicle;
-import com.example.tankverhalten.MainActivity_Menu;
 import com.example.tankverhalten.R;
-import com.example.tankverhalten.RecyclerviewVehicles;
-import com.example.tankverhalten.Vehicle;
-import com.example.tankverhalten.VehicleType;
+import com.example.tankverhalten.RecyclerviewVehiclesAdapter;
+import com.example.tankverhalten.datastructure.Vehicle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Vector;
 
-public class GarageActivity extends AppCompatActivity implements RecyclerviewVehicles.OnVehicleListener {
+public class GarageActivity extends AppCompatActivity implements RecyclerviewVehiclesAdapter.OnVehicleListener {
 
     RecyclerView recyclerView;
-    RecyclerviewVehicles rows;
+    RecyclerviewVehiclesAdapter rows;
     public static Vector<Vehicle> vehicles;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -60,7 +57,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         /*
             Show Buttons for vehicles
          */
-        rows = new RecyclerviewVehicles(this, vehicles, this);
+        rows = new RecyclerviewVehiclesAdapter(this, vehicles, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(rows);
     }
@@ -68,7 +65,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
-        rows = new RecyclerviewVehicles(this, vehicles, this);
+        rows = new RecyclerviewVehiclesAdapter(this, vehicles, this);
         recyclerView.setAdapter(rows);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Vehicle.save(vehicles, this);
@@ -78,7 +75,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
     public static Intent vIntent;
     @Override
     public void onVehicleClick(int position) {
-        vIntent = new Intent(this, MainActivity_Menu.class);
+        vIntent = new Intent(this, MenuActivity.class);
         vIntent.putExtra("pos", position);
         startActivity(vIntent);
     }

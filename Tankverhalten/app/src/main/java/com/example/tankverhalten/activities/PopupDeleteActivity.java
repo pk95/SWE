@@ -4,15 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.tankverhalten.MainActivity;
 import com.example.tankverhalten.R;
-import com.example.tankverhalten.Vehicle;
-
-import java.util.Vector;
 
 public class PopupDeleteActivity extends Activity {
 

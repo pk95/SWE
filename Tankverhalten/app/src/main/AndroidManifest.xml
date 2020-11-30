@@ -15,7 +15,6 @@
             android:theme="@style/Theme.Tankverhalten.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -23,24 +22,21 @@
             android:name=".activities.AddVehicleActivity"
             android:label="AddVehicle"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
-        <activity android:name=".MainActivity2" />
         <activity
-            android:name=".MainActivity_Menu"
+            android:name=".activities.MenuActivity"
             android:label="@string/title_activity_edit_vehicle"
             android:parentActivityName=".activities.GarageActivity"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Tankverhalten.NoActionBar">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:name=".activities.RefuelingProcessesActivity"
+            android:label=""
+            android:parentActivityName=".activities.MenuActivity"
+            android:theme="@style/Theme.Tankverhalten.NoActionBar" />
+        <activity
+            android:name=".activities.PopupDeleteActivity"
+            android:label=""
+            android:parentActivityName=".activities.AddVehicleActivity"
+            android:theme="@style/Theme.Tankverhalten.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,12 +1,18 @@
 package com.example.tankverhalten;
 
+import com.example.tankverhalten.datastructure.Refuel;
+import com.example.tankverhalten.datastructure.Ride;
+import com.example.tankverhalten.datastructure.RoadType;
+import com.example.tankverhalten.datastructure.Vehicle;
+import com.example.tankverhalten.datastructure.VehicleType;
+
 import junit.framework.TestCase;
 
 public class VehicleTest extends TestCase {
 
 
     public void testVehicleTypeCahnges() {
-        Vehicle v = new Vehicle("hallo","dm",1,1,1,1,100,1,VehicleType.CAR);
+        Vehicle v = new Vehicle("hallo","dm",1,1,1,1,100,1, VehicleType.CAR);
         // Tests if vehicleType is set up right and value is readable as int and VehicleType
         assertEquals(0,v.vehicleType);
         assertEquals(VehicleType.CAR,v.vehicleType);
@@ -39,7 +45,7 @@ public class VehicleTest extends TestCase {
 
     public void testChangeRide(){
         Vehicle v = new Vehicle();
-        v.add(new Ride(5,1000,RoadType.CITY));
+        v.add(new Ride(5,1000, RoadType.CITY));
         assertEquals(5,v.getLastRide().mileAge);
         assertEquals((float)1000,v.getLastRide().fuelLevel);
         assertEquals(RoadType.CITY,v.getLastRide().road);

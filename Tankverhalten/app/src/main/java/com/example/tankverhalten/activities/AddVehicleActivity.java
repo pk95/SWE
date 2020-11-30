@@ -14,10 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tankverhalten.MainActivity_Menu;
 import com.example.tankverhalten.R;
-import com.example.tankverhalten.Vehicle;
-import com.example.tankverhalten.VehicleType;
+import com.example.tankverhalten.datastructure.Vehicle;
+import com.example.tankverhalten.datastructure.VehicleType;
 
 public class AddVehicleActivity extends AppCompatActivity {
 
@@ -216,12 +215,13 @@ public class AddVehicleActivity extends AppCompatActivity {
                 }
                 Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, combined, vehicleType);
                 GarageActivity.vehicles.add(newVehicle);
+                Vehicle.save(GarageActivity.vehicles, c);
 
-                //finish();
+//                finish();
 
                 int pos = GarageActivity.vehicles.indexOf(newVehicle);
                 if (pos >= 0) {
-                    vIntent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
+                    vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
                     vIntent.putExtra("pos", pos);
                     startActivity(vIntent);
                 }

@@ -1,4 +1,4 @@
-package com.example.tankverhalten;
+package com.example.tankverhalten.datastructure;
 
 import androidx.annotation.IntDef;
 
