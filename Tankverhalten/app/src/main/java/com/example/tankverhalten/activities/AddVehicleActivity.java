@@ -1,5 +1,7 @@
 package com.example.tankverhalten.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -27,8 +29,8 @@ public class AddVehicleActivity extends AppCompatActivity {
     int mile = -1, volume = -1, vehicleType;
     float co2 = -1, fuel = -1;
     boolean error = false;
-    public static Intent vIntent;
-
+    public Intent vIntent;
+    Activity c = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,16 +220,16 @@ public class AddVehicleActivity extends AppCompatActivity {
                 Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, combined, vehicleType);
                 GarageActivity.vehicles.add(newVehicle);
 
-                finish();
+                //finish();
 
                 int pos = GarageActivity.vehicles.indexOf(newVehicle);
 
-/*
+
                 vIntent = new Intent(AddVehicleActivity.this, MainActivity_Menu.class);
                 vIntent.putExtra("pos", pos);
                 startActivity(vIntent);
 
- */
+
 
                 /*
                 Intent intent = new Intent(this, MainActivity_Menu.class);
@@ -255,79 +257,6 @@ public class AddVehicleActivity extends AppCompatActivity {
     private void markOk(EditText input, TextView description) {
         description.setTextColor(Color.BLACK);
         description.setError(null);
+        error = false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-//
-///**
-// * Container for three variables to handle at once
-// *
-// * @param <First>
-// * @param <Second>
-// * @param <Third>
-// * @param <Fourth>
-// */
-//class VehicleParseItem<First, Second, Third, Fourth> {
-//    public First variable;
-//    public Second type;
-//    public Third variableToAssign;
-//    public Fourth textObject;
-//
-//    VehicleParseItem(First variable, Second type, Third variableToAssign, Fourth textObject) {
-//        this.variable = variable;
-//        this.type = type;
-//        this.variableToAssign = variableToAssign;
-//        this.textObject = textObject;
-//    }
-//
-//}
-
-
-
-//    /**
-//     * @param vehicleValues
-//     * @param vehicle
-//     */
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    private void parseToVehicle(ArrayList<VehicleParseItem<EditText, String, String, TextView>> vehicleValues, Vehicle vehicle) {
-//        for (VehicleParseItem<EditText, String, String, TextView> triple : vehicleValues) {
-//            double doubleValue;
-//            int intValue;
-//            float floatValue;
-//            String stringValue;
-//            Object value;
-//
-//            if (triple.type.equals("double"))
-//                try {
-//                    value = Double.parseDouble(triple.variable.getText().toString());
-//                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
-//                }
-//            else if (triple.type.equals("float")) {
-//                try {
-//                    value = Float.parseFloat(triple.variable.getText().toString());
-//                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
-//                }
-//            } else if (triple.type.equals("String")) {
-//                value = triple.variable.getText().toString();
-//            }
-//
-//            switch (triple.variableToAssign) {
-//                case "mileAge":
-//                    vehicle.mileAge = value;
-//            }
-//            error = true;
-//            triple.textObject.setError("erforderlich");
-//            triple.textObject.setTextColor(Color.RED);
-//        }
-//    }
