@@ -23,6 +23,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
     RecyclerView recyclerView;
     RecyclerviewVehiclesAdapter rows;
     public static Vector<Vehicle> vehicles;
+    public static Bundle vehicleData = new Bundle();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -68,17 +69,25 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         rows = new RecyclerviewVehiclesAdapter(this, vehicles, this);
         recyclerView.setAdapter(rows);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Vehicle.save(vehicles, this);
+//        Vehicle.save(vehicles, this);
         super.onResume();
     }
 
-    public static Intent vIntent;
+    /**
+     *Starts the Menu for the vehicle withthe index at the vector vehicles
+     * @param position index of vehicle in vector vehicles
+     */
     @Override
     public void onVehicleClick(int position) {
-        vIntent = new Intent(this, MenuActivity.class);
-        vIntent.putExtra("pos", position);
-        startActivity(vIntent);
+        //Collect all data for putthrough to a new activity
+        vehicleData.putInt("pos",position);
+
+        //Make intent for new activity
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
     }
+
+
 
     public static Vector<Vehicle> getVehicle() {
         return vehicles;

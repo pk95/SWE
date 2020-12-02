@@ -24,7 +24,9 @@ public class MenuActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
 
-//    int vehiclePos = getIntent().getExtras();
+    //    int vehiclePos = getIntent().getExtras();
+    Bundle vehicleData;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,14 +39,17 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar_id);
+
+        vehicleData = savedInstanceState;
+
+        toolbar = findViewById(R.id.toolbar_id);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView textview_title = (TextView) findViewById(R.id.Title);
+        TextView textview_title = findViewById(R.id.Title);
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager_id);
+        viewPager = findViewById(R.id.viewPager_id);
 
         com.example.tankverhalten.ViewPagerAdapter adapter = new com.example.tankverhalten.ViewPagerAdapter(getSupportFragmentManager());
 
@@ -56,26 +61,36 @@ public class MenuActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                switch (position){
-                    case 0: textview_title.setText("Fahrzeugübersicht");
+                switch (position) {
+                    case 0:
+                        textview_title.setText("Fahrzeugübersicht");
                         break;
-                    case 1: textview_title.setText("gefahrene Strecken");
+                    case 1:
+                        textview_title.setText("gefahrene Strecken");
                         break;
-                    case 2: textview_title.setText("Tankvorgänge");
+                    case 2:
+                        textview_title.setText("Tankvorgänge");
                         break;
-                    case 3: textview_title.setText("Statistik");
+                    case 3:
+                        textview_title.setText("Statistik");
                         break;
-                    case 4: textview_title.setText("Streckenprognose");
+                    case 4:
+                        textview_title.setText("Streckenprognose");
                         break;
                 }
 
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
 
-        adapter.addFragment(new fahrzeuguebersicht_fragment(), "");
+
+        fahrzeuguebersicht_fragment fahrzeuguebersicht_fragment = new fahrzeuguebersicht_fragment();
+//        fahrzeuguebersicht_fragment.setArguments(vehicleData);
+        adapter.addFragment(fahrzeuguebersicht_fragment, "");
+
         adapter.addFragment(new gefahrene_strecke_fragment(), "");
         adapter.addFragment(new tankvorgang_fragment(), "");
         adapter.addFragment(new statistik_fragment(), "");
@@ -83,7 +98,7 @@ public class MenuActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout_id);
+        tabLayout = findViewById(R.id.tabLayout_id);
 
         tabLayout.setupWithViewPager(viewPager);
 

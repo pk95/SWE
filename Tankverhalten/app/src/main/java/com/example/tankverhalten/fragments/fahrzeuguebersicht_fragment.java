@@ -12,8 +12,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.tankverhalten.R;
-import com.example.tankverhalten.datastructure.Vehicle;
 import com.example.tankverhalten.activities.GarageActivity;
+import com.example.tankverhalten.datastructure.Vehicle;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -31,7 +31,8 @@ public class fahrzeuguebersicht_fragment extends Fragment {
     public TextView permission;
     View view;
     Vehicle v;
-    Bundle extras = getActivity().getIntent().getExtras();
+    //    Bundle extras = getActivity().getIntent().getExtras();
+
     public fahrzeuguebersicht_fragment() {
     }
 
@@ -41,9 +42,20 @@ public class fahrzeuguebersicht_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fahrzeuguebersicht_layout, container, false);
 
+        v = new Vehicle();
         // get the selected vehicle
-
-        v = GarageActivity.vehicles.elementAt(extras.getInt("pos"));
+        int pos = -1;
+        if (!GarageActivity.vehicleData.isEmpty()) {
+            try {
+                pos = GarageActivity.vehicleData.getInt("pos");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (pos < 0)
+            getActivity().finish();
+        else
+            v = GarageActivity.vehicles.get(pos);
 
         // Format of displayed Number
         DecimalFormat df = new DecimalFormat("#,###.##");
@@ -69,28 +81,28 @@ public class fahrzeuguebersicht_fragment extends Fragment {
             strPermission = v.permission.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
         // lock TextView object with TextView(id) from xml, then setText
-        licensePlate = (TextView) view.findViewById(R.id.show_licensePlate);
+        licensePlate = view.findViewById(R.id.show_licensePlate);
         licensePlate.setText(v.licensePlate);
 
-        consumption = (TextView) view.findViewById(R.id.show_averageConsumption);
+        consumption = view.findViewById(R.id.show_averageConsumption);
         consumption.setText(df.format(v.averageConsumption));
 
-        co2 = (TextView) view.findViewById(R.id.show_co2emissions);
+        co2 = view.findViewById(R.id.show_co2emissions);
         co2.setText(df.format(v.co2emissions));
 
-        range = (TextView) view.findViewById(R.id.show_remainingRange);
+        range = view.findViewById(R.id.show_remainingRange);
         range.setText(df.format(fRange));
 
-        fuel = (TextView) view.findViewById(R.id.show_fuelLevel);
+        fuel = view.findViewById(R.id.show_fuelLevel);
         fuel.setText(df.format(v.fuelLevel));
 
-        mileAge = (TextView) view.findViewById(R.id.show_mileAge);
+        mileAge = view.findViewById(R.id.show_mileAge);
         mileAge.setText(df.format(miles));
 
-        inspection = (TextView) view.findViewById(R.id.show_nextInspection);
+        inspection = view.findViewById(R.id.show_nextInspection);
         inspection.setText(strInspection);
 
-        permission = (TextView) view.findViewById(R.id.show_nextPermission);
+        permission = view.findViewById(R.id.show_nextPermission);
         permission.setText(strPermission);
 
         return view;

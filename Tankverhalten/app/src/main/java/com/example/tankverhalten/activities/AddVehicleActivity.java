@@ -78,7 +78,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 //                vehicleValues.add(new VehicleParseItem(consumptionUrban, "float", "averageConsumption", consumptionUrbanTxt));
 //                vehicleValues.add(new VehicleParseItem(consumptionOutside, "float", "averageConsumption", consumptionOutsideTxt));
 
-
+                error = false;
                 if (displayName.getText().length() > 0) {
                     name = displayName.getText().toString();
                     markOk(displayName, displayNameTxt);
@@ -105,7 +105,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     markError(consumptionUrban, consumptionUrbanTxt);
                 }
 
-                if (consumptionOutside.getText().length() >= 0) {
+                if (consumptionOutside.getText().length() > 0) {
                     try {
                         outside = Double.parseDouble(consumptionOutside.getText().toString());
                         markOk(consumptionOutside, consumptionOutsideTxt);
@@ -141,7 +141,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     markError(mileage, mileageTxt);
                 }
 
-                if (fuelLevel.getText().length() >= 0) {
+                if (fuelLevel.getText().length() > 0) {
                     try {
                         fuel = Float.parseFloat(fuelLevel.getText().toString());
                         markOk(fuelLevel, fuelLevelTxt);
@@ -153,7 +153,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     markError(fuelLevel, fuelLevelTxt);
                 }
 
-                if (tankVolume.getText().length() >= 0) {
+                if (tankVolume.getText().length() > 0) {
                     try {
                         volume = Integer.parseInt(tankVolume.getText().toString());
                         markOk(tankVolume, tankVolumeTxt);
@@ -165,7 +165,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     markError(tankVolume, tankVolumeTxt);
                 }
 
-                if (emissions.getText().length() >= 0) {
+                if (emissions.getText().length() > 0) {
                     try {
                         co2 = Float.parseFloat(emissions.getText().toString());
                         markOk(emissions, emissionsTxt);
@@ -210,20 +210,22 @@ public class AddVehicleActivity extends AppCompatActivity {
                     transporter.setTextColor(Color.RED);
                 }
 
-                if (error) {
-                    return;
-                }
-                Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, combined, vehicleType);
-                GarageActivity.vehicles.add(newVehicle);
-                Vehicle.save(GarageActivity.vehicles, c);
+                if (!error) {
+                    Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, combined, vehicleType);
+                    GarageActivity.vehicles.add(newVehicle);
+                    Vehicle.save(GarageActivity.vehicles, c);
 
 //                finish();
 
-                int pos = GarageActivity.vehicles.indexOf(newVehicle);
-                if (pos >= 0) {
-                    vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
-                    vIntent.putExtra("pos", pos);
-                    startActivity(vIntent);
+                    int pos = GarageActivity.vehicles.indexOf(newVehicle);
+                    if (pos >= 0) {
+                        vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
+                        vIntent.putExtra("pos", pos);
+                        GarageActivity.vehicleData.putInt("pos", pos);
+//                    vIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        finish();
+                        startActivity(vIntent);
+                    }
                 }
 
                 /*
@@ -251,6 +253,5 @@ public class AddVehicleActivity extends AppCompatActivity {
     private void markOk(EditText input, TextView description) {
         description.setTextColor(Color.BLACK);
         description.setError(null);
-        error = false;
     }
 }
