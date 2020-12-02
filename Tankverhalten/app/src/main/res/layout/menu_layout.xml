@@ -44,8 +44,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="60dp"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="90dp"
-        android:layout_marginBottom="665dp"
         android:text="Fahrzeugübersicht"
         android:textColor="@color/white"
         android:textSize="19sp">

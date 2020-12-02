@@ -92,12 +92,12 @@
                     android:id="@+id/consumption_urban_vehicle_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autofillHints=""
                     android:hint="@string/consumption_city_hint"
                     android:inputType="numberDecimal"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:autofillHints="" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/consumption_combined_txt"
