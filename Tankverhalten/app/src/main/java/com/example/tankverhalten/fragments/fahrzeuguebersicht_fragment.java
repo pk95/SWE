@@ -89,23 +89,23 @@ public class fahrzeuguebersicht_fragment extends Fragment {
 
         //Verbrauch
         consumption = view.findViewById(R.id.show_averageConsumption);
-        consumption.setText(df.format(v.averageConsumption) + "l(kWh) / 100km");
+        consumption.setText(df.format(v.averageConsumption) + " l(kWh)");
 
         //CO2-Ausstoß
         co2 = view.findViewById(R.id.show_co2emissions);
-        co2.setText(df.format(v.co2emissions) + "g");
+        co2.setText(df.format(v.co2emissions) + " g");
 
         //Reichweite
         range = view.findViewById(R.id.show_remainingRange);
-        range.setText(df.format(fRange) + "km");
+        range.setText(df.format(fRange) + " km");
 
         //Tankstand
         fuel = view.findViewById(R.id.show_fuelLevel);
-        fuel.setText(df.format(v.fuelLevel) + "%");
+        fuel.setText(df.format(v.fuelLevel) + " %");
 
         //Kilometerstand
         mileAge = view.findViewById(R.id.show_mileAge);
-        mileAge.setText(df.format(miles) + "km");
+        mileAge.setText(df.format(miles) + " km");
 
         //Next TÜV
         inspection = view.findViewById(R.id.show_nextInspection);

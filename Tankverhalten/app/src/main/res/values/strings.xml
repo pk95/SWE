@@ -19,7 +19,7 @@
     <string name="streckenprognose">Streckenprognose</string>
 
     <!-- fahrzeuguebersicht_layout Strings -->
-    <string name="verbrauch">Verbrauch</string>
+    <string name="verbrauch">Verbrauch / 100km</string>
     <string name="kilometerstand">Kilometerstand</string>
     <string name="tankstand">Tankstand</string>
     <string name="reichweite">Reichweite</string>
