@@ -1,5 +1,6 @@
 package com.example.tankverhalten.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class fahrzeuguebersicht_fragment extends Fragment {
     public fahrzeuguebersicht_fragment() {
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
@@ -58,7 +60,7 @@ public class fahrzeuguebersicht_fragment extends Fragment {
             v = GarageActivity.vehicles.get(pos);
 
         // Format of displayed Number
-        DecimalFormat df = new DecimalFormat("#,###.##");
+        DecimalFormat df = new DecimalFormat("#,###");
         DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
         dfs.setDecimalSeparator(',');
         dfs.setGroupingSeparator('.');
@@ -81,27 +83,35 @@ public class fahrzeuguebersicht_fragment extends Fragment {
             strPermission = v.permission.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
         // lock TextView object with TextView(id) from xml, then setText
+        //Kennzeichen
         licensePlate = view.findViewById(R.id.show_licensePlate);
         licensePlate.setText(v.licensePlate);
 
+        //Verbrauch
         consumption = view.findViewById(R.id.show_averageConsumption);
-        consumption.setText(df.format(v.averageConsumption));
+        consumption.setText(df.format(v.averageConsumption) + "l(kWh) / 100km");
 
+        //CO2-Ausstoß
         co2 = view.findViewById(R.id.show_co2emissions);
-        co2.setText(df.format(v.co2emissions));
+        co2.setText(df.format(v.co2emissions) + "g");
 
+        //Reichweite
         range = view.findViewById(R.id.show_remainingRange);
-        range.setText(df.format(fRange));
+        range.setText(df.format(fRange) + "km");
 
+        //Tankstand
         fuel = view.findViewById(R.id.show_fuelLevel);
-        fuel.setText(df.format(v.fuelLevel));
+        fuel.setText(df.format(v.fuelLevel) + "%");
 
+        //Kilometerstand
         mileAge = view.findViewById(R.id.show_mileAge);
-        mileAge.setText(df.format(miles));
+        mileAge.setText(df.format(miles) + "km");
 
+        //Next TÜV
         inspection = view.findViewById(R.id.show_nextInspection);
         inspection.setText(strInspection);
 
+        //Next Inspection
         permission = view.findViewById(R.id.show_nextPermission);
         permission.setText(strPermission);
 

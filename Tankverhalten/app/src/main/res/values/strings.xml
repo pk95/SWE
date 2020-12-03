@@ -19,14 +19,14 @@
     <string name="streckenprognose">Streckenprognose</string>
 
     <!-- fahrzeuguebersicht_layout Strings -->
-    <string name="verbrauch">Verbrauch\n[l(kWh) / 100km]</string>
-    <string name="kilometerstand">Kilometerstand\n[km]</string>
-    <string name="tankstand">Tankstand\n[%]</string>
-    <string name="reichweite">Reichweite\n[km]</string>
-    <string name="co2_ausstoß">CO<sub><small>2</small></sub>-Ausstoß\n[g]</string>
+    <string name="verbrauch">Verbrauch</string>
+    <string name="kilometerstand">Kilometerstand</string>
+    <string name="tankstand">Tankstand</string>
+    <string name="reichweite">Reichweite</string>
+    <string name="co2_ausstoß">CO<sub><small>2</small></sub>-Ausstoß</string>
     <string name="licensePlate">Kennzeichen</string>
-    <string name="inspection">Nächste Hauptuntersuchung</string>
-    <string name="permission">Nächste TÜV Inspektion</string>
+    <string name="inspection">Nächste TÜV Inspektion</string>
+    <string name="permission">Nächste Inspektion</string>
 
     <!--  Add vehicle header and hints  -->
     <string name="displayname">Anzeigename...</string>
