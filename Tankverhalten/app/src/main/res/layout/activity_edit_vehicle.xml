@@ -173,12 +173,12 @@
                     android:id="@+id/fuel_level_vehicle_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autofillHints=""
                     android:hint="@string/fuelLevel_hint"
                     android:inputType="number"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:autofillHints="" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tank_volume_txt"

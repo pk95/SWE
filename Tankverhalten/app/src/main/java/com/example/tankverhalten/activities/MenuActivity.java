@@ -1,9 +1,12 @@
 package com.example.tankverhalten.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,7 @@ public class MenuActivity extends AppCompatActivity {
     //    int vehiclePos = getIntent().getExtras();
     Bundle vehicleData;
 
+    public static AppCompatActivity fa;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,9 +39,32 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int pos = GarageActivity.vehicleData.getInt("pos");
+        switch (item.getItemId()) {
+            case R.id.editEntry:
+                Intent editIntent = new Intent(this, AddVehicleActivity.class);
+                editIntent.putExtra("pos", pos);
+                startActivity(editIntent);
+                return true;
+
+            case R.id.deleteEntry:
+                Intent deleteIntent = new Intent(this, PopupDeleteActivity.class);
+                deleteIntent.putExtra("pos", pos);
+                startActivity(deleteIntent);
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
+        fa = this;
 
 
         vehicleData = savedInstanceState;

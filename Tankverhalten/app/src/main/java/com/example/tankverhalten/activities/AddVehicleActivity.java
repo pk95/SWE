@@ -20,7 +20,6 @@ import com.example.tankverhalten.datastructure.VehicleType;
 
 public class AddVehicleActivity extends AppCompatActivity {
 
-    Intent vIntent;
     String name = "";
     String license = "";
     double urban = -1, outside = -1;
@@ -30,6 +29,7 @@ public class AddVehicleActivity extends AppCompatActivity {
     boolean error = false;
     Activity c = this;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,18 +65,25 @@ public class AddVehicleActivity extends AppCompatActivity {
         RadioButton motorcycle = findViewById(R.id.motorcycle_radio_btn);
         RadioButton transporter = findViewById(R.id.transporter_radio_btn);
 
+        int pos = -1;
+
+        if (pos >= 0) {
+            displayName.setText(GarageActivity.vehicles.elementAt(pos).name);
+            licensePlate.setText(GarageActivity.vehicles.elementAt(pos).licensePlate);
+            //consumptionUrban.setText(GarageActivity.vehicles.elementAt(pos).
+            //consumptionOutside.setText(GarageActivity.vehicles.elementAt(pos).
+            //consumptionCombined.setText(GarageActivity.vehicles.elementAt(pos).
+            mileage.setText(GarageActivity.vehicles.elementAt(pos).mileAge);
+            fuelLevel.setText(Math.round(GarageActivity.vehicles.elementAt(pos).fuelLevel));
+            tankVolume.setText(GarageActivity.vehicles.elementAt(pos).volume);
+            emissions.setText(Math.round(GarageActivity.vehicles.elementAt(pos).co2emissions));
+        }
+
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-
-
-//                //LIst all parses from editText to Vehicle
-//                ArrayList<VehicleParseItem<EditText, String, String, TextView>> vehicleValues = new ArrayList<>();
-//                vehicleValues.add(new VehicleParseItem(consumptionCombined, "float", "averageConsumption", consumptionCombinedTxt));
-//                vehicleValues.add(new VehicleParseItem(consumptionUrban, "float", "averageConsumption", consumptionUrbanTxt));
-//                vehicleValues.add(new VehicleParseItem(consumptionOutside, "float", "averageConsumption", consumptionOutsideTxt));
 
                 error = false;
                 if (displayName.getText().length() > 0) {
@@ -144,7 +151,11 @@ public class AddVehicleActivity extends AppCompatActivity {
                 if (fuelLevel.getText().length() > 0) {
                     try {
                         fuel = Float.parseFloat(fuelLevel.getText().toString());
-                        markOk(fuelLevel, fuelLevelTxt);
+                        if (fuel >= 0 && fuel <= 100) {
+                            markOk(fuelLevel, fuelLevelTxt);
+                        } else {
+                            markError(fuelLevel, fuelLevelTxt);
+                        }
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         markError(fuelLevel, fuelLevelTxt);
@@ -215,24 +226,16 @@ public class AddVehicleActivity extends AppCompatActivity {
                     GarageActivity.vehicles.add(newVehicle);
                     Vehicle.save(GarageActivity.vehicles, c);
 
-//                finish();
 
                     int pos = GarageActivity.vehicles.indexOf(newVehicle);
                     if (pos >= 0) {
-                        vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
+                        Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
                         vIntent.putExtra("pos", pos);
                         GarageActivity.vehicleData.putInt("pos", pos);
-//                    vIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         finish();
                         startActivity(vIntent);
                     }
                 }
-
-                /*
-                Intent intent = new Intent(this, MainActivity_Menu.class);
-                intent.putExtra("pos", pos);
-                startActivity(intent);
-                 */
             }
         });
 

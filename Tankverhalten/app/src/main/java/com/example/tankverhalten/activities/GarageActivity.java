@@ -48,7 +48,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         vehicles = Vehicle.load(this);
 
         /*
-            Creaate new Vehicle
+            Create new Vehicle
          */
         recyclerView = findViewById(R.id.garage_add_vehicle);
 //        Vehicle r = new Vehicle("Test1", "123", 0, 0, 0, 0, 0, 0, VehicleType.CAR);

@@ -6,12 +6,12 @@
     tools:context=".activity.MainActivity">
 
     <item
-        android:id="@+id/overflowmenu_option1"
+        android:id="@+id/editEntry"
         android:title="Eintrag bearbeiten"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/overflowmenu_option2"
+        android:id="@+id/deleteEntry"
         android:title="Eintrag löschen"
         app:showAsAction="never"
         />

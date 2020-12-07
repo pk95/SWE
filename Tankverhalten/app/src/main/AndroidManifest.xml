@@ -24,7 +24,7 @@
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity
             android:name=".activities.MenuActivity"
-            android:label="@string/title_activity_edit_vehicle"
+            android:label="Test"
             android:parentActivityName=".activities.GarageActivity"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity
