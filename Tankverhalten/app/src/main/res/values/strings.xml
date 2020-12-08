@@ -28,6 +28,14 @@
     <string name="inspection">Nächste TÜV Inspektion</string>
     <string name="permission">Nächste Inspektion</string>
 
+    <!-- statistik layout Strings -->
+    <string name="before">früher</string>
+    <string name="later">später</string>
+    <string name="week">Woche</string>
+    <string name="month">Monat</string>
+    <string name="year">Jahr</string>
+
+
     <!--  Add vehicle header and hints  -->
     <string name="displayname">Anzeigename...</string>
     <string name="license_plate_header">Kennzeichen</string>

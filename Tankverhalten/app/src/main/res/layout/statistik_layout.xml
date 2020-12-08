@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/diagramm"
+        android:id="@+id/content"
         android:layout_above="@+id/before_later_b"/>
 
     <LinearLayout
@@ -16,10 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_above="@id/zeitBar">
+        android:layout_above="@id/timeBar">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/before"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_weight="0.5"
@@ -27,13 +27,14 @@
             android:insetTop="10dp"
             android:insetRight="5dp"
             android:insetBottom="10dp"
-            android:text="before"
+            android:text="@string/before"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textSize="22sp"
-            app:cornerRadius="0dp"/>
+            app:cornerRadius="0dp"
+            tools:ignore="ButtonStyle" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/later"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_weight="0.5"
@@ -41,29 +42,71 @@
             android:insetTop="10dp"
             android:insetRight="10dp"
             android:insetBottom="10dp"
-            android:text="later"
+            android:text="@string/later"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textSize="22sp"
-            app:cornerRadius="0dp" />
+            app:cornerRadius="0dp"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/zeitBar"
+        android:id="@+id/timeBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/artBar"
+        android:layout_above="@+id/valueBar"
         android:backgroundTint="@color/FHGreen"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        app:tabTextAppearance="@style/statistikTabText">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <TextView
+        android:id="@+id/backG"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="@color/FHGreen"
+        android:layout_alignParentBottom="true"/>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/artBar"
+        android:id="@+id/valueBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:backgroundTint="@color/FHGreen"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginHorizontal="22dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.google.android.material.tabs.TabLayout>
 
 </RelativeLayout>
