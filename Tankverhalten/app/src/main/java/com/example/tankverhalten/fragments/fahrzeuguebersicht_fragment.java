@@ -89,7 +89,7 @@ public class fahrzeuguebersicht_fragment extends Fragment {
 
         //Verbrauch
         consumption = view.findViewById(R.id.show_averageConsumption);
-        consumption.setText(df.format(v.averageConsumption) + " l(kWh)");
+        consumption.setText(df.format(v.combinedConsumption) + " l(kWh)");
 
         //CO2-Ausstoß
         co2 = view.findViewById(R.id.show_co2emissions);

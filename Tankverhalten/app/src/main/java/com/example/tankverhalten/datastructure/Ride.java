@@ -2,34 +2,10 @@ package com.example.tankverhalten.datastructure;
 
 import android.os.Build;
 
-import androidx.annotation.IntDef;
 import androidx.annotation.RequiresApi;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.time.LocalDate;
-
-/**
- * Defines the type of used road.
- * Can take the states: city, combined or country.
- *
- * @author Stephan de Gavarelli
- * @version 1.0
- * @see Ride
- */
-//enum RoadType {
-//    CITY,
-//    COMBINED,
-//    COUNTRY
-//}
-
-@IntDef({RoadType.COMBINED, RoadType.CITY, RoadType.COUNTRY})
-@Retention(RetentionPolicy.SOURCE)
-@interface RoadType {
-    int COMBINED = 0;
-    int CITY = 1;
-    int COUNTRY = 2;
-}
+import java.util.Objects;
 
 
 /**
@@ -44,9 +20,9 @@ import java.time.LocalDate;
 public class Ride {
     private final LocalDate creationDate = LocalDate.now();
     @RoadType
-    int road = RoadType.COMBINED;
-    int mileAge = 0;
-    float fuelLevel = 0;
+    public int roadType = RoadType.COMBINED;
+    public int mileAge = 0;
+    public float fuelLevel = 0;
 
     /**
      * Default-Constructor
@@ -59,12 +35,12 @@ public class Ride {
      *
      * @param mileAge   new mileAge to take over
      * @param fuelLevel new fuelLevel to take over
-     * @param road      new roadType to take over
+     * @param roadType  new roadType to take over
      */
-    public Ride(int mileAge, float fuelLevel, @RoadType int road) {
+    public Ride(int mileAge, float fuelLevel, @RoadType int roadType) {
         this.fuelLevel = fuelLevel;
         this.mileAge = mileAge;
-        this.road = road;
+        this.roadType = roadType;
     }
 
 //    public void change(Ride ride){
@@ -77,21 +53,27 @@ public class Ride {
      * Camparison of Ride with this Ride.
      * Returns true, if Rides data matches.
      *
-     * @param ride Ride to compare with
+     * @param o to compare
      * @return bool if true
      */
-    public boolean equals(Ride ride) {
-        return (ride.road == this.road && ride.mileAge == this.mileAge && ride.fuelLevel == this.fuelLevel && ride.creationDate == this.creationDate);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ride ride = (Ride) o;
+        return roadType == ride.roadType &&
+                mileAge == ride.mileAge &&
+                Float.compare(ride.fuelLevel, fuelLevel) == 0 &&
+                Objects.equals(creationDate, ride.creationDate);
     }
 
     /**
      * Clones a Ride to a new Ride with equal data
      *
-     * @param ride clone Ride
-     * @return bool
+     * @return Ride
      */
-    public Ride clone(Ride ride) {
-        return new Ride(ride.mileAge, ride.fuelLevel, ride.road);
+    public Ride clone() {
+        return new Ride(this.mileAge, this.fuelLevel, this.roadType);
     }
 
     /**

@@ -51,7 +51,7 @@ public class RecyclerviewVehiclesAdapter extends RecyclerView.Adapter<Recyclervi
      * @param parent
      * @param viewType
      * @return RowHolder a Row of a Vehicle
-     * @see RecyclerviewVehiclesAdapter
+     * @see RecyclerviewVehiclesAdapter|
      * @see RecyclerView.Adapter
      */
     @NonNull
@@ -73,7 +73,7 @@ public class RecyclerviewVehiclesAdapter extends RecyclerView.Adapter<Recyclervi
     @Override
     public void onBindViewHolder(@NonNull RowHolder holder, int position) {
         holder.vehicleName_txt.setText(vehicles.elementAt(position).name);
-        if (vehicles.elementAt(position).getDrawIdOfVehicleType(context) != 0 )
+        if (vehicles.elementAt(position).getDrawIdOfVehicleType(context) != 0)
 //            holder.vehicleButton_img.setImageResource( context.getResources().getIdentifier(vehicles.elementAt(position).getIconName(),"drawable",context.getPackageName() ));
             holder.vehicleButton_img.setImageResource(vehicles.elementAt(position).getDrawIdOfVehicleType(context));
 //            holder.vehicleButton_img.setImageResource(R.drawable.ic_car_black);
@@ -112,7 +112,7 @@ public class RecyclerviewVehiclesAdapter extends RecyclerView.Adapter<Recyclervi
          * Contains variables to address the Activity-ids and allow changes in Activity
          * After construction uses the onBindViewHolder.
          *
-         * @param itemView Viewelement/Activity
+         * @param itemView          Viewelement/Activity
          * @param onVehicleListener Listener of the Row
          */
         public RowHolder(@NonNull View itemView, OnVehicleListener onVehicleListener) {

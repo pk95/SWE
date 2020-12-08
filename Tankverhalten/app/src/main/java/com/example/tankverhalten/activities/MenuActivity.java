@@ -1,6 +1,5 @@
 package com.example.tankverhalten.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -27,9 +26,6 @@ public class MenuActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
 
-    //    int vehiclePos = getIntent().getExtras();
-    Bundle vehicleData;
-
     public static AppCompatActivity fa;
 
     @Override
@@ -47,27 +43,20 @@ public class MenuActivity extends AppCompatActivity {
                 editIntent.putExtra("pos", pos);
                 startActivity(editIntent);
                 return true;
-
             case R.id.deleteEntry:
                 Intent deleteIntent = new Intent(this, PopupDeleteActivity.class);
                 deleteIntent.putExtra("pos", pos);
                 startActivity(deleteIntent);
                 return true;
-
-            default:
-                return false;
         }
+        return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
         fa = this;
-
-
-        vehicleData = savedInstanceState;
 
         toolbar = findViewById(R.id.toolbar_id);
         setSupportActionBar(toolbar);
@@ -113,11 +102,7 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-
-        fahrzeuguebersicht_fragment fahrzeuguebersicht_fragment = new fahrzeuguebersicht_fragment();
-//        fahrzeuguebersicht_fragment.setArguments(vehicleData);
-        adapter.addFragment(fahrzeuguebersicht_fragment, "");
-
+        adapter.addFragment(new fahrzeuguebersicht_fragment(), "");
         adapter.addFragment(new gefahrene_strecke_fragment(), "");
         adapter.addFragment(new tankvorgang_fragment(), "");
         adapter.addFragment(new statistik_fragment(), "");

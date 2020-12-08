@@ -37,12 +37,17 @@ public class Vehicle implements Serializable {
     public String name = "";
     public String licensePlate = "";
     public int vehicleType = VehicleType.CAR;
-    public float averageConsumption = 0;
+    public float urbanConsumption = 0;
+    public float outsideConsumption = 0;
+    public float combinedConsumption = 0;
+
     public int mileAge = 0;
     public int remainingRange = 0;
     public int volume = 0;
     public float fuelLevel = 100;
     public float co2emissions = 0;
+
+
     private Vector<Ride> rides;
     private Vector<Refuel> refuels;
 
@@ -57,14 +62,14 @@ public class Vehicle implements Serializable {
     /**
      * Constructor with all parameters
      *
-     * @param volume             of tank
-     * @param co2emissions       while driving
-     * @param remainingRange     possible to drive
-     * @param mileAge            right now
-     * @param fuelLevel          right now
-     * @param averageConsumption calculated with data
+     * @param volume              of tank
+     * @param co2emissions        while driving
+     * @param remainingRange      possible to drive
+     * @param mileAge             right now
+     * @param fuelLevel           right now
+     * @param combinedConsumption calculated with data
      */
-    public Vehicle(String name, String licensePlate, int volume, float co2emissions, int remainingRange, int mileAge, float fuelLevel, float averageConsumption, @VehicleType int vehicleType) {
+    public Vehicle(String name, String licensePlate, int volume, float co2emissions, int remainingRange, int mileAge, float fuelLevel, float urbanConsumption, float outsideConsumption, float combinedConsumption, @VehicleType int vehicleType) {
         this.name = name;
         this.licensePlate = licensePlate;
         this.volume = volume;
@@ -72,7 +77,9 @@ public class Vehicle implements Serializable {
         this.remainingRange = remainingRange;
         this.mileAge = mileAge;
         this.fuelLevel = fuelLevel;
-        this.averageConsumption = averageConsumption;
+        this.urbanConsumption = urbanConsumption;
+        this.outsideConsumption = outsideConsumption;
+        this.combinedConsumption = combinedConsumption;
         this.vehicleType = vehicleType;
         rides = new Vector<Ride>();
         refuels = new Vector<Refuel>();
@@ -103,21 +110,10 @@ public class Vehicle implements Serializable {
             e.printStackTrace();
             vehicles = new Vector<Vehicle>();
         }
-//
-//        if (os != null) {
-//            try {
-//                vehicles = (Vector<Vehicle>) os.readObject();
-//                Log.d("File", "File not found in: " + context.getFilesDir().getAbsoluteFile().toString());
-//            } catch (ClassNotFoundException | IOException e) {
-//                e.printStackTrace();
-//                vehicles = new Vector<Vehicle>();
-//            }
-//        }
-//
-//        if (vehicles == null) {
-//            vehicles = new Vector<Vehicle>();
-//        }
-
+        if (vehicles == null) {
+            vehicles = new Vector<Vehicle>();
+            Vehicle.save(vehicles, context);
+        }
         return vehicles;
     }
 
@@ -151,7 +147,7 @@ public class Vehicle implements Serializable {
      */
     @Override
     public Vehicle clone() {
-        Vehicle v = new Vehicle(this.name, this.licensePlate, this.volume, this.co2emissions, this.remainingRange, this.mileAge, this.fuelLevel, this.averageConsumption, this.vehicleType);
+        Vehicle v = new Vehicle(this.name, this.licensePlate, this.volume, this.co2emissions, this.remainingRange, this.mileAge, this.fuelLevel, this.urbanConsumption, this.outsideConsumption ,this.combinedConsumption, this.vehicleType);
         v.refuels = new Vector<Refuel>(this.refuels);
         v.rides = new Vector<Ride>(this.rides);
         return v;
@@ -166,6 +162,15 @@ public class Vehicle implements Serializable {
         return rides.lastElement();
     }
 
+
+    public Ride[] getRides(){
+        Ride[] rides = new Ride[this.rides.size()];
+        for (int i =0; i<this.rides.size();i++ ){
+            rides[i] = this.rides.elementAt(i).clone();
+        }
+        return rides;
+    }
+
     /**
      * Get last refuel.
      *
@@ -173,6 +178,14 @@ public class Vehicle implements Serializable {
      */
     public Refuel getLastRefuel() {
         return refuels.lastElement();
+    }
+
+    public Refuel[] getRefuels(){
+        Refuel[] refuels = new Refuel[this.refuels.size()];
+        for (int i =0; i<this.refuels.size();i++ ){
+            refuels[i] = this.refuels.elementAt(i).clone();
+        }
+        return refuels;
     }
 
 //    /**
@@ -231,7 +244,7 @@ public class Vehicle implements Serializable {
      * @return boolean true if equal values
      */
     public boolean equals(Vehicle vehicle) {
-        boolean sameAttr = this.remainingRange == vehicle.remainingRange && this.volume == vehicle.volume && this.mileAge == vehicle.mileAge && this.fuelLevel == vehicle.fuelLevel && this.co2emissions == vehicle.co2emissions && this.averageConsumption == vehicle.averageConsumption;// && this.creationDate == vehicle.creationDate;
+        boolean sameAttr = this.remainingRange == vehicle.remainingRange && this.volume == vehicle.volume && this.mileAge == vehicle.mileAge && this.fuelLevel == vehicle.fuelLevel && this.co2emissions == vehicle.co2emissions && this.combinedConsumption == vehicle.combinedConsumption;// && this.creationDate == vehicle.creationDate;
         return (sameAttr && this.rides.equals(vehicle.rides) && this.refuels.equals(vehicle.refuels));
     }
 

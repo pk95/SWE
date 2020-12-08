@@ -20,10 +20,15 @@ import java.util.Vector;
 
 public class GarageActivity extends AppCompatActivity implements RecyclerviewVehiclesAdapter.OnVehicleListener {
 
-    RecyclerView recyclerView;
-    RecyclerviewVehiclesAdapter rows;
     public static Vector<Vehicle> vehicles;
     public static Bundle vehicleData = new Bundle();
+
+    RecyclerView recyclerView;
+    RecyclerviewVehiclesAdapter rows;
+
+//    public static Vector<Vehicle> getVehicle() {
+//        return vehicles;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -32,64 +37,65 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
         setContentView(R.layout.activity_garage);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        recyclerView = findViewById(R.id.vehicleButtonsContainer);
 
         vehicles = Vehicle.load(this);
+        showVehicleButtons();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),AddVehicleActivity.class);
-                //intent.putExtra("pos", -1);
+                vehicleData.putInt("pos", -1);
+                Intent intent = new Intent(getApplicationContext(), AddVehicleActivity.class);
+                intent.putExtras(vehicleData);
                 startActivity(intent);
             }
         });
 
-        vehicles = Vehicle.load(this);
-
-        /*
-            Create new Vehicle
-         */
-        recyclerView = findViewById(R.id.garage_add_vehicle);
-//        Vehicle r = new Vehicle("Test1", "123", 0, 0, 0, 0, 0, 0, VehicleType.CAR);
-//        vehicles.add(r);
-//        Vehicle.save(vehicles, this);
-
-        /*
-            Show Buttons for vehicles
-         */
-        rows = new RecyclerviewVehiclesAdapter(this, vehicles, this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(rows);
+        //Specification: When just one vehicle in garage open the menu of this vehicle
+        if (vehicles.size() == 1) {
+            vehicleData.putInt("pos", 0);
+            Intent intent = new Intent(this, MenuActivity.class);
+            intent.putExtras(vehicleData);
+            startActivity(intent);
+        }
     }
 
+    /**
+     *When continue on this screen
+     * clear pos / vehicleId
+     * recreate buttons for vehicles
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
-        rows = new RecyclerviewVehiclesAdapter(this, vehicles, this);
-        recyclerView.setAdapter(rows);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        Vehicle.save(vehicles, this);
+        vehicleData.putInt("pos", -1);
+        showVehicleButtons();
         super.onResume();
     }
 
     /**
-     *Starts the Menu for the vehicle withthe index at the vector vehicles
+     * Starts the Menu for the vehicle withthe index at the vector vehicles
+     *
      * @param position index of vehicle in vector vehicles
      */
     @Override
     public void onVehicleClick(int position) {
         //Collect all data for putthrough to a new activity
-        vehicleData.putInt("pos",position);
-
+        vehicleData.putInt("pos", position);
         //Make intent for new activity
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 
-
-
-    public static Vector<Vehicle> getVehicle() {
-        return vehicles;
+    /**
+     * Shows a button for each vehicle.
+     * A click opens the overview about the vehicle's data.
+     */
+    void showVehicleButtons() {
+        rows = new RecyclerviewVehiclesAdapter(getApplicationContext(), vehicles, this);
+        recyclerView.setAdapter(rows);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 }

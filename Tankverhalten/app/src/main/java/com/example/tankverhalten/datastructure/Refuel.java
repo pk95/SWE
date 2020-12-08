@@ -17,9 +17,9 @@ import java.time.LocalDate;
 public class Refuel {
 
     private final LocalDate creationDate = java.time.LocalDate.now();
-    float refueled = 0;
-    float cost = 0;
-    String costImageSrc = "";
+    public float refueled = 0;
+    public float cost = 0;
+    public String costImageSrc = "";
 
     /**
      * Default-Constructor
@@ -46,6 +46,19 @@ public class Refuel {
      */
     public LocalDate getCreationDateDate() {
         return creationDate;
+    }
+
+    public Refuel clone() {
+        return new Refuel(this.refueled, this.cost, this.costImageSrc);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Refuel) {
+            Refuel r = (Refuel) o;
+            return (this.refueled == r.refueled && this.cost == r.cost && this.costImageSrc.equals(r.costImageSrc));
+        }
+        return false;
     }
 }
 

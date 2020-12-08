@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".activities.AddVehicleActivity"
-            android:label="AddVehicle"
+            android:label="EditVehicle"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity
             android:name=".activities.MenuActivity"

@@ -22,12 +22,13 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     String name = "";
     String license = "";
-    double urban = -1, outside = -1;
-    float combined = -1;
+    float combinedConsumption = -1, urbanConsumption = -1, outsideConsumption = -1;
     int mile = -1, volume = -1, vehicleType;
     float co2 = -1, fuel = -1;
     boolean error = false;
     Activity c = this;
+    Bundle bundle;
+    int vehicleIndex = -1;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -65,18 +66,36 @@ public class AddVehicleActivity extends AppCompatActivity {
         RadioButton motorcycle = findViewById(R.id.motorcycle_radio_btn);
         RadioButton transporter = findViewById(R.id.transporter_radio_btn);
 
-        int pos = -1;
+//        if (bundle != null) {
+//            bundle = getIntent().getExtras();
+//            vehicleIndex = bundle.getInt("pos");
+//        }
+        vehicleIndex = GarageActivity.vehicleData.getInt("pos",-1);
+        if (vehicleIndex >= 0) {
+            displayName.setText(GarageActivity.vehicles.elementAt(vehicleIndex).name);
+            licensePlate.setText(GarageActivity.vehicles.elementAt(vehicleIndex).licensePlate);
+            consumptionUrban.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).urbanConsumption));
+            consumptionOutside.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).outsideConsumption));
+            consumptionCombined.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).combinedConsumption));
+            mileage.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).mileAge));
+            fuelLevel.setText(String.valueOf(Math.round(GarageActivity.vehicles.elementAt(vehicleIndex).fuelLevel)));
+            tankVolume.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).volume));
+            emissions.setText(String.valueOf(Math.round(GarageActivity.vehicles.elementAt(vehicleIndex).co2emissions)));
 
-        if (pos >= 0) {
-            displayName.setText(GarageActivity.vehicles.elementAt(pos).name);
-            licensePlate.setText(GarageActivity.vehicles.elementAt(pos).licensePlate);
-            //consumptionUrban.setText(GarageActivity.vehicles.elementAt(pos).
-            //consumptionOutside.setText(GarageActivity.vehicles.elementAt(pos).
-            //consumptionCombined.setText(GarageActivity.vehicles.elementAt(pos).
-            mileage.setText(GarageActivity.vehicles.elementAt(pos).mileAge);
-            fuelLevel.setText(Math.round(GarageActivity.vehicles.elementAt(pos).fuelLevel));
-            tankVolume.setText(GarageActivity.vehicles.elementAt(pos).volume);
-            emissions.setText(Math.round(GarageActivity.vehicles.elementAt(pos).co2emissions));
+            vehicleType = GarageActivity.vehicles.elementAt(vehicleIndex).vehicleType;
+            switch (vehicleType) {
+                case VehicleType.CAR:
+                    car.isChecked();
+                    break;
+                case VehicleType.MOTORCYCLE:
+                    motorcycle.isChecked();
+                    break;
+                case VehicleType.TRANSPORTER:
+                    transporter.isChecked();
+                    break;
+            }
+
+
         }
 
 
@@ -102,7 +121,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                 if (consumptionUrban.getText().toString().length() > 0) {
                     try {
-                        urban = Double.parseDouble(consumptionUrban.getText().toString());
+                        urbanConsumption = Float.parseFloat(consumptionUrban.getText().toString());
                         markOk(consumptionUrban, consumptionUrbanTxt);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -114,7 +133,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                 if (consumptionOutside.getText().length() > 0) {
                     try {
-                        outside = Double.parseDouble(consumptionOutside.getText().toString());
+                        outsideConsumption = Float.parseFloat(consumptionOutside.getText().toString());
                         markOk(consumptionOutside, consumptionOutsideTxt);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -126,7 +145,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                 if (consumptionCombined.getText().toString().length() > 0) {
                     try {
-                        combined = Float.parseFloat(consumptionCombined.getText().toString());
+                        combinedConsumption = Float.parseFloat(consumptionCombined.getText().toString());
                         markOk(consumptionCombined, consumptionCombinedTxt);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -222,18 +241,23 @@ public class AddVehicleActivity extends AppCompatActivity {
                 }
 
                 if (!error) {
-                    Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, combined, vehicleType);
-                    GarageActivity.vehicles.add(newVehicle);
-                    Vehicle.save(GarageActivity.vehicles, c);
+                    Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, urbanConsumption, outsideConsumption, combinedConsumption, vehicleType);
 
+                    if (vehicleIndex < 0) {
+                        GarageActivity.vehicles.add(newVehicle);
+                        Vehicle.save(GarageActivity.vehicles, c);
 
-                    int pos = GarageActivity.vehicles.indexOf(newVehicle);
-                    if (pos >= 0) {
-                        Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
-                        vIntent.putExtra("pos", pos);
-                        GarageActivity.vehicleData.putInt("pos", pos);
+                        int pos = GarageActivity.vehicles.indexOf(newVehicle);
+                        if (pos >= 0) {
+                            Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
+                            vIntent.putExtra("pos", pos);
+                            GarageActivity.vehicleData.putInt("pos", pos);
+                            finish();
+                            startActivity(vIntent);
+                        }
+                    } else {
+                        GarageActivity.vehicles.set(vehicleIndex, newVehicle);
                         finish();
-                        startActivity(vIntent);
                     }
                 }
             }
