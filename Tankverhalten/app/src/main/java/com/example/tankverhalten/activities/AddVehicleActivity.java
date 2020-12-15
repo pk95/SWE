@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.datastructure.Vehicle;
@@ -29,6 +30,7 @@ public class AddVehicleActivity extends AppCompatActivity {
     Activity c = this;
     Bundle bundle;
     int vehicleIndex = -1;
+     Toolbar toolbar;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -37,6 +39,10 @@ public class AddVehicleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_edit_vehicle);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar_vehicle);
+        setSupportActionBar(toolbar);
+
 
         TextView displayNameTxt = findViewById(R.id.displayname_txt);
         TextView licensePlateTxt = findViewById(R.id.licenseplate_txt);
@@ -72,6 +78,9 @@ public class AddVehicleActivity extends AppCompatActivity {
 //        }
         vehicleIndex = GarageActivity.vehicleData.getInt("pos",-1);
         if (vehicleIndex >= 0) {
+
+            getSupportActionBar().setTitle("Fahrzeug bearbeiten");
+
             displayName.setText(GarageActivity.vehicles.elementAt(vehicleIndex).name);
             licensePlate.setText(GarageActivity.vehicles.elementAt(vehicleIndex).licensePlate);
             consumptionUrban.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).urbanConsumption));
@@ -94,10 +103,9 @@ public class AddVehicleActivity extends AppCompatActivity {
                     transporter.isChecked();
                     break;
             }
-
-
+        } else {
+            getSupportActionBar().setTitle("Fahrzeug anlegen");
         }
-
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)

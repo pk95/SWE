@@ -35,7 +35,7 @@ public class GarageActivity extends AppCompatActivity implements RecyclerviewVeh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_garage);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_vehicle);
         setSupportActionBar(toolbar);
         recyclerView = findViewById(R.id.vehicleButtonsContainer);
 
