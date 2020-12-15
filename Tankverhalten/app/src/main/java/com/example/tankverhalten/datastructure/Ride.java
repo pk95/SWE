@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 
@@ -19,6 +20,7 @@ import java.util.Objects;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Ride {
     private final LocalDate creationDate = LocalDate.now();
+    private final LocalTime creationTime = LocalTime.now();
     @RoadType
     public int roadType = RoadType.COMBINED;
     public int mileAge = 0;
@@ -84,5 +86,12 @@ public class Ride {
     public LocalDate getCreationDateDate() {
         return creationDate;
     }
+
+    /**
+     * returns the creationTime
+     *
+     * @return LocalTime of creation
+     */
+    public LocalTime getCreationTime(){return creationTime;}
 
 }
