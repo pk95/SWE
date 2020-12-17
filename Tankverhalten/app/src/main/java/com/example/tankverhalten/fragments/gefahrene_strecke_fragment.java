@@ -7,9 +7,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +29,7 @@ import com.example.tankverhalten.datastructure.Ride;
 import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.tankverhalten.fragments.gefahrene_strecke_fragment;
 import java.util.Vector;
 import com.example.tankverhalten.activities.GarageActivity;
 
@@ -32,7 +38,13 @@ import static com.example.tankverhalten.activities.GarageActivity.vehicleData;
 
 public class gefahrene_strecke_fragment extends Fragment implements RecycleViewRidesAdapter.OnRideListener{
 
-    FloatingActionButton fab;
+
+    FloatingActionButton fab_main, fab_add, fab_edit;
+    private Animation fab_open, fab_close, fab_clock, fab_anticlock;
+    boolean isOpen = false;
+    TextView tv_add, tv_edit;
+
+
     View view;
     private RecyclerView myrecyclerview;
     private RecycleViewRidesAdapter myviewadapter;
@@ -56,13 +68,57 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
         myviewadapter = new RecycleViewRidesAdapter(getActivity(), rides, this);
         myrecyclerview.setAdapter(myviewadapter);
 
-        fab = (FloatingActionButton) view.findViewById(R.id.fab_addride);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab_main = (FloatingActionButton) view.findViewById(R.id.fab_expand);
+        fab_add = (FloatingActionButton) view.findViewById(R.id.fab_add);
+        fab_edit = (FloatingActionButton) view.findViewById(R.id.fab_editlast);
+        fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_close);
+        fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
+        fab_clock = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_rotate_clock);
+        fab_anticlock = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_rotate_anticlock);
+
+        tv_add = (TextView) view.findViewById(R.id.tv_add);
+        tv_edit = (TextView) view.findViewById(R.id.tv_edit);
+        fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isOpen) {
+
+                    tv_add.setVisibility(View.INVISIBLE);
+                    tv_edit.setVisibility(View.INVISIBLE);
+                    fab_add.startAnimation(fab_close);
+                    fab_edit.startAnimation(fab_close);
+                    fab_main.startAnimation(fab_anticlock);
+                    fab_add.setClickable(false);
+                    fab_edit.setClickable(false);
+                    isOpen = false;
+                }
+                else {
+                    tv_add.setVisibility(View.VISIBLE);
+                    tv_edit.setVisibility(View.VISIBLE);
+                    fab_add.startAnimation(fab_open);
+                    fab_edit.startAnimation(fab_open);
+                    fab_main.startAnimation(fab_clock);
+                    fab_add.setClickable(true);
+                    fab_edit.setClickable(true);
+                    isOpen = true;
+                }
 
             }
         });
+
+        fab_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "addride", Toast.LENGTH_SHORT).show();
+            }
+        });
+        fab_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "editride", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         return view;
     }
@@ -77,11 +133,14 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
         rides.add(new Ride(50, 70, RoadType.COUNTRY ));
         rides.add(new Ride(80, 65, RoadType.COUNTRY ));
 
+
     }
+
+
 
     @Override
     public void OnRideListener(int position) {
-        rideData.putInt("pos", position);
+        //rideData.putInt("pos", position);
 
         //Intent intent = new Intent(this, );
         //startActivity(intent);
