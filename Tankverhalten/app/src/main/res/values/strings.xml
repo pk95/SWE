@@ -34,6 +34,8 @@
     <string name="week">Woche</string>
     <string name="month">Monat</string>
     <string name="year">Jahr</string>
+    <string name="value">Wert</string>
+    <string name="time">Zeit</string>
 
 
     <!--  Add vehicle header and hints  -->
