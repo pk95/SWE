@@ -97,7 +97,8 @@
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:scrollbars="vertical"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        />
 
 </RelativeLayout>
 

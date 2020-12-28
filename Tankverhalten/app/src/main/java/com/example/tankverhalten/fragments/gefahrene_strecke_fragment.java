@@ -23,13 +23,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.RecycleViewRidesAdapter;
-//import com.example.tankverhalten.activities.AddRideActivity;
 import com.example.tankverhalten.activities.AddVehicleActivity;
+
 import com.example.tankverhalten.datastructure.Ride;
 import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.example.tankverhalten.fragments.gefahrene_strecke_fragment;
+
+import java.util.Arrays;
 import java.util.Vector;
 import com.example.tankverhalten.activities.GarageActivity;
 
@@ -50,7 +52,7 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
     private RecycleViewRidesAdapter myviewadapter;
     RecyclerView.LayoutManager mLayoutmanager;
     private Vector<Ride> rides;
-    public static Bundle rideData = new Bundle();
+
     Vehicle v;
     public gefahrene_strecke_fragment() {}
 
@@ -60,6 +62,26 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.gefahrene_strecken_layout, container, false);
+
+        int pos = -1;
+
+        v = new Vehicle();
+        if(!GarageActivity.vehicleData.isEmpty()) {
+            try {
+                pos = GarageActivity.vehicleData.getInt("pos");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(pos <0) {
+            getActivity().finish();
+        }
+        else {
+            v = GarageActivity.vehicles.get(pos);
+        }
+
+        rides = new Vector(Arrays.asList(v.getRides()));
+
 
 
         myrecyclerview = (RecyclerView) view.findViewById(R.id.rides_recycleview);
@@ -109,13 +131,19 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "addride", Toast.LENGTH_SHORT).show();
+                vehicleData.putInt("pos", -1);
+                Intent intent = new Intent(getActivity().getApplicationContext(), AddVehicleActivity.class);
+                intent.putExtras(vehicleData);
+                startActivity(intent);
             }
         });
         fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "editride", Toast.LENGTH_SHORT).show();
+                vehicleData.putInt("pos", -1);
+                Intent editintent = new Intent(getActivity().getApplicationContext(), AddVehicleActivity.class);
+                editintent.putExtras(vehicleData);
+                startActivity(editintent);
             }
         });
 
@@ -126,12 +154,6 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        v = new Vehicle();
-
-        rides = new Vector<>();
-        rides.add(new Ride(50, 70, RoadType.COUNTRY ));
-        rides.add(new Ride(80, 65, RoadType.COUNTRY ));
 
 
     }

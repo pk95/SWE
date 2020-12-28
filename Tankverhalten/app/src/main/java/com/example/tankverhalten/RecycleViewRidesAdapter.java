@@ -134,7 +134,7 @@ public class RecycleViewRidesAdapter extends RecyclerView.Adapter<RecycleViewRid
             tv_length = (TextView) itemView.findViewById(R.id.mileage);
             tv_date = (TextView) itemView.findViewById(R.id.date);
             tv_clock = (TextView) itemView.findViewById(R.id.clock);
-            this.onRideListener = onRideListener;
+            this.onRideListener = OnRideListener;
             itemView.setOnClickListener(this);
 
         }
