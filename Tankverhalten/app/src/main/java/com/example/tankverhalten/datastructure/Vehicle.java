@@ -45,7 +45,7 @@ public class Vehicle implements Serializable {
     public int remainingRange = 0;
     public int volume = 0;
     public float fuelLevel = 100;
-    public float co2emissions = 0;
+    public int co2emissions = 0;
 
 
     private Vector<Ride> rides;
@@ -69,7 +69,7 @@ public class Vehicle implements Serializable {
      * @param fuelLevel           right now
      * @param combinedConsumption calculated with data
      */
-    public Vehicle(String name, String licensePlate, int volume, float co2emissions, int remainingRange, int mileAge, float fuelLevel, float urbanConsumption, float outsideConsumption, float combinedConsumption, @VehicleType int vehicleType) {
+    public Vehicle(String name, String licensePlate, int volume, int co2emissions, int remainingRange, int mileAge, float fuelLevel, float urbanConsumption, float outsideConsumption, float combinedConsumption, @VehicleType int vehicleType) {
         this.name = name;
         this.licensePlate = licensePlate;
         this.volume = volume;
@@ -260,13 +260,13 @@ public class Vehicle implements Serializable {
         int icon = 0;
         switch (this.vehicleType) {
             case VehicleType.CAR:
-                icon = R.drawable.ic_car_white;
+                icon = R.mipmap.ic_car_forground;
                 break;
             case VehicleType.MOTORCYCLE:
-                icon = R.drawable.ic_motorcycle_white;
+                icon = R.mipmap.ic_motorcycle_forground;
                 break;
             case VehicleType.TRANSPORTER:
-                icon = R.drawable.ic_transporter2_white;
+                icon = R.mipmap.ic_transporter_forground;
         }
         return icon;
 //        final int resourceId = context.getResources().getIdentifier(resourceName, "drawable", null);
