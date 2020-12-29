@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="Icon"
             android:elevation="2dp"
-            app:srcCompat="@drawable/ic_car_white" />
+            app:srcCompat="@mipmap/ic_car_forground" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

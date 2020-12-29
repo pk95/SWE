@@ -60,12 +60,17 @@
     <string name="vehicleType_car">Auto</string>
     <string name="vehicleType_motorcycle">Motorrad</string>
     <string name="vehicleType_transporter">Transporter / LKW</string>
+    <string name="permission_header">Nächster TÜV</string>
+    <string name="inspection_header">Nächste Inspektion</string>
+    <string name="date_hint">TT.MM.JJJJ</string>
 
     <string name="save_Text">Speichern</string>
     <string name="cancel_Text">Abbrechen</string>
 
     <!-- GarageActivity descriptions -->
     <string name="AddVehicle_Button_description">Add a new Vehicle</string>
+    <string name="permission_txt">TÜV-Erinnerung</string>
+
 
 
 </resources>

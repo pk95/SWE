@@ -1,6 +1,7 @@
 package com.example.tankverhalten.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,18 +20,28 @@ import com.example.tankverhalten.R;
 import com.example.tankverhalten.datastructure.Vehicle;
 import com.example.tankverhalten.datastructure.VehicleType;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class AddVehicleActivity extends AppCompatActivity {
 
     String name = "";
     String license = "";
     float combinedConsumption = -1, urbanConsumption = -1, outsideConsumption = -1;
     int mile = -1, volume = -1, vehicleType;
-    float co2 = -1, fuel = -1;
+    int co2 = -1;
+    float fuel = -1;
+    LocalDate permissionDate = null;
+    LocalDate inspectionDate = null;
     boolean error = false;
     Activity c = this;
     Bundle bundle;
     int vehicleIndex = -1;
-     Toolbar toolbar;
+    Toolbar toolbar;
+    Context context = this;
+
+    DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -43,7 +54,7 @@ public class AddVehicleActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_vehicle);
         setSupportActionBar(toolbar);
 
-
+        //All hints above input-fields
         TextView displayNameTxt = findViewById(R.id.displayname_txt);
         TextView licensePlateTxt = findViewById(R.id.licenseplate_txt);
         TextView consumptionUrbanTxt = findViewById(R.id.consumption_urban_txt);
@@ -54,7 +65,10 @@ public class AddVehicleActivity extends AppCompatActivity {
         TextView tankVolumeTxt = findViewById(R.id.tank_volume_txt);
         TextView emissionsTxt = findViewById(R.id.emissions_txt);
         TextView selectVehicleTypeTxt = findViewById(R.id.select_vehicle_type_txt);
+        TextView permissionTxt = findViewById(R.id.permission_txt);
+        TextView inspectionTxt = findViewById(R.id.inspection_txt);
 
+        //Input-fields
         EditText displayName = findViewById(R.id.display_name_vehicle_edit);
         EditText licensePlate = findViewById(R.id.license_plate_edit_vehicle);
         EditText consumptionUrban = findViewById(R.id.consumption_urban_vehicle_edit);
@@ -64,23 +78,30 @@ public class AddVehicleActivity extends AppCompatActivity {
         EditText fuelLevel = findViewById(R.id.fuel_level_vehicle_edit);
         EditText tankVolume = findViewById(R.id.tank_volume_vehicle_edit);
         EditText emissions = findViewById(R.id.emissions_vehicle_edit);
+        EditText permission = findViewById(R.id.permission_edit);
+        EditText inspection = findViewById(R.id.inspection_edit);
 
-        Button confirmButton = findViewById(R.id.confirm_editing_vehicle);
-        Button cancelButton = findViewById(R.id.cancel_editing_vehicle);
-
+        //vehicleType selection-options
         RadioButton car = findViewById(R.id.car_radio_btn);
         RadioButton motorcycle = findViewById(R.id.motorcycle_radio_btn);
         RadioButton transporter = findViewById(R.id.transporter_radio_btn);
+
+        //Buttons
+        Button confirmButton = findViewById(R.id.confirm_editing_vehicle);
+        Button cancelButton = findViewById(R.id.cancel_editing_vehicle);
+
 
 //        if (bundle != null) {
 //            bundle = getIntent().getExtras();
 //            vehicleIndex = bundle.getInt("pos");
 //        }
-        vehicleIndex = GarageActivity.vehicleData.getInt("pos",-1);
+        vehicleIndex = GarageActivity.vehicleData.getInt("pos", -1);
+        //Was a vehicle selected? Then fill fields with data of the vehicle
         if (vehicleIndex >= 0) {
 
             getSupportActionBar().setTitle("Fahrzeug bearbeiten");
 
+            //set all input-fields with value of vehicle
             displayName.setText(GarageActivity.vehicles.elementAt(vehicleIndex).name);
             licensePlate.setText(GarageActivity.vehicles.elementAt(vehicleIndex).licensePlate);
             consumptionUrban.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).urbanConsumption));
@@ -91,6 +112,17 @@ public class AddVehicleActivity extends AppCompatActivity {
             tankVolume.setText(String.valueOf(GarageActivity.vehicles.elementAt(vehicleIndex).volume));
             emissions.setText(String.valueOf(Math.round(GarageActivity.vehicles.elementAt(vehicleIndex).co2emissions)));
 
+            if (GarageActivity.vehicles.elementAt(vehicleIndex).permission != null) {
+                String permissionDate = GarageActivity.vehicles.elementAt(vehicleIndex).permission.format(formatter1);
+                permission.setText(permissionDate);
+            }
+
+            if (GarageActivity.vehicles.elementAt(vehicleIndex).inspection != null) {
+                String inspectionDate = GarageActivity.vehicles.elementAt(vehicleIndex).inspection.format(formatter1);
+                inspection.setText(inspectionDate);
+            }
+
+            //set vehicleType from vehicle-data
             vehicleType = GarageActivity.vehicles.elementAt(vehicleIndex).vehicleType;
             switch (vehicleType) {
                 case VehicleType.CAR:
@@ -111,8 +143,10 @@ public class AddVehicleActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-
+                // default is no error until one is found
                 error = false;
+
+                //check input-fields
                 if (displayName.getText().length() > 0) {
                     name = displayName.getText().toString();
                     markOk(displayName, displayNameTxt);
@@ -205,7 +239,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                 if (emissions.getText().length() > 0) {
                     try {
-                        co2 = Float.parseFloat(emissions.getText().toString());
+                        co2 = Integer.parseInt(emissions.getText().toString());
                         markOk(emissions, emissionsTxt);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -248,9 +282,44 @@ public class AddVehicleActivity extends AppCompatActivity {
                     transporter.setTextColor(Color.RED);
                 }
 
+                if (permission.getText().length() == 10) {
+                    try {
+                        String s = permission.getText().toString();
+                        permissionDate = LocalDate.parse(s,formatter1);
+                        markOk(permission, permissionTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(permission, permissionTxt);
+                    }
+                } else if(permission.getText().length() != 0){
+                    markError(permission, permissionTxt);
+                }
+
+                if (inspection.getText().length() == 10) {
+                    try {
+                        String s = inspection.getText().toString();
+                        inspectionDate = LocalDate.parse(s,formatter1);
+                        markOk(inspection, inspectionTxt);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        markError(inspection, inspectionTxt);
+                    }
+                } else if(inspection.getText().length() != 0) {
+                    markError(inspection, inspectionTxt);
+                }
+
+
+                // When no error was found, make a new vehicle with data of the input-fields and add it to vehicles-vector. Then go to the vehicle-overview-activity
                 if (!error) {
                     Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, urbanConsumption, outsideConsumption, combinedConsumption, vehicleType);
 
+                    if (permissionDate != null)
+                        newVehicle.permission = permissionDate;
+                    if (inspectionDate != null)
+                        newVehicle.inspection = inspectionDate;
+
+                    //When vehicle is new / no vehicle was selected before ^= -1
+                    //-> Add vehicle to vehicles-vector
                     if (vehicleIndex < 0) {
                         GarageActivity.vehicles.add(newVehicle);
                         Vehicle.save(GarageActivity.vehicles, c);
@@ -264,13 +333,19 @@ public class AddVehicleActivity extends AppCompatActivity {
                             startActivity(vIntent);
                         }
                     } else {
+                        //replace vehicle in vehicles-vector with a new vehicle with data of inputs
                         GarageActivity.vehicles.set(vehicleIndex, newVehicle);
+                        System.gc();
+
+                        Vehicle.save(GarageActivity.vehicles,context);
                         finish();
                     }
                 }
             }
         });
 
+
+        //cancel changes with cancel-button
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,12 +354,14 @@ public class AddVehicleActivity extends AppCompatActivity {
         });
     }
 
+    //marks a Input-fields as declined
     private void markError(EditText input, TextView description) {
         error = true;
         description.setError("erforderlich");
         description.setTextColor(Color.RED);
     }
 
+    //marks a Input-fields as accepted
     private void markOk(EditText input, TextView description) {
         description.setTextColor(Color.BLACK);
         description.setError(null);
