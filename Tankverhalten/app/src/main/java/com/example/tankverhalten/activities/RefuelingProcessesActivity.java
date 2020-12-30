@@ -260,7 +260,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
     // Loads picture if receipt is edited
     private void loadImageFromStorage(String child) {
         try {
-            File f = new File("/data/data/com.example.refuel_activity/app_imageDir", child);
+            File f = new File("/data/data/com.example.tankverhalten/app_imageDir", child);
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             ImageView img = (ImageView) findViewById(R.id.image_view);
             img.setImageBitmap(b);

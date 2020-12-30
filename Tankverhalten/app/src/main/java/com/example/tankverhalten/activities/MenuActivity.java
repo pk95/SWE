@@ -25,7 +25,6 @@ public class MenuActivity extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
-    String active_tab_name = "Fahrzeuguebersicht";
     public static AppCompatActivity fa;
 
     @Override
@@ -59,27 +58,21 @@ public class MenuActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                active_tab_name = "";
                 switch (position) {
                     case 0:
                         textview_title.setText("Fahrzeugübersicht");
-                        active_tab_name = "Fahrzeuguebersicht";
                         break;
                     case 1:
                         textview_title.setText("gefahrene Strecken");
-                        active_tab_name = "gefahrene Strecken";
                         break;
                     case 2:
                         textview_title.setText("Tankvorgänge");
-                        active_tab_name = "Tankvorgaenge";
                         break;
                     case 3:
                         textview_title.setText("Statistik");
-                        active_tab_name = "Statistik";
                         break;
                     case 4:
                         textview_title.setText("Streckenprognose");
-                        active_tab_name = "Streckenprognose";
                         break;
                 }
             }
@@ -135,47 +128,16 @@ public class MenuActivity extends AppCompatActivity {
         int pos = GarageActivity.vehicleData.getInt("pos");
         switch (item.getItemId()) {
             case R.id.editEntry:
-                if (active_tab_name.equals("Fahrzeuguebersicht")) {
-                    Intent editIntent = new Intent(this, AddVehicleActivity.class);
-                    editIntent.putExtra("pos", pos);
-                    startActivity(editIntent);
-                    return true;
-                }
-                else if (active_tab_name.equals("gefahrene Strecken")) {
-                    //TODO: .class zur Edit Acitivity ändern
-                    Intent editIntent = new Intent(this, gefahrene_strecke_fragment.class);
-                    editIntent.putExtra("pos", pos);
-                    startActivity(editIntent);
-                    return true;
-                }
-                else if (active_tab_name.equals("Tankvorgaenge")) {
-                    Intent edit_fuel_receipt = new Intent(this, RefuelingProcessesActivity.class);
-                    //TODO: PASS EXTRAS LEADS TO ERROR
-                    edit_fuel_receipt.putExtra("com.example.tankverhalten.mode", "edit");
-                    startActivity(edit_fuel_receipt);
-                    return true;
-                }
-
+                Intent editIntent = new Intent(this, AddVehicleActivity.class);
+                editIntent.putExtra("pos", pos);
+                startActivity(editIntent);
+                return true;
 
             case R.id.deleteEntry:
-                if (active_tab_name.equals("Fahrzeuguebersicht")) {
                     Intent deleteIntent = new Intent(this, PopupDeleteActivity.class);
                     deleteIntent.putExtra("pos", pos);
                     startActivity(deleteIntent);
                     return true;
-                }
-                else if (active_tab_name.equals("gefahrene Strecken")) {
-                    Intent deleteIntent = new Intent(this, PopupDeleteRideActivity.class);
-                    deleteIntent.putExtra("pos", pos);
-                    startActivity(deleteIntent);
-                    return true;
-                }
-                else if (active_tab_name.equals("Tankvorgaenge")) {
-                    Intent deleteIntent = new Intent(this, PopupDeleteRefuelActivity.class);
-                    deleteIntent.putExtra("pos", pos);
-                    startActivity(deleteIntent);
-                    return true;
-                }
         }
         return super.onOptionsItemSelected(item);
     }
