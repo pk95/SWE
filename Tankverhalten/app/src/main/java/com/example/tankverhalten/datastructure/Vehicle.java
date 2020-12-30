@@ -155,11 +155,13 @@ public class Vehicle implements Serializable {
 
     /**
      * Get last ride.
+     * If rides is empty, nulll is returned.
      *
      * @return last Ride
      */
     public Ride getLastRide() {
-        return rides.lastElement();
+        if(rides.size() <= 0)
+            return null;return rides.lastElement();
     }
 
 
@@ -173,13 +175,22 @@ public class Vehicle implements Serializable {
 
     /**
      * Get last refuel.
+     *If refuels is empty, nulll is returned.
      *
-     * @return last Refuel
+     * @return last Refuel.
      */
     public Refuel getLastRefuel() {
+        if(refuels.size() <= 0)
+            return null;
         return refuels.lastElement();
     }
 
+    /**
+     *A copied array of refuels.
+     * Changes of refuels are not done at the vehicle.
+     *
+     * @return refuels
+     */
     public Refuel[] getRefuels(){
         Refuel[] refuels = new Refuel[this.refuels.size()];
         for (int i =0; i<this.refuels.size();i++ ){
@@ -260,13 +271,13 @@ public class Vehicle implements Serializable {
         int icon = 0;
         switch (this.vehicleType) {
             case VehicleType.CAR:
-                icon = R.mipmap.ic_car_forground;
+                icon = R.mipmap.ic_car2_foreground;
                 break;
             case VehicleType.MOTORCYCLE:
-                icon = R.mipmap.ic_motorcycle_forground;
+                icon = R.mipmap.ic_motorcycle2_foreground;
                 break;
             case VehicleType.TRANSPORTER:
-                icon = R.mipmap.ic_transporter_forground;
+                icon = R.mipmap.ic_transporter2_foreground;
         }
         return icon;
 //        final int resourceId = context.getResources().getIdentifier(resourceName, "drawable", null);

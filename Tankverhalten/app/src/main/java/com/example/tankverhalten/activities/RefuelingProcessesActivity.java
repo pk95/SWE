@@ -1,8 +1,6 @@
 package com.example.tankverhalten.activities;
 
 import android.Manifest;
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -22,17 +20,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.datastructure.Refuel;
-import com.example.tankverhalten.datastructure.Ride;
-import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
-import com.example.tankverhalten.fragments.tankvorgang_fragment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,24 +36,30 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Vector;
 
 public class RefuelingProcessesActivity extends AppCompatActivity {
 
     ImageView imageview;
     String mode = "";
+    String date;
+
     EditText fuel_edittext;
     EditText price_edittext;
-    String date;
     Toolbar toolbar;
-    Vehicle active;
+
+    Vehicle active = null;
+    Refuel refuel = null;
     int volume = 0;
+    // Displays the image
+    Bitmap captureImage;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refuelingprocessactivity_layout);
 
+        //Get fields of GUI
         fuel_edittext = (EditText) findViewById(R.id.fuel_edittext);
         price_edittext = (EditText) findViewById(R.id.price_edittext);
         imageview = (ImageView) findViewById(R.id.image_view);
@@ -80,12 +81,21 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get active Vehicle and set tank volume
-        active = GarageActivity.vehicles.elementAt(GarageActivity.vehicleData.getInt("pos", -1));
+        // Was a vehicle selected? -> get vehicle or break
+        int pos = GarageActivity.vehicleData.getInt("pos", -1);
+        if (pos < 0)
+            //no vehicle to get/add refuel -> return to previous activity
+            this.finish();
+
+        // Get active vehicle and set tank volume
+        active = GarageActivity.vehicles.elementAt(pos);
         volume = active.volume;
 
+
         // Check if new or editing
-        if(mode.equals("edit")) {
+        // Was edit selected and a refuel already exists?
+        if (mode.equals("edit") && active.getLastRefuel() != null) {
+            //Edit existing refuel
             getSupportActionBar().setTitle("Tankvorgang bearbeiten");
             //TODO: Crashed immer wenn man den letzten Refuel abfragen will.
             /*Refuel active_refuel = active.getLastRefuel();
@@ -103,9 +113,18 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
 
             loadImageFromStorage(costImageSrc); // Name des Bildes der Refuelklasse
 */
+
+            //set fields with last refuel-data
+            refuel = active.getLastRefuel();
+            fuel_edittext.setText(String.valueOf(refuel.refueled));
+            price_edittext.setText(String.valueOf(refuel.cost));
+            loadImageFromStorage(refuel.costImageSrc);
         } else if (mode.equals("new")) {
+            //Add new refuel
             getSupportActionBar().setTitle("Tankvorgang eintragen");
-        }
+        } else
+            this.finish();
+
 
         // Camera permissions
         Button camera_button = findViewById(R.id.camera_button);
@@ -126,8 +145,6 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         });
     }
 
-    // Displays the image
-    Bitmap captureImage;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 100 && resultCode == RESULT_OK) {
@@ -149,7 +166,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //TODO: .class wird Tankvorgänge anzeigen
-        Intent save_fuel_receipt = new Intent(RefuelingProcessesActivity.this, GarageActivity.class);
+//        Intent save_fuel_receipt = new Intent(RefuelingProcessesActivity.this, GarageActivity.class);
 
         boolean fuel_error = true;
         boolean price_error = true;
@@ -159,23 +176,25 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         float price = 0;
 
         // Prevents that fuel_error occurs, when using backbutton
-        if(item.getItemId() == R.id.save_button) {
+        if (item.getItemId() == R.id.save_button) {
 
             // Get String out of edittext field
-            String Fuel_string = fuel_edittext.getText().toString().trim();
-            String Price_string = price_edittext.getText().toString().trim();
+            String fuel_string = fuel_edittext.getText().toString().trim();
+            String price_string = price_edittext.getText().toString().trim();
 
             // Store edittext value in variable fuel
             try {
-                fuel = Integer.parseInt(Fuel_string);
+                fuel = Integer.parseInt(fuel_string);
             } catch (NumberFormatException e) {
                 fuel = 0;
+                fuel_error = false;
             }
             // Store edittext value in variable price
             try {
-                price = Integer.parseInt(Price_string);
+                price = Integer.parseInt(price_string);
             } catch (NumberFormatException e) {
                 price = 0;
+                fuel_error = false;
             }
 
             if (fuel > 0 && fuel <= volume) {
@@ -196,8 +215,8 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
                 saveToInternalStorage(captureImage);
 
                 // Formats String to 2 decimals
-                String price_string = Float.toString(price);
-                String fuel_string = Float.toString(fuel);
+                price_string = Float.toString(price);
+                fuel_string = Float.toString(fuel);
                 try {
                     price_string = String.format("%.2f", price);
                 } catch (java.util.IllegalFormatException e) {
@@ -209,24 +228,28 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
                     price_edittext.setError("Unerlaubte Eingabe");
                 }
 
-                if(mode.equals("edit")) {
-                    Refuel active_refuel = active.getLastRefuel();
-                    active_refuel.cost = price;
-                    active_refuel.refueled = fuel;
-                    active_refuel.costImageSrc = date + "_fuelreceipt.jpg";
-                }
-                else if (mode.equals("new")) {
+                if (mode.equals("edit")) {
+                    // Change refuel's data
+
+//                    Refuel active_refuel = active.getLastRefuel();
+                    refuel.cost = price;
+                    refuel.refueled = fuel;
+                    refuel.costImageSrc = date + "_fuelreceipt.jpg";
+                } else if (mode.equals("new")) {
+                    //Add a new Refuel to vehicle
                     String costImgSrc = date + "_fuelreceipt.jpg";
                     Refuel temp = new Refuel(fuel, price, costImgSrc);
                     active.add(temp);
                 }
-                startActivity(save_fuel_receipt);
+//                startActivity(save_fuel_receipt);
+                finish();
             }
         }
         return super.onOptionsItemSelected(item);
     }
+
     // saving image to internal storage
-    private String saveToInternalStorage(Bitmap bitmapImage){
+    private String saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
 
         // path to /data/data/appname/app_data/imageDir
@@ -236,21 +259,18 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         String fname = date + "_fuelreceipt.jpg";
 
         //save file in path
-        File mypath = new File(directory,fname);
+        File mypath = new File(directory, fname);
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 fos.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -264,8 +284,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             ImageView img = (ImageView) findViewById(R.id.image_view);
             img.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }

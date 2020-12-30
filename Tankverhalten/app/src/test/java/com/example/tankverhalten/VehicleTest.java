@@ -87,4 +87,18 @@ public class VehicleTest extends TestCase {
         v1.mileAge = 1000000;
         assertFalse(v1.equals(v2));
     }
+
+    //Does getLastRefuel can return something(null), if empty vector
+    @Test
+    public void testGetLastRefuel_emptyCase() {
+        Vehicle v1 = new Vehicle();
+        assertEquals(null, v1.getLastRefuel());
+    }
+
+    //Does getLastRide can return something(null), if empty vector
+    @Test
+    public void testGetLastRide_emptyCase() {
+        Vehicle v1 = new Vehicle();
+        assertEquals(null, v1.getLastRide());
+    }
 }
