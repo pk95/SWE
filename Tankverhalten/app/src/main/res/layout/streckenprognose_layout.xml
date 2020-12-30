@@ -1,16 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/streckenprognose"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="40sp">
-    </TextView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            tools:context=".MainActivity">
+
+            <TextView
+                android:id="@+id/ride_length_stat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ride_length_stat"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/ride_length_stat_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ride_length_stat_descr"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:autofillHints=""/>
+            <TextView
+                android:id="@+id/ride_type_innercity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ride_type_innercity"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ride_type_innercity_edit"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:autofillHints=""/>
+            <TextView
+                android:id="@+id/ride_type_combined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ride_type_combined"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ride_type_combined_edit"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:autofillHints=""/>
+            <TextView
+                android:id="@+id/ride_type_outercity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ride_type_outercity"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ride_type_outercity_edit"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:autofillHints=""/>
+            <Button
+                android:id="@+id/confirm_calculating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_calculating"/>
+
+            <TextView
+                android:id="@+id/used_gas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/used_gas"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/used_gas_calc"/>
+            <TextView
+                android:id="@+id/used_gas_cost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/used_gas_cost"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/used_gas_cost_calc"/>
+            <TextView
+                android:id="@+id/number_refueling"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/number_refueling"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/number_refueling_calc"/>
+            <TextView
+                android:id="@+id/co2emissions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/co2emissions"
+                android:textColor="#00ACA2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/co2emissions_calc"/>
+
+
+
+        </LinearLayout>
+    </ScrollView>
 
 
 

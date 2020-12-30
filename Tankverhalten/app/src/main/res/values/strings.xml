@@ -79,5 +79,17 @@
     <string name="permission_txt">TÜV-Erinnerung</string>
 
 
+    <!-- Streckenprognose  -->
+    <string name="ride_length_stat">Streckenlänge [km]</string>
+    <string name="ride_length_stat_descr">Streckenlänge...</string>
+    <string name="ride_type_innercity">innerorts [%]</string>
+    <string name="ride_type_outercity">außerorts [%]</string>
+    <string name="ride_type_combined">kombiniert [%]</string>
+    <string name="confirm_calculating">berechnen</string>
+    <string name="used_gas">Kraftstoffverbrauch [l(kWh)]</string>
+    <string name="used_gas_cost">Kraftstoffkosten [€]</string>
+    <string name="number_refueling">Anzahl der nötigen Tankvorgänge</string>
+    <string name="co2emissions">CO2_Ausstoß [kg]</string>
+
 
 </resources>
