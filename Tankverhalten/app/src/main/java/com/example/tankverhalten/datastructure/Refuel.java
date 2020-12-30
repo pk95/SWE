@@ -5,6 +5,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Vector;
 
 
 /**
@@ -16,7 +18,7 @@ import java.time.LocalDate;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Refuel {
 
-    private final LocalDate creationDate = java.time.LocalDate.now();
+    private final LocalDateTime creationDate = java.time.LocalDateTime.now();
     public float refueled = 0;
     public float cost = 0;
     public String costImageSrc = "";
@@ -41,10 +43,26 @@ public class Refuel {
     }
 
     /**
+     *
+     * @param refuels
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static Refuel[] getRefuelsBetweenDates(Vector<Refuel> refuels, LocalDateTime startDate, LocalDateTime endDate) {
+        Vector<Refuel> refuelsBetween = new Vector<>();
+        for (Refuel r : refuels) {
+            if (!r.getCreationDate().isBefore(startDate) && !r.getCreationDate().isAfter(endDate))
+                refuelsBetween.add(r);
+        }
+        return refuelsBetween.toArray(new Refuel[0]);
+    }
+
+    /**
      * @return LocalDate, when this Refuel was created
      * @see LocalDate
      */
-    public LocalDate getCreationDateDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 

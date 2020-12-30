@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
@@ -86,7 +87,7 @@ public class Ride {
      *
      * @return LocalDate of creation
      */
-    public LocalDate getCreationDateDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
@@ -95,7 +96,19 @@ public class Ride {
      *
      * @return LocalTime of creation
      */
-    public LocalTime getCreationTime(){return creationTime;}
+    public LocalTime getCreationTime() {
+        return creationTime;
+    }
 
-    public Date getDateCreation(){return dateCreation;}
+    /**
+     *Converts creationDate and time to one LocalDateTime
+     * @return LocalDaateTime creationDateTime
+     */
+    public LocalDateTime getCreationDateTime() {
+        return LocalDateTime.of(creationDate, creationTime);
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
 }

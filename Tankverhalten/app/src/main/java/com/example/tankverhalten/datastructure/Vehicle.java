@@ -147,7 +147,7 @@ public class Vehicle implements Serializable {
      */
     @Override
     public Vehicle clone() {
-        Vehicle v = new Vehicle(this.name, this.licensePlate, this.volume, this.co2emissions, this.remainingRange, this.mileAge, this.fuelLevel, this.urbanConsumption, this.outsideConsumption ,this.combinedConsumption, this.vehicleType);
+        Vehicle v = new Vehicle(this.name, this.licensePlate, this.volume, this.co2emissions, this.remainingRange, this.mileAge, this.fuelLevel, this.urbanConsumption, this.outsideConsumption, this.combinedConsumption, this.vehicleType);
         v.refuels = new Vector<Refuel>(this.refuels);
         v.rides = new Vector<Ride>(this.rides);
         return v;
@@ -160,14 +160,15 @@ public class Vehicle implements Serializable {
      * @return last Ride
      */
     public Ride getLastRide() {
-        if(rides.size() <= 0)
-            return null;return rides.lastElement();
+        if (rides.size() <= 0)
+            return null;
+        return rides.lastElement();
     }
 
 
-    public Ride[] getRides(){
+    public Ride[] getRides() {
         Ride[] rides = new Ride[this.rides.size()];
-        for (int i =0; i<this.rides.size();i++ ){
+        for (int i = 0; i < this.rides.size(); i++) {
             rides[i] = this.rides.elementAt(i).clone();
         }
         return rides;
@@ -175,25 +176,25 @@ public class Vehicle implements Serializable {
 
     /**
      * Get last refuel.
-     *If refuels is empty, nulll is returned.
+     * If refuels is empty, nulll is returned.
      *
      * @return last Refuel.
      */
     public Refuel getLastRefuel() {
-        if(refuels.size() <= 0)
+        if (refuels.size() <= 0)
             return null;
         return refuels.lastElement();
     }
 
     /**
-     *A copied array of refuels.
+     * A copied array of refuels.
      * Changes of refuels are not done at the vehicle.
      *
      * @return refuels
      */
-    public Refuel[] getRefuels(){
+    public Refuel[] getRefuels() {
         Refuel[] refuels = new Refuel[this.refuels.size()];
-        for (int i =0; i<this.refuels.size();i++ ){
+        for (int i = 0; i < this.refuels.size(); i++) {
             refuels[i] = this.refuels.elementAt(i).clone();
         }
         return refuels;
@@ -234,6 +235,9 @@ public class Vehicle implements Serializable {
      */
     public void add(Ride ride) {
         rides.add(ride);
+        this.mileAge = ride.mileAge;
+        this.fuelLevel = ride.fuelLevel;
+        this.remainingRange = calcRemainingRange();
     }
 
     /**
@@ -282,5 +286,60 @@ public class Vehicle implements Serializable {
         return icon;
 //        final int resourceId = context.getResources().getIdentifier(resourceName, "drawable", null);
 //        return ResourcesCompat.getDrawable(context.getResources(),resourceId,null) ;
+    }
+
+
+    /**
+     * Calculates remainingRange from vehicle's rides
+     *
+     * @return remainingRange
+     */
+    public int calcRemainingRange() {
+        float litersPer100km = 0; // liters per 100km
+        int entries = this.rides.size();
+
+        //values while look-through rides
+        Ride ride = null;
+        Ride lastRide = null;
+        Refuel[] refuelsBetween = null;
+
+        float refuelDifference = 0;
+        float rideProportion = 0;
+
+
+        if (entries > 1) {
+            //compares pairs of rides (actual and last ride)
+            lastRide = this.rides.elementAt(0);
+            for (int i = 1; i < entries; i++) {
+                //Get next Ride
+                ride = this.rides.elementAt(i);
+
+                // Get refuels between rides to get all fuelLevel changes.
+                // e.g fuelLevel between two rides could be 50-> 45 but a big refuel between was not considered (50 -> 90 -> 45)
+                refuelsBetween = Refuel.getRefuelsBetweenDates(this.refuels, lastRide.getCreationDateTime(), ride.getCreationDateTime());
+                refuelDifference = 0;
+                for (Refuel r : refuelsBetween) {
+                    refuelDifference += r.refueled / volume;
+                }
+
+                //calculate km per fuelLevel
+                // if no division with zero
+                if (ride.mileAge - lastRide.mileAge != 0)
+                    //e.g. (2100 -2000) / ( 60 + 0 - 40 )
+                    rideProportion = (lastRide.fuelLevel + refuelDifference - ride.fuelLevel) / 100 * volume / ((ride.mileAge - lastRide.mileAge) / 100f);
+//                    rideProportion = (ride.mileAge - lastRide.mileAge) / (lastRide.fuelLevel + refuelDifference - ride.fuelLevel);
+                litersPer100km += rideProportion;
+
+                lastRide = ride;
+            }
+            litersPer100km /= entries - 1;
+        } else if (entries == 1) {
+            ride = this.rides.elementAt(0);
+            litersPer100km = (ride.fuelLevel) / 100 * volume / (ride.mileAge / 100f);
+        } else {
+            litersPer100km = (combinedConsumption + urbanConsumption + outsideConsumption) / 3;
+        }
+
+        return Math.round( fuelLevel/100 * volume / litersPer100km *100);
     }
 }

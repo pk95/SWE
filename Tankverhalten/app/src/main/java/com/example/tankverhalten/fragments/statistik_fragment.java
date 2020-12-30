@@ -1,6 +1,5 @@
 package com.example.tankverhalten.fragments;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -18,7 +17,6 @@ import com.example.tankverhalten.activities.GarageActivity;
 import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
 import com.example.tankverhalten.datastructure.Ride;
-import com.example.tankverhalten.datastructure.Refuel;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -35,9 +33,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.github.mikephil.charting.charts.BarChart;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class statistik_fragment extends Fragment{
@@ -145,9 +141,9 @@ public class statistik_fragment extends Fragment{
         // diagram - anfang von km zusammenrechnen pro tag/woche/monat
         List<BarEntry> entries = new ArrayList<>();
         for(int i = rides.length - 1; i >= 0; i--){
-            LocalDate d = rides[i].getCreationDateDate();
+            LocalDate d = rides[i].getCreationDate();
             int miles = 0;
-            while (d == rides[i].getCreationDateDate()){
+            while (d == rides[i].getCreationDate()){
                 if(i-1 < 0)
                     break;
                 miles += (rides[i].mileAge - rides[i-1].mileAge);
@@ -157,7 +153,7 @@ public class statistik_fragment extends Fragment{
         }
 
 
-        LocalDate zero = rides[0].getCreationDateDate();/*
+        LocalDate zero = rides[0].getCreationDate();/*
         float x0 = rides[0].getCreationDateDate().compareTo(zero);
         float x1 = rides[1].getCreationDateDate().compareTo(zero);
         float x2 = rides[2].getCreationDateDate().compareTo(zero);

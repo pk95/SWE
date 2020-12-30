@@ -61,7 +61,7 @@
     <string name="fuelLevel_hint">Tankstand...</string>
     <string name="volume_header">Tankvolumen [l(kWh)]</string>
     <string name="volume_hint">Tankvolumen...</string>
-    <string name="co2_header">Herstellerangabe zum CO2-Ausstoß [kg / 100km]</string>
+    <string name="co2_header">Herstellerangabe zum CO2-Ausstoß [g / km]</string>
     <string name="co2_hint">CO2-Ausstoß...</string>
     <string name="vehicleType_header">Fahrzeugart wählen</string>
     <string name="vehicleType_car">Auto</string>
