@@ -37,6 +37,16 @@
             android:label=""
             android:parentActivityName=".activities.AddVehicleActivity"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
+        <activity
+            android:name=".activities.PopupDeleteRefuelActivity"
+            android:label=""
+            android:parentActivityName=".activities.AddVehicleActivity"
+            android:theme="@style/Theme.Tankverhalten.NoActionBar" />
+        <activity
+            android:name=".activities.PopupDeleteRideActivity"
+            android:label=""
+            android:parentActivityName=".activities.AddVehicleActivity"
+            android:theme="@style/Theme.Tankverhalten.NoActionBar" />
     </application>
 
 </manifest>

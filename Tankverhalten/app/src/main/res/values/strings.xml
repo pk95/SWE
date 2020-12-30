@@ -37,6 +37,13 @@
     <string name="value">Wert</string>
     <string name="time">Zeit</string>
 
+    <!-- Refueling Process Strings -->
+    <string name="getankt">getankte Menge [l(kWh)]</string>
+    <string name="preis">Preis [€]</string>
+    <string name="getankt_hint">getankte Menge</string>
+    <string name="preis_hint">bezahlter Preis</string>
+    <string name="bild">Bild des Tankbelegs</string>
+    <string name="bild_aufnehmen">Bild aufnehmen</string>
 
     <!--  Add vehicle header and hints  -->
     <string name="displayname">Anzeigename...</string>
