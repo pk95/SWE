@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Vector;
 
 
 /**
@@ -54,6 +55,23 @@ public class Ride {
 //        this.mileAge = ride.mileAge;
 //        this.road = ride.road;
 //    }
+
+    /**
+     * Returns all rides of a vehicle, which are between a start and an end LocalTimeDate
+     *
+     * @param rides
+     * @param startDate
+     * @param endDate
+     * @return refuels
+     */
+    public static Ride[] getRidesBetweenDates(Vector<Ride> rides, LocalDateTime startDate, LocalDateTime endDate) {
+        Vector<Ride> ridesBetween = new Vector<>();
+        for (Ride r : rides) {
+            if (!r.getCreationDateTime().isBefore(startDate) && !r.getCreationDateTime().isAfter(endDate))
+                ridesBetween.add(r);
+        }
+        return ridesBetween.toArray(new Ride[0]);
+    }
 
     /**
      * Camparison of Ride with this Ride.
@@ -101,7 +119,8 @@ public class Ride {
     }
 
     /**
-     *Converts creationDate and time to one LocalDateTime
+     * Converts creationDate and time to one LocalDateTime
+     *
      * @return LocalDaateTime creationDateTime
      */
     public LocalDateTime getCreationDateTime() {

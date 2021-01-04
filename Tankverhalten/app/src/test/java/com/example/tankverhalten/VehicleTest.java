@@ -151,4 +151,33 @@ public class VehicleTest extends TestCase {
 
         assertEquals(Math.round(100* (10*35/100f) / 7.875),4, v1.calcRemainingRange());
     }
+
+
+    @Test
+    public void testPrediction() {
+        // determined data
+        //
+        Vehicle v = new Vehicle("Test","TEST_001",40,10,0,0,100,7,3,5,VehicleType.CAR);
+        v.add(new Ride(100,75,RoadType.CITY));      // 40 * 0.25 / 100 = 10l/100km
+        v.add(new Ride(200,50,RoadType.COUNTRY));   // 40 * 0.25 /100 = 10l/100km
+        v.add(new Refuel(20,20,""));
+
+        // ( 7l/100km  * 0.3 + 5l/100km * 0.5 + 3l/100km * 0.2 ) *100/100 * 1.5 = 5.2 * 1.5 = 7.8
+        float[] result= v.getPrediction(100,30,50,20);
+        assertEquals( 5.2f,result[0]);
+        assertEquals( 7.80f,result[1]);
+        assertEquals( 0f,result[2]);
+        assertEquals( 10f,result[3]);
+    }
+
+
+
+
+    @Test
+    public void testLper100km() {
+        // 5l for 100km ^= 35l actual volume / 40l max volume = 87.5l
+        Vehicle v = new Vehicle("","",40,5,100,0,100,7,3,5,VehicleType.CAR);
+        assertEquals(5f, v.lPer100km(100,12.5f));
+    }
+
 }

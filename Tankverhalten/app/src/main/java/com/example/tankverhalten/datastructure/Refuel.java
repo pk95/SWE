@@ -47,11 +47,12 @@ public class Refuel {
     }
 
     /**
+     * Returns all refuels of a vehicle, which are between a start and an end LocalTimeDate
      *
      * @param refuels
      * @param startDate
      * @param endDate
-     * @return
+     * @return refuels
      */
     public static Refuel[] getRefuelsBetweenDates(Vector<Refuel> refuels, LocalDateTime startDate, LocalDateTime endDate) {
         Vector<Refuel> refuelsBetween = new Vector<>();
@@ -70,6 +71,8 @@ public class Refuel {
         return creationDate;
     }
 
+
+    @Override
     public Refuel clone() {
         return new Refuel(this.refueled, this.cost, this.costImageSrc);
     }
