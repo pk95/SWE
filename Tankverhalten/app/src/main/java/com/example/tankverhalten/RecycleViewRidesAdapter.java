@@ -83,7 +83,7 @@ public class RecycleViewRidesAdapter extends RecyclerView.Adapter<RecycleViewRid
         }
 
         try {
-            LocalDate locald = mData.get(position).getCreationDateDate();
+            LocalDate locald = mData.get(position).getCreationDate();
             DateTimeFormatter germandate = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             String formatted = locald.format(germandate);
             holder.tv_date.setText(formatted);

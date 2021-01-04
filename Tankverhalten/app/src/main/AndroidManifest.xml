@@ -9,12 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tankverhalten">
+        <service
+            android:name=".services.NotificationTUV"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".activities.GarageActivity"
             android:label="Garage"
             android:theme="@style/Theme.Tankverhalten.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

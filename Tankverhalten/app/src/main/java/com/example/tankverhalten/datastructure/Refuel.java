@@ -4,8 +4,11 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Vector;
 
 
@@ -19,6 +22,7 @@ import java.util.Vector;
 public class Refuel {
 
     private final LocalDateTime creationDate = java.time.LocalDateTime.now();
+    private final LocalTime creationTime = LocalTime.now();
     public float refueled = 0;
     public float cost = 0;
     public String costImageSrc = "";
@@ -77,6 +81,10 @@ public class Refuel {
             return (this.refueled == r.refueled && this.cost == r.cost && this.costImageSrc.equals(r.costImageSrc));
         }
         return false;
+    }
+
+    public LocalTime getCreationTime() {
+        return creationTime;
     }
 }
 
