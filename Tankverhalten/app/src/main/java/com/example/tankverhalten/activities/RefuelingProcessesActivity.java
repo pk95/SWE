@@ -27,6 +27,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.datastructure.Refuel;
+import com.example.tankverhalten.datastructure.Ride;
+import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
 
 import java.io.File;
@@ -34,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -52,7 +55,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
     int volume = 0;
     // Displays the image
     Bitmap captureImage;
-
+    Boolean photo_taken = false;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,6 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         date = simpleDateFormat.format(calendar.getTime());
 
         // Displaying Data if fuelreceipt is being edited
-
         if (getIntent().hasExtra("com.example.tankverhalten.mode")) {
             mode = getIntent().getExtras().getString("com.example.tankverhalten.mode");
         }
@@ -97,28 +99,13 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         if (mode.equals("edit") && active.getLastRefuel() != null) {
             //Edit existing refuel
             getSupportActionBar().setTitle("Tankvorgang bearbeiten");
-            //TODO: Crashed immer wenn man den letzten Refuel abfragen will.
-            /*Refuel active_refuel = active.getLastRefuel();
-
-            float refuel = active_refuel.refueled;
-            String refuel_string = Float.toString(refuel);
-
-            float cost = active_refuel.cost;
-            String cost_string = Float.toString(cost);
-
-            String costImageSrc = active_refuel.costImageSrc;
-
-            fuel_edittext.setText(refuel_string);
-            price_edittext.setText(cost_string);
-
-            loadImageFromStorage(costImageSrc); // Name des Bildes der Refuelklasse
-*/
 
             //set fields with last refuel-data
             refuel = active.getLastRefuel();
             fuel_edittext.setText(String.valueOf(refuel.refueled));
             price_edittext.setText(String.valueOf(refuel.cost));
             loadImageFromStorage(refuel.costImageSrc);
+
         } else if (mode.equals("new")) {
             //Add new refuel
             getSupportActionBar().setTitle("Tankvorgang eintragen");
@@ -150,6 +137,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         if (requestCode == 100 && resultCode == RESULT_OK) {
             captureImage = (Bitmap) data.getExtras().get("data");
             imageview.setImageBitmap(captureImage);
+            photo_taken = true;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -161,12 +149,10 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    // Activity a9.3 saving/abort changes and returning to d05
+    // Checks Input and saves Data
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //TODO: .class wird Tankvorgänge anzeigen
-//        Intent save_fuel_receipt = new Intent(RefuelingProcessesActivity.this, GarageActivity.class);
 
         boolean fuel_error = true;
         boolean price_error = true;
@@ -184,64 +170,67 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
 
             // Store edittext value in variable fuel
             try {
-                fuel = Integer.parseInt(fuel_string);
+                fuel = Float.parseFloat(fuel_string);
             } catch (NumberFormatException e) {
                 fuel = 0;
                 fuel_error = false;
             }
             // Store edittext value in variable price
             try {
-                price = Integer.parseInt(price_string);
+                price = Float.parseFloat(price_string);
             } catch (NumberFormatException e) {
                 price = 0;
                 fuel_error = false;
             }
 
-            if (fuel > 0 && fuel <= volume) {
+            if ((fuel > 0 && fuel <= volume))  {
                 fuel_error = false;
             } else {
                 fuel_edittext.setError("Darf nicht leer oder größer als das Tankvolumen sein");
             }
 
-            if (price > 0) {
+            if ((price > 0)) {
                 price_error = false;
             } else {
                 price_edittext.setError("Darf nicht leer sein");
             }
 
-
             if (!fuel_error && !price_error) {
 
-                saveToInternalStorage(captureImage);
+                DecimalFormat a = new DecimalFormat();
+                a.setMaximumFractionDigits(3);
+                String fuel_format = a.format(fuel);
+                String price_format = a.format(price);
 
-                // Formats String to 2 decimals
-                price_string = Float.toString(price);
-                fuel_string = Float.toString(fuel);
                 try {
-                    price_string = String.format("%.2f", price);
-                } catch (java.util.IllegalFormatException e) {
-                    fuel_edittext.setError("Unerlaubte Eingabe");
+                    price = Float.parseFloat(price_format);
+                } catch (NumberFormatException e) {
+                    price = 0;
                 }
                 try {
-                    fuel_string = String.format("%.2f", fuel);
-                } catch (java.util.IllegalFormatException e) {
-                    price_edittext.setError("Unerlaubte Eingabe");
+                    fuel = Float.parseFloat(fuel_format);
+                } catch (NumberFormatException e) {
+                    fuel = 0;
                 }
 
                 if (mode.equals("edit")) {
-                    // Change refuel's data
+                    // Only change the related photo, if new one is taken and saved
+                    if(photo_taken) {
+                        saveToInternalStorage(captureImage);
+                        refuel.costImageSrc = date + "_fuelreceipt.jpg";
+                    }
 
-//                    Refuel active_refuel = active.getLastRefuel();
                     refuel.cost = price;
                     refuel.refueled = fuel;
-                    refuel.costImageSrc = date + "_fuelreceipt.jpg";
                 } else if (mode.equals("new")) {
                     //Add a new Refuel to vehicle
+                    saveToInternalStorage(captureImage);
                     String costImgSrc = date + "_fuelreceipt.jpg";
                     Refuel temp = new Refuel(fuel, price, costImgSrc);
                     active.add(temp);
                 }
-//                startActivity(save_fuel_receipt);
+                //TODO: Save löscht noch das Fahrzeug
+                //Vehicle.save(GarageActivity.vehicles, this);
                 finish();
             }
         }
@@ -249,7 +238,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
     }
 
     // saving image to internal storage
-    private String saveToInternalStorage(Bitmap bitmapImage) {
+    private void saveToInternalStorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
 
         // path to /data/data/appname/app_data/imageDir
@@ -274,7 +263,6 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        return directory.getAbsolutePath();
     }
 
     // Loads picture if receipt is edited

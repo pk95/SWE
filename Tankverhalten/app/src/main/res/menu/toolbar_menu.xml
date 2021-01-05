@@ -7,12 +7,12 @@
 
     <item
         android:id="@+id/editEntry"
-        android:title="Eintrag bearbeiten"
+        android:title="Fahrzeug bearbeiten"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/deleteEntry"
-        android:title="Eintrag löschen"
+        android:title="Fahrzeug löschen"
         app:showAsAction="never"
         />
 </menu>

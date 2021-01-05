@@ -54,7 +54,7 @@ public class RefuelingProcessesListAdapter extends RecyclerView.Adapter<Refuelin
 
         View v;
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        v = inflater.inflate(R.layout.refueling, parent, false);
+        v = inflater.inflate(R.layout.refuellist, parent, false);
         //MyViewHolder vHolder = new MyViewHolder(v, itemClickListener);
         return new RefuelingProcessesListAdapter.MyViewHolder(v, OnRideListener);
     }
@@ -67,36 +67,35 @@ public class RefuelingProcessesListAdapter extends RecyclerView.Adapter<Refuelin
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull RefuelingProcessesListAdapter.MyViewHolder holder, int position) {
-        float refueled = mData.get(position).refueled;
+        float fuel = mData.get(position).refueled;
+        float price = mData.get(position).cost;
         try {
-            String mileagestr = Float.toString(refueled);
-            mileagestr += " km";
-            holder.tv_length.setText(mileagestr);
+            String fuel_string = Float.toString(fuel);
+            String cost_string = Float.toString(price);
+            fuel_string += " l(kWh)";
+            fuel_string += " | " + cost_string + "€";
+            holder.refuelvolume_cost.setText(fuel_string);
         }
         catch (NumberFormatException e) {
-            String mileagestr = "";
-            holder.tv_length.setText(mileagestr);
+            String fuel_string = "";
+            holder.refuelvolume_cost.setText(fuel_string);
         }
 
         try {
             LocalDateTime locald = mData.get(position).getCreationDate();
             DateTimeFormatter germandate = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            String formatted = locald.format(germandate);
-            holder.tv_date.setText(formatted);
-        }
-        catch (NumberFormatException e) {
-            String date = "";
-            holder.tv_date.setText(date);
-        }
-        try{
+
             LocalTime localt = mData.get(position).getCreationTime();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
             String time = localt.format(dtf);
-            holder.tv_clock.setText(time);
+
+            String formatted = locald.format(germandate);
+            formatted += " | " + time;
+            holder.refuel_date.setText(formatted);
         }
         catch (NumberFormatException e) {
-            String time = "";
-            holder.tv_clock.setText(time);
+            String date = "";
+            holder.refuel_date.setText(date);
         }
     }
 
@@ -115,10 +114,9 @@ public class RefuelingProcessesListAdapter extends RecyclerView.Adapter<Refuelin
      */
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView tv_length;
-        TextView tv_date;
+        TextView refuelvolume_cost;
         RefuelingProcessesListAdapter.OnRideListener onRideListener;
-        TextView tv_clock;
+        TextView refuel_date;
 
         /**
          * Constructor sets the Textview and Clicklistener
@@ -127,9 +125,8 @@ public class RefuelingProcessesListAdapter extends RecyclerView.Adapter<Refuelin
          */
         public MyViewHolder(View itemView, RefuelingProcessesListAdapter.OnRideListener OnRideListener) {
             super(itemView);
-            tv_length = (TextView) itemView.findViewById(R.id.mileage);
-            tv_date = (TextView) itemView.findViewById(R.id.date);
-            tv_clock = (TextView) itemView.findViewById(R.id.clock);
+            refuelvolume_cost = (TextView) itemView.findViewById(R.id.refuelvolume_cost);
+            refuel_date = (TextView) itemView.findViewById(R.id.refueldate);
             this.onRideListener = OnRideListener;
             itemView.setOnClickListener(this);
         }

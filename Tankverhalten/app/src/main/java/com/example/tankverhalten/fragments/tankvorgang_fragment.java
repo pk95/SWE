@@ -1,5 +1,6 @@
 package com.example.tankverhalten.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,13 +14,16 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tankverhalten.R;
+import com.example.tankverhalten.RecyclerviewVehiclesAdapter;
 import com.example.tankverhalten.RefuelingProcessesListAdapter;
 import com.example.tankverhalten.activities.AddVehicleActivity;
 import com.example.tankverhalten.activities.GarageActivity;
+import com.example.tankverhalten.activities.RefuelingProcessesActivity;
 import com.example.tankverhalten.datastructure.Refuel;
 import com.example.tankverhalten.datastructure.Vehicle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,7 +46,7 @@ public class tankvorgang_fragment extends Fragment implements RefuelingProcesses
     private RefuelingProcessesListAdapter myviewadapter;
     RecyclerView.LayoutManager mLayoutmanager;
     private Vector<Refuel> refuels;
-
+    Activity activity;
     Vehicle v;
     public tankvorgang_fragment() {}
 
@@ -50,7 +54,7 @@ public class tankvorgang_fragment extends Fragment implements RefuelingProcesses
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
+        activity = getActivity();
         view = inflater.inflate(R.layout.tankvorgang_layout, container, false);
 
         int pos = -1;
@@ -73,12 +77,14 @@ public class tankvorgang_fragment extends Fragment implements RefuelingProcesses
         refuels = new Vector(Arrays.asList(v.getRefuels()));
 
 
-
         myrecyclerview = (RecyclerView) view.findViewById(R.id.refuels_recycleview);
         mLayoutmanager = new LinearLayoutManager(getActivity());
         myrecyclerview.setLayoutManager(mLayoutmanager);
         myviewadapter = new RefuelingProcessesListAdapter(getActivity(), refuels, this);
         myrecyclerview.setAdapter(myviewadapter);
+
+        RecyclerView.ItemDecoration divider = new DividerItemDecoration(getActivity().getApplicationContext(), DividerItemDecoration.VERTICAL);
+        myrecyclerview.addItemDecoration(divider);
 
         fab_main = (FloatingActionButton) view.findViewById(R.id.fab_expand);
         fab_add = (FloatingActionButton) view.findViewById(R.id.fab_add);
@@ -114,40 +120,53 @@ public class tankvorgang_fragment extends Fragment implements RefuelingProcesses
                     fab_edit.setClickable(true);
                     isOpen = true;
                 }
-
             }
         });
 
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vehicleData.putInt("pos", -1);
-                Intent intent = new Intent(getActivity().getApplicationContext(), AddVehicleActivity.class);
-                intent.putExtras(vehicleData);
+                Intent intent = new Intent(getActivity().getApplicationContext(), RefuelingProcessesActivity.class);
+                intent.putExtra("com.example.tankverhalten.mode", "new");
                 startActivity(intent);
             }
         });
         fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vehicleData.putInt("pos", -1);
-                Intent editintent = new Intent(getActivity().getApplicationContext(), AddVehicleActivity.class);
-                editintent.putExtras(vehicleData);
+                Intent editintent = new Intent(getActivity().getApplicationContext(), RefuelingProcessesActivity.class);
+                editintent.putExtra("com.example.tankverhalten.mode", "edit");
                 startActivity(editintent);
             }
         });
-
-
         return view;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+
+            // Refresh tab data:
+
+            if(getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+            }
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
-
 
 
     @Override
