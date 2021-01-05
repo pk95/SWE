@@ -5,10 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rides_recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        android:background="@color/white"
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -85,19 +93,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rides_recycleview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="4dp"
-        android:scrollbars="vertical"
-        android:background="@color/white"
-        />
 
 </RelativeLayout>
 

@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -89,6 +90,9 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
         myrecyclerview.setLayoutManager(mLayoutmanager);
         myviewadapter = new RecycleViewRidesAdapter(getActivity(), rides, this);
         myrecyclerview.setAdapter(myviewadapter);
+
+        RecyclerView.ItemDecoration divider = new DividerItemDecoration(getActivity().getApplicationContext(), DividerItemDecoration.VERTICAL);
+        myrecyclerview.addItemDecoration(divider);
 
         fab_main = (FloatingActionButton) view.findViewById(R.id.fab_expand);
         fab_add = (FloatingActionButton) view.findViewById(R.id.fab_add);
