@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.activities.GarageActivity;
+import com.example.tankverhalten.datastructure.Refuel;
 import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
 import com.example.tankverhalten.datastructure.Ride;
@@ -32,6 +34,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +42,8 @@ import java.util.List;
 public class statistik_fragment extends Fragment{
 
     View view;
+    Button before;
+    Button later;
     BarChart chart;
     TabLayout tabLayoutTime;
     TabLayout tabLayoutValue;
@@ -47,6 +52,8 @@ public class statistik_fragment extends Fragment{
     int selValue = 0;
     int iconColor;
     int colorFH;
+    int before_later = 0; // negative -> more in the past
+    List<BarEntry> entries;
 
     public statistik_fragment() {}
 
@@ -73,6 +80,21 @@ public class statistik_fragment extends Fragment{
 
         iconColor = getResources().getColor(R.color.color_icons);
 
+        before = view.findViewById(R.id.before);
+        before.setOnClickListener(new View.OnClickListener() {      //Buttons entfernen?
+            @Override
+            public void onClick(View v) {
+                before_later--;
+            }
+        });
+        later = view.findViewById(R.id.later);
+        later.setOnClickListener(new View.OnClickListener() {       //Buttons entfernen?
+            @Override
+            public void onClick(View v) {
+                before_later++;
+            }
+        });
+
         // Bottom Tabs Design
         {
             tabLayoutValue = view.findViewById(R.id.valueBar);
@@ -92,12 +114,98 @@ public class statistik_fragment extends Fragment{
             tabLayoutTime.setTabTextColors(iconColor, Color.WHITE);
         }
 
+        chart = view.findViewById(R.id.chart);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        YAxis rightAxis = chart.getAxisRight();
+        XAxis botAxis = chart.getXAxis();
+
+
+
         // Tab selected logic
-        tabLayoutValue.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        List<BarEntry> entries = new ArrayList<>();
+        tabLayoutValue.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {     // auswählen der Arten (Strecke/Tankvorgänge/...
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tab.getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
                 selValue = tab.getPosition();
+                entries.clear();
+                if (selValue == 0) {    // km: stand letzte fahrt - letzte fahrt die nicht mehr im zeitraum ist
+                    Ride[] r = v.getRides();
+                    if (r.length > 0) {
+                        for (int i = r.length, o = 0; i > 0 && o < 7; i--, o++) {
+                            LocalDate d = r[i - 1].getCreationDate();
+                            int miles = r[i - 1].mileAge;
+                            if (selTime == 0) {
+                                while (d == r[i - 1].getCreationDate()) {
+                                    i--;
+                                    if (i == 1)
+                                        break;
+                                }
+                                miles = miles - r[i - 1].mileAge;
+                            } else if (selTime == 1) {
+                                if (i - 1 != 0)
+                                    i--;
+                                while (r[i - 1].getCreationDate().getDayOfWeek() != DayOfWeek.SUNDAY) {
+                                    i--;
+                                    if (i == 1)
+                                        break;
+                                }
+                                miles = miles - r[i - 1].mileAge;
+                            }
+                            else if (selTime == 2){
+                                if (i - 1 != 0)
+                                    i--;
+                                while (r[i - 1].getCreationDate().getMonthValue() != d.minusMonths(1).getMonthValue()) {
+                                    i--;
+                                    if (i == 1)
+                                        break;
+                                }
+                                miles = miles - r[i - 1].mileAge;
+                            }
+                            //entries.add(new BarEntry(o, miles));
+                        }
+                    }
+
+                    entries.add(new BarEntry(0f, 50f));
+                    entries.add(new BarEntry(1f, 10f));
+                    entries.add(new BarEntry(2f, 10f));
+                    entries.add(new BarEntry(3f, 10f));
+                    entries.add(new BarEntry(4f, 10f));
+                    entries.add(new BarEntry(5f, 10f));
+                    entries.add(new BarEntry(6f, 10f));
+                }
+                else if (selValue == 1){
+                    Refuel[] r = v.getRefuels();
+
+                    entries.add(new BarEntry(0f, 10f));
+                    entries.add(new BarEntry(1f, 50f));
+                    entries.add(new BarEntry(2f, 10f));
+                    entries.add(new BarEntry(3f, 10f));
+                    entries.add(new BarEntry(4f, 10f));
+                    entries.add(new BarEntry(5f, 10f));
+                    entries.add(new BarEntry(6f, 10f));
+                }
+                else if (selValue == 2){
+                    entries.add(new BarEntry(0f, 10f));
+                    entries.add(new BarEntry(1f, 10f));
+                    entries.add(new BarEntry(2f, 50f));
+                    entries.add(new BarEntry(3f, 10f));
+                    entries.add(new BarEntry(4f, 10f));
+                    entries.add(new BarEntry(5f, 10f));
+                    entries.add(new BarEntry(6f, 10f));
+                }
+                else if (selValue == 3){
+                    entries.add(new BarEntry(0f, 10f));
+                    entries.add(new BarEntry(1f, 10f));
+                    entries.add(new BarEntry(2f, 10f));
+                    entries.add(new BarEntry(3f, 50f));
+                    entries.add(new BarEntry(4f, 10f));
+                    entries.add(new BarEntry(5f, 10f));
+                    entries.add(new BarEntry(6f, 10f));
+                }
+                chart.notifyDataSetChanged();
+                chart.invalidate();
             }
 
             @Override
@@ -109,10 +217,53 @@ public class statistik_fragment extends Fragment{
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        tabLayoutTime.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayoutTime.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {      // auswählen welche Zeit angezeigt wird (Woche/Monat/Jahr)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selTime = tab.getPosition();
+
+                if (selTime == 0) {
+                    class Formatter extends ValueFormatter {
+                        private String[] days = {"20.12", "21.12", "22.12", "23.12", "24.12", "25.12", "26.12"};
+
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return days[(int) value];
+                        }
+                    }
+                    botAxis.setValueFormatter(new Formatter());
+                }
+                else if(selTime == 1){
+                    class Formatter extends ValueFormatter {
+                        private String[] weeks = {"KW45", "KW46", "KW47", "KW48", "KW49", "KW50", "KW51"};
+
+                        /*
+                        LocalDate date = LocalDate.now();
+                        TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
+                        int weekNumber = date.get(woy);
+                        */
+
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return weeks[(int) value];
+                        }
+                    }
+                    botAxis.setValueFormatter(new Formatter());
+                }
+                else if(selTime == 2) {
+                    class Formatter extends ValueFormatter {
+                        private String[] months = {"5.20", "6.20", "7.20", "8.20", "9.20", "10.20", "11.20"};
+
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return months[(int) value];
+                        }
+                    }
+                    botAxis.setValueFormatter(new Formatter());
+                }
+
+                chart.notifyDataSetChanged();
+                chart.invalidate();
             }
 
             @Override
@@ -124,14 +275,11 @@ public class statistik_fragment extends Fragment{
             }
         });
 
-        chart = view.findViewById(R.id.chart);
 
-        YAxis leftAxis = chart.getAxisLeft();
-        YAxis rightAxis = chart.getAxisRight();
-        XAxis botAxis = chart.getXAxis();
 
         rightAxis.setEnabled(false);
 
+        // waren zum testen gedacht, vielleicht nicht mehr brauchbar
         Ride ride1 = new Ride(12000, 0.6f, RoadType.COMBINED);
         Ride ride2 = new Ride(13000, 0.4f, RoadType.COMBINED);
         Ride ride3 = new Ride(14000, 0.2f, RoadType.COMBINED);
@@ -139,7 +287,6 @@ public class statistik_fragment extends Fragment{
         Ride[] rides = {ride1, ride2, ride3}; //v.getRides();
 
         // diagram - anfang von km zusammenrechnen pro tag/woche/monat
-        List<BarEntry> entries = new ArrayList<>();
         for(int i = rides.length - 1; i >= 0; i--){
             LocalDate d = rides[i].getCreationDate();
             int miles = 0;
@@ -165,57 +312,27 @@ public class statistik_fragment extends Fragment{
 
         //Date d = (Date)ride1.getCreationDateDate();
 
-        entries.add(new BarEntry(0f, 82f));
-        entries.add(new BarEntry(1f, 32f));
-        entries.add(new BarEntry(2f, 87f));
-        entries.add(new BarEntry(3f, 71f));
-        entries.add(new BarEntry(4f, 54f));
-        entries.add(new BarEntry(5f, 91f));
-        entries.add(new BarEntry(6f, 64f));
+        entries.add(new BarEntry(0f, 50f));
+        entries.add(new BarEntry(1f, 10f));
+        entries.add(new BarEntry(2f, 10f));
+        entries.add(new BarEntry(3f, 10f));
+        entries.add(new BarEntry(4f, 10f));
+        entries.add(new BarEntry(5f, 10f));
+        entries.add(new BarEntry(6f, 10f));
 
-        if (selTime == 0) {
-            class Formatter extends ValueFormatter {
-                private String[] days = {"20.12", "21.12", "22.12", "23.12", "24.12", "25.12", "26.12"};
 
-                @Override
-                public String getAxisLabel(float value, AxisBase axis) {
-                    return days[(int) value];
-                }
+        // standard on Create
+        class Formatter extends ValueFormatter {
+            private String[] days = {"20.12", "21.12", "22.12", "23.12", "24.12", "25.12", "26.12"};
+
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return days[(int) value];
             }
-            botAxis.setValueFormatter(new Formatter());
         }
-        else if(selTime == 1){
-            class Formatter extends ValueFormatter {
-                private String[] weeks = {"KW45", "KW46", "KW47", "KW48", "KW49", "KW50", "KW51"};
+        botAxis.setValueFormatter(new Formatter());
 
-                /*
-                LocalDate date = LocalDate.now();
-                TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
-                int weekNumber = date.get(woy);
-                */
-
-                @Override
-                public String getAxisLabel(float value, AxisBase axis) {
-                    return weeks[(int) value];
-                }
-            }
-            botAxis.setValueFormatter(new Formatter());
-        }
-        else if(selTime == 2) {
-            class Formatter extends ValueFormatter {
-                private String[] months = {"5.20", "6.20", "7.20", "8.20", "9.20", "10.20", "11.20"};
-
-                @Override
-                public String getAxisLabel(float value, AxisBase axis) {
-                    return months[(int) value];
-                }
-            }
-            botAxis.setValueFormatter(new Formatter());
-        }
-
-
-
-
+        // Achsen Anpassen
         leftAxis.setDrawGridLines(true);
         leftAxis.setDrawAxisLine(true);
         leftAxis.setDrawLabels(true);
@@ -236,7 +353,7 @@ public class statistik_fragment extends Fragment{
         botAxis.setLabelCount(7);
         botAxis.setTextSize(12);
 
-
+        // Diagramm anpassen
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
         colorFH = ColorTemplate.rgb("0c9a9a");
