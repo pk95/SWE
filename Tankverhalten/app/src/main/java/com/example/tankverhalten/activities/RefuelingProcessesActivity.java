@@ -27,8 +27,6 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.datastructure.Refuel;
-import com.example.tankverhalten.datastructure.Ride;
-import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
 
 import java.io.File;
@@ -56,6 +54,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
     // Displays the image
     Bitmap captureImage;
     Boolean photo_taken = false;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +62,9 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         setContentView(R.layout.refuelingprocessactivity_layout);
 
         //Get fields of GUI
-        fuel_edittext = (EditText) findViewById(R.id.fuel_edittext);
-        price_edittext = (EditText) findViewById(R.id.price_edittext);
-        imageview = (ImageView) findViewById(R.id.image_view);
+        fuel_edittext = findViewById(R.id.fuel_edittext);
+        price_edittext = findViewById(R.id.price_edittext);
+        imageview = findViewById(R.id.image_view);
 
         // Set date
         Calendar calendar = Calendar.getInstance();
@@ -183,7 +182,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
                 fuel_error = false;
             }
 
-            if ((fuel > 0 && fuel <= volume))  {
+            if ((fuel > 0 && fuel <= volume)) {
                 fuel_error = false;
             } else {
                 fuel_edittext.setError("Darf nicht leer oder größer als das Tankvolumen sein");
@@ -215,7 +214,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
 
                 if (mode.equals("edit")) {
                     // Only change the related photo, if new one is taken and saved
-                    if(photo_taken) {
+                    if (photo_taken) {
                         saveToInternalStorage(captureImage);
                         refuel.costImageSrc = date + "_fuelreceipt.jpg";
                     }
@@ -229,8 +228,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
                     Refuel temp = new Refuel(fuel, price, costImgSrc);
                     active.add(temp);
                 }
-                //TODO:
-                //active.calcRemainingRange() = Vehicle.calcRemainingRange();
+                active.calcRemainingRange();
                 Vehicle.save(GarageActivity.vehicles, this);
                 finish();
             }
@@ -271,7 +269,7 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
         try {
             File f = new File("/data/data/com.example.tankverhalten/app_imageDir", child);
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            ImageView img = (ImageView) findViewById(R.id.image_view);
+            ImageView img = findViewById(R.id.image_view);
             img.setImageBitmap(b);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.tankverhalten.R;
@@ -18,6 +19,8 @@ import com.example.tankverhalten.datastructure.Vehicle;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class fahrzeuguebersicht_fragment extends Fragment {
@@ -110,11 +113,31 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         //Next TÜV
         inspection = view.findViewById(R.id.show_nextInspection);
         inspection.setText(strInspection);
+        setBackgroundColorByDate(inspection, v.inspection);
 
         //Next Inspection
         permission = view.findViewById(R.id.show_nextPermission);
         permission.setText(strPermission);
+        setBackgroundColorByDate(permission, v.permission);
 
         return view;
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setBackgroundColorByDate(TextView textview, LocalDate date) {
+        if (textview == null || date == null)
+            return;
+        if (date.isBefore(LocalDate.now()))
+            //Date is already over
+            textview.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.dateExceeded, null));
+        else if (date.isAfter(LocalDate.now()) && Period.between(LocalDate.now(), date).getMonths() > 0) {
+            //Date is in the future above a month
+            textview.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.FHGreen, null));
+        } else
+            //Date is of today or within a month
+            textview.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.dateIsApproaching, null));
+    }
 }
+
+

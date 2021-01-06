@@ -12,4 +12,7 @@
     <color name="FHSystem">#206266</color><!--freesyle for darker FH-color-->
     <color name="FHGruen_alt">#2E919A</color>
     <color name="color_icons">#35e9e1</color>
+
+    <color name="dateExceeded">#F04A34</color>
+    <color name="dateIsApproaching">#F0DA4D</color>
 </resources>

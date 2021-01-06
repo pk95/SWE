@@ -73,7 +73,6 @@ public class Vehicle implements Serializable {
      * @param licensePlate        of real vehicle
      * @param volume              maximal of tank
      * @param co2emissions        while driving
-     * @param remainingRange      possible to drive
      * @param mileAge             since last ride
      * @param fuelLevel           actual level of tank
      * @param urbanConsumption    of manufacturer
@@ -81,7 +80,7 @@ public class Vehicle implements Serializable {
      * @param combinedConsumption of manufacturer
      * @param vehicleType
      */
-    public Vehicle(String name, String licensePlate, int volume, int co2emissions, int remainingRange, int mileAge, float fuelLevel, float urbanConsumption, float outsideConsumption, float combinedConsumption, @VehicleType int vehicleType) {
+    public Vehicle(String name, String licensePlate, int volume, int co2emissions, int mileAge, float fuelLevel, float urbanConsumption, float outsideConsumption, float combinedConsumption, @VehicleType int vehicleType) {
         this.name = name;
         this.licensePlate = licensePlate;
         this.volume = volume;
@@ -95,6 +94,7 @@ public class Vehicle implements Serializable {
         this.vehicleType = vehicleType;
         rides = new Vector<Ride>();
         refuels = new Vector<Refuel>();
+        calcRemainingRange();
     }
 
     /**
@@ -152,60 +152,6 @@ public class Vehicle implements Serializable {
         }
     }
 
-
-//    private static float getRoadTypeCost(Vehicle vehicle, @RoadType int roadType) {
-//        float costs = 0;
-//        float miles = 0;
-//
-//        int rideEntries = vehicle.rides.size();
-//        Ride lastRide;
-//        Ride ride;
-//
-//        Refuel lastRefuel;
-//        Refuel refuel;
-//        Refuel[] refuelsBetween;
-//
-//        int refuelIndex = 0;
-//
-//        if (rideEntries > 1) {
-//            //initialize last ride
-//            lastRide = vehicle.rides.elementAt(0);
-//
-//            //compares pairs of rides (actual and last ride)
-//            for (int i = 1; i < rideEntries; i++) {
-//                //Get next Ride
-//                ride = vehicle.rides.elementAt(i);
-//
-//                if (ride.roadType == roadType) {
-//                    miles += ride.mileAge - lastRide.mileAge;
-//
-//                    refuelsBetween = Refuel.getRefuelsBetweenDates(vehicle.refuels, ride.getCreationDateTime(), ride.getCreationDateTime());
-//
-//
-//
-//                }
-//
-//                // Get refuels between rides to get all fuelLevel changes.
-//                // e.g fuelLevel between two rides could be 50-> 45 but a big refuel between was not considered (50 -> 90 -> 45)
-//                refuelsBetween = Refuel.getRefuelsBetweenDates(this.refuels, lastRide.getCreationDateTime(), ride.getCreationDateTime());
-//                refuelDifference = 0;
-//                for (Refuel r : refuelsBetween) {
-//                    refuelDifference += r.refueled / volume;
-//                }
-//
-//                //calculate km per fuelLevel
-//                // if no division with zero
-//                if (ride.mileAge - lastRide.mileAge != 0)
-//                    //e.g. (2100 -2000) / ( 60 + 0 - 40 )
-//                    rideProportion = (lastRide.fuelLevel + refuelDifference - ride.fuelLevel) / 100 * volume / ((ride.mileAge - lastRide.mileAge) / 100f);
-////                    rideProportion = (ride.mileAge - lastRide.mileAge) / (lastRide.fuelLevel + refuelDifference - ride.fuelLevel);
-//                litersPer100km += rideProportion;
-//
-//                lastRide = ride;
-//            }
-//        }
-//        return costs / miles;
-//    }
 
     /**
      * Return the average of float values in a FLoat-Vector
@@ -336,7 +282,7 @@ public class Vehicle implements Serializable {
             averageConsumption += this.outsideConsumption * distance / 100 * outsideRatio / 100;
         }
 
-        float emission = distance * this.co2emissions / 100f;
+        float emission = distance * this.co2emissions;
 
         //Calc refuelBreaks
         int kilometresToDrive = distance;
@@ -372,7 +318,7 @@ public class Vehicle implements Serializable {
      */
     @Override
     public Vehicle clone() {
-        Vehicle v = new Vehicle(this.name, this.licensePlate, this.volume, this.co2emissions, this.remainingRange, this.mileAge, this.fuelLevel, this.urbanConsumption, this.outsideConsumption, this.combinedConsumption, this.vehicleType);
+        Vehicle v = new Vehicle(this.name, this.licensePlate, this.volume, this.co2emissions, this.mileAge, this.fuelLevel, this.urbanConsumption, this.outsideConsumption, this.combinedConsumption, this.vehicleType);
         v.refuels = new Vector<Refuel>(this.refuels);
         v.rides = new Vector<Ride>(this.rides);
         return v;
@@ -398,33 +344,6 @@ public class Vehicle implements Serializable {
         return rides;
     }
 
-//    /**
-//     * Allows changes on last added private decelerated Ride-Vector   !!Right now possible with getLastRide and access to the Ride's attributes
-//     *
-//     * @param mileAge to take over
-//     * @param fuelLevel to take over
-//     * @param road to take over
-//     */
-//    public void setLastRide(int mileAge, float fuelLevel, RoadType road) {
-//        Ride r = rides.lastElement();
-//        r.road = road;
-//        r.mileAge = mileAge;
-//        r.fuelLevel = fuelLevel;
-//    }
-//
-//    /**
-//     * Allows changes on last added private decelerated Ride-Vector   !!Right now possible with getLastRefuel and access to the Refuel's attributes
-//     *
-//     * @param refueled     to take over
-//     * @param cost         to take over
-//     * @param costImageSrc to take over
-//     */
-//    public void setLastRefuel(int refueled, float cost, String costImageSrc) {
-//        Refuel r = refuels.lastElement();
-//        r.refueled = refueled;
-//        r.cost = cost;
-//        r.costImageSrc = costImageSrc;
-//    }
 
     /**
      * Get last refuel.
@@ -461,7 +380,7 @@ public class Vehicle implements Serializable {
         rides.add(ride);
         this.mileAge = ride.mileAge;
         this.fuelLevel = ride.fuelLevel;
-        this.remainingRange = calcRemainingRange();
+        calcRemainingRange();
     }
 
     /**
@@ -487,11 +406,17 @@ public class Vehicle implements Serializable {
         return (sameAttr && this.rides.equals(vehicle.rides) && this.refuels.equals(vehicle.refuels));
     }
 
+    /**
+     * @return LocalDate of creation this vehicle
+     */
     public LocalDate getCreationDate() {
         return creationDate;
     }
 
+
     /**
+     * Get id of icon for R.id.###
+     *
      * @param context
      * @return int for Resscource
      */
@@ -512,12 +437,12 @@ public class Vehicle implements Serializable {
 //        return ResourcesCompat.getDrawable(context.getResources(),resourceId,null) ;
     }
 
+
     /**
-     * Calculates remainingRange from vehicle's rides and refuels
+     * Updates remainingRange. Calculates remainingRange  from vehicle's rides and refuels
      *
-     * @return remainingRange
      */
-    public int calcRemainingRange() {
+    public void calcRemainingRange() {
         float litersPer100km = 0; // liters per 100km
         int entries = this.rides.size();
 
@@ -564,11 +489,12 @@ public class Vehicle implements Serializable {
             litersPer100km = (combinedConsumption + urbanConsumption + outsideConsumption) / 3;
         }
 
-        return Math.round(fuelLevel / 100 * volume / litersPer100km * 100);
+        this.remainingRange = Math.round(fuelLevel / 100 * volume / litersPer100km * 100);
     }
 
-    public float calcAverageConsumption(Vector<Vehicle> vehicles) {
-        return 0;
-    }
+
+//    public float calcAverageConsumption(Vector<Vehicle> vehicles) {
+//        return 0;
+//    }
 
 }

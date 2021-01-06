@@ -311,7 +311,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                 // When no error was found, make a new vehicle with data of the input-fields and add it to vehicles-vector. Then go to the vehicle-overview-activity
                 if (!error) {
-                    Vehicle newVehicle = new Vehicle(name, license, volume, co2, 0, mile, fuel, urbanConsumption, outsideConsumption, combinedConsumption, vehicleType);
+                    Vehicle newVehicle = new Vehicle(name, license, volume, co2, mile, fuel, urbanConsumption, outsideConsumption, combinedConsumption, vehicleType);
 
                     if (permissionDate != null)
                         newVehicle.permission = permissionDate;
@@ -334,6 +334,8 @@ public class AddVehicleActivity extends AppCompatActivity {
                         }
                     } else {
                         //replace vehicle in vehicles-vector with a new vehicle with data of inputs
+
+                        newVehicle.calcRemainingRange();
                         GarageActivity.vehicles.set(vehicleIndex, newVehicle);
                         System.gc();
 

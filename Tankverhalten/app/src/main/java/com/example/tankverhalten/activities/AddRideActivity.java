@@ -38,8 +38,8 @@ public class AddRideActivity extends AppCompatActivity {
         setContentView(R.layout.addrideactivity_layout);
 
         //Get fields of GUI
-        fuellevel_edittext = (EditText) findViewById(R.id.fuelLevelE);
-        mileage_edittext = (EditText) findViewById(R.id.mileAgeE);
+        fuellevel_edittext = findViewById(R.id.fuelLevelE);
+        mileage_edittext = findViewById(R.id.mileAgeE);
 
         cityE = findViewById(R.id.cityE);
         combinedE = findViewById(R.id.combinedE);
@@ -78,13 +78,11 @@ public class AddRideActivity extends AppCompatActivity {
 
             // Sets current roadtype
             int current_roadtype = ride.roadType;
-            if(current_roadtype == 0) {
+            if (current_roadtype == 0) {
                 combinedE.setChecked(true);
-            }
-            else if(current_roadtype == 1) {
+            } else if (current_roadtype == 1) {
                 cityE.setChecked(true);
-            }
-            else if(current_roadtype == 2) {
+            } else if (current_roadtype == 2) {
                 countryE.setChecked(true);
             }
 
@@ -138,7 +136,7 @@ public class AddRideActivity extends AppCompatActivity {
                 mileage_error = false;
             }
 
-            if ((fuellevel > 0 && fuellevel <= 100))  {
+            if ((fuellevel > 0 && fuellevel <= 100)) {
                 fuellevel_error = false;
             } else {
                 fuellevel_edittext.setError("Nicht erlaubte Eingabe");
@@ -181,11 +179,10 @@ public class AddRideActivity extends AppCompatActivity {
                     ride.roadType = road_type;
                 } else if (mode.equals("new")) {
                     // Add a new Ride to vehicle
-                   Ride temp = new Ride(mileage, fuellevel, road_type);
+                    Ride temp = new Ride(mileage, fuellevel, road_type);
                     active.add(temp);
                 }
-                //TODO:
-                //active.calcRemainingRange() = Vehicle.calcRemainingRange();
+                active.calcRemainingRange();
                 Vehicle.save(GarageActivity.vehicles, this);
                 finish();
             }
