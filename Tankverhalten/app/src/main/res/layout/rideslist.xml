@@ -21,23 +21,14 @@
             android:id="@+id/mileage"/>
 
         <TextView
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="tDatum"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:layout_below="@+id/mileage"
-            android:id="@+id/date"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="tvUhrzeit"
+            android:hint="Datum"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_below="@id/date"
-            android:id="@+id/clock"/>
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

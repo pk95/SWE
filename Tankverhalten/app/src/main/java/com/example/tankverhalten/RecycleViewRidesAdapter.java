@@ -5,7 +5,6 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +16,6 @@ import com.example.tankverhalten.datastructure.Ride;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 public class RecycleViewRidesAdapter extends RecyclerView.Adapter<RecycleViewRidesAdapter.MyViewHolder> {
@@ -85,22 +82,19 @@ public class RecycleViewRidesAdapter extends RecyclerView.Adapter<RecycleViewRid
         try {
             LocalDate locald = mData.get(position).getCreationDate();
             DateTimeFormatter germandate = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+            LocalTime localt = mData.get(position).getCreationTime();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+
+            String time = localt.format(dtf);
             String formatted = locald.format(germandate);
+
+            formatted += " | " + time;
             holder.tv_date.setText(formatted);
         }
         catch (NumberFormatException e) {
             String date = "";
             holder.tv_date.setText(date);
-        }
-        try{
-            LocalTime localt = mData.get(position).getCreationTime();
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-            String time = localt.format(dtf);
-            holder.tv_clock.setText(time);
-        }
-        catch (NumberFormatException e) {
-            String time = "";
-            holder.tv_clock.setText(time);
         }
     }
 
@@ -133,7 +127,6 @@ public class RecycleViewRidesAdapter extends RecyclerView.Adapter<RecycleViewRid
             super(itemView);
             tv_length = (TextView) itemView.findViewById(R.id.mileage);
             tv_date = (TextView) itemView.findViewById(R.id.date);
-            tv_clock = (TextView) itemView.findViewById(R.id.clock);
             this.onRideListener = OnRideListener;
             itemView.setOnClickListener(this);
 

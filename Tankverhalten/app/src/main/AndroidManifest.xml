@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tankverhalten">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -40,6 +44,11 @@
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity
             android:name=".activities.PopupDeleteActivity"
+            android:label=""
+            android:parentActivityName=".activities.AddVehicleActivity"
+            android:theme="@style/Theme.Tankverhalten.NoActionBar" />
+        <activity
+            android:name=".activities.AddRideActivity"
             android:label=""
             android:parentActivityName=".activities.AddVehicleActivity"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />

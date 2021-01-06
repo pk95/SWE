@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.RecycleViewRidesAdapter;
+import com.example.tankverhalten.activities.AddRideActivity;
 import com.example.tankverhalten.activities.AddVehicleActivity;
 
 import com.example.tankverhalten.datastructure.Ride;
@@ -135,24 +136,40 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vehicleData.putInt("pos", -1);
-                Intent intent = new Intent(getActivity().getApplicationContext(), AddVehicleActivity.class);
-                intent.putExtras(vehicleData);
+                Intent intent = new Intent(getActivity().getApplicationContext(), AddRideActivity.class);
+                intent.putExtra("com.example.tankverhalten.mode", "new");
                 startActivity(intent);
             }
         });
         fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vehicleData.putInt("pos", -1);
-                Intent editintent = new Intent(getActivity().getApplicationContext(), AddVehicleActivity.class);
-                editintent.putExtras(vehicleData);
+                Intent editintent = new Intent(getActivity().getApplicationContext(), AddRideActivity.class);
+                editintent.putExtra("com.example.tankverhalten.mode", "edit");
                 startActivity(editintent);
             }
         });
-
-
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+
+            // Refresh tab data:
+
+            if(getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+            }
+        }
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
