@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <ScrollView
@@ -15,7 +16,6 @@
             android:orientation="vertical"
             android:padding="10dp"
             tools:context=".MainActivity">
-
             <TextView
                 android:id="@+id/ride_length_stat"
                 android:layout_width="match_parent"
@@ -36,6 +36,8 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:autofillHints=""/>
+
+
             <TextView
                 android:id="@+id/ride_type_innercity"
                 android:layout_width="match_parent"
@@ -45,15 +47,14 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
-            <EditText
+            <com.gregacucnik.EditableSeekBar
+                android:id="@+id/ride_type_innercity_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ride_type_innercity_edit"
-                android:inputType="numberDecimal"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:autofillHints=""/>
+                app:esbMax="100"
+                app:esbValue="0"
+                />
+
             <TextView
                 android:id="@+id/ride_type_combined"
                 android:layout_width="match_parent"
@@ -63,15 +64,14 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
-            <EditText
+            <com.gregacucnik.EditableSeekBar
+                android:id="@+id/ride_type_combined_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ride_type_combined_edit"
-                android:inputType="numberDecimal"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:autofillHints=""/>
+                app:esbMax="100"
+                app:esbValue="0"
+                />
+
             <TextView
                 android:id="@+id/ride_type_outercity"
                 android:layout_width="match_parent"
@@ -81,15 +81,13 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
-            <EditText
+
+            <com.gregacucnik.EditableSeekBar
+                android:id="@+id/ride_type_outercity_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ride_type_outercity_edit"
-                android:inputType="numberDecimal"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:autofillHints=""/>
+                app:esbMax="100"
+                app:esbValue="0"/>
             <Button
                 android:id="@+id/confirm_calculating"
                 android:layout_width="match_parent"

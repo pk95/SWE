@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.activities.GarageActivity;
 import com.example.tankverhalten.datastructure.Vehicle;
+import com.gregacucnik.EditableSeekBar;
 
 import java.text.DecimalFormat;
 
@@ -49,9 +50,9 @@ public class streckenprognose_fragment extends Fragment {
 
     //Inputs
     EditText distanceField;
-    EditText urbanField;
-    EditText combinedField;
-    EditText outsideField;
+    EditableSeekBar urbanField;
+    EditableSeekBar combinedField;
+    EditableSeekBar outsideField;
 
     //Results
     TextView consumptionReport;
@@ -92,9 +93,9 @@ public class streckenprognose_fragment extends Fragment {
 
         //Assign viewElements InputFields
         distanceField = (EditText) view.findViewById(R.id.ride_length_stat_edit);
-        urbanField = (EditText) view.findViewById(R.id.ride_type_innercity_edit);
-        combinedField = (EditText) view.findViewById(R.id.ride_type_combined_edit);
-        outsideField = (EditText) view.findViewById(R.id.ride_type_outercity_edit);
+        urbanField = (EditableSeekBar) view.findViewById(R.id.ride_type_innercity_edit);
+        combinedField = (EditableSeekBar) view.findViewById(R.id.ride_type_combined_edit);
+        outsideField = (EditableSeekBar) view.findViewById(R.id.ride_type_outercity_edit);
 
         //Assign viewElements Results
         consumptionReport = (TextView) view.findViewById(R.id.used_gas_calc);
@@ -115,29 +116,17 @@ public class streckenprognose_fragment extends Fragment {
                 else
                     markError(distanceField, distanceFieldDescription);
 
-                if (urbanField.length() > 0 && urbanField.length() < 3)
-                    markOk(urbanField, urbanFieldDescription);
-                else
-                    markError(urbanField, urbanFieldDescription);
-
-                if (combinedField.length() > 0 && combinedField.length() < 3)
-                    markOk(combinedField, combinedFieldDescription);
-                else
-                    markError(combinedField, combinedFieldDescription);
-
-                if (outsideField.length() > 0 && outsideField.length() < 3)
-                    markOk(outsideField, outsideFieldDescription);
-                else
-                    markError(outsideField, outsideFieldDescription);
-
                 //No input errors? -> process inputs
                 if (!inputError) {
                     try {
                         //Get textInput into variableInputs
                         distance = Integer.parseInt(distanceField.getText().toString());
-                        urbanRatio = Integer.parseInt(urbanField.getText().toString());
-                        combinedRatio = Integer.parseInt(combinedField.getText().toString());
-                        outsideRatio = Integer.parseInt(outsideField.getText().toString());
+                        //urbanRatio = Integer.parseInt(urbanField.toString());
+                        //combinedRatio = Integer.parseInt(combinedField.toString());
+                        //outsideRatio = Integer.parseInt(outsideField.toString());
+                        urbanRatio = urbanField.getValue();
+                        combinedRatio = combinedField.getValue();
+                        outsideRatio = outsideField.getValue();
 
                         //Values out of range? -> break
                         if (distance <= 0 ||
@@ -167,10 +156,9 @@ public class streckenprognose_fragment extends Fragment {
                             emissionDf.setMaximumFractionDigits(0);
                             emissionReport.setText(emissionDf.format(Math.round(emission)).replace('.', ','));
                         } else {
-                            //Mark rideRatios as error
-                            markError(urbanField, urbanFieldDescription);
-                            markError(combinedField, combinedFieldDescription);
-                            markError(outsideField, outsideFieldDescription);
+                            //Mark rideRatios as error/markError(urbanField, urbanFieldDescription);
+                            //markError(combinedField, combinedFieldDescription);
+                            //markError(outsideField, outsideFieldDescription);
                             //Show advice-message
                             Toast.makeText(getActivity(), "% müssen zusammen 100% ergeben", Toast.LENGTH_LONG).show();
                         }
@@ -185,10 +173,6 @@ public class streckenprognose_fragment extends Fragment {
 
         return view;
     }
-
-    /*
-        Hier kommt die Streckenprognose Activity hin.
-    */
 
     //Click on button -> do prediction()
 

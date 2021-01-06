@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ import java.util.Vector;
  * @version 1.0
  */
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class Refuel {
+public class Refuel implements Serializable {
 
     private final LocalDateTime creationDate = java.time.LocalDateTime.now();
     private final LocalTime creationTime = LocalTime.now();

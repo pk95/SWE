@@ -89,7 +89,7 @@
     <string name="used_gas">Kraftstoffverbrauch [l(kWh)]</string>
     <string name="used_gas_cost">Kraftstoffkosten [€]</string>
     <string name="number_refueling">Anzahl der nötigen Tankvorgänge</string>
-    <string name="co2emissions">CO2_Ausstoß [g]</string>
+    <string name="co2emissions">CO2-Ausstoß [g]</string>
 
 
 </resources>

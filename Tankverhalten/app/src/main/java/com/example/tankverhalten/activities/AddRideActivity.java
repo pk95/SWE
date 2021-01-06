@@ -184,8 +184,9 @@ public class AddRideActivity extends AppCompatActivity {
                    Ride temp = new Ride(mileage, fuellevel, road_type);
                     active.add(temp);
                 }
-                //TODO: Save löscht noch das Fahrzeug
-                //Vehicle.save(GarageActivity.vehicles, this);
+                //TODO:
+                //active.calcRemainingRange() = Vehicle.calcRemainingRange();
+                Vehicle.save(GarageActivity.vehicles, this);
                 finish();
             }
         }

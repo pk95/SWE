@@ -229,8 +229,9 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
                     Refuel temp = new Refuel(fuel, price, costImgSrc);
                     active.add(temp);
                 }
-                //TODO: Save löscht noch das Fahrzeug
-                //Vehicle.save(GarageActivity.vehicles, this);
+                //TODO:
+                //active.calcRemainingRange() = Vehicle.calcRemainingRange();
+                Vehicle.save(GarageActivity.vehicles, this);
                 finish();
             }
         }

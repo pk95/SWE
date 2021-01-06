@@ -40,7 +40,7 @@
         <activity
             android:name=".activities.RefuelingProcessesActivity"
             android:label=""
-            android:parentActivityName=".activities.MenuActivity"
+            android:parentActivityName=".activities.AddVehicleActivity"
             android:theme="@style/Theme.Tankverhalten.NoActionBar" />
         <activity
             android:name=".activities.PopupDeleteActivity"

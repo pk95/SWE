@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ import java.util.Vector;
  * @see LocalDate
  */
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class Ride {
+public class Ride implements Serializable {
     private final LocalDate creationDate = LocalDate.now();
     private final Date dateCreation = Date.from(Instant.now());
     private final LocalTime creationTime = LocalTime.now();

@@ -11,7 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -32,6 +31,7 @@ import com.example.tankverhalten.datastructure.RoadType;
 import com.example.tankverhalten.datastructure.Vehicle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.example.tankverhalten.fragments.gefahrene_strecke_fragment;
+
 
 import java.util.Arrays;
 import java.util.Vector;
@@ -57,6 +57,8 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
 
     Vehicle v;
     public gefahrene_strecke_fragment() {}
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -84,7 +86,10 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
 
         rides = new Vector(Arrays.asList(v.getRides()));
 
-
+/**
+ * Setting the Layoutmanager, the TextViews,
+ * Divider, Recyclerview and FAB
+ */
 
         myrecyclerview = (RecyclerView) view.findViewById(R.id.rides_recycleview);
         mLayoutmanager = new LinearLayoutManager(getActivity());
@@ -105,6 +110,10 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
 
         tv_add = (TextView) view.findViewById(R.id.tv_add);
         tv_edit = (TextView) view.findViewById(R.id.tv_edit);
+        /**
+         * Setting the FAB with OnClickListener
+         * Setting the Visibility when clicked of the expanding fabs
+         */
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +141,9 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
 
             }
         });
-
+/**
+ * OnClick for the add FAB
+ */
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,6 +152,9 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
                 startActivity(intent);
             }
         });
+        /**
+         * OnClick for the edit FAB
+         */
         fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,8 +163,12 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
                 startActivity(editintent);
             }
         });
+
+
         return view;
     }
+
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -171,6 +189,9 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
             }
         }
     }
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -179,7 +200,11 @@ public class gefahrene_strecke_fragment extends Fragment implements RecycleViewR
 
     }
 
-
+    /**
+     * empty OnRideListener, because the edit and add Ride activity
+     * is called by the expanding fabs
+     * @param position
+     */
 
     @Override
     public void OnRideListener(int position) {
