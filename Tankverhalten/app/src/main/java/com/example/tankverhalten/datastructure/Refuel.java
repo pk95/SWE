@@ -5,11 +5,9 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Vector;
 
 
@@ -53,7 +51,7 @@ public class Refuel implements Serializable {
      * @param refuels
      * @param startDate
      * @param endDate
-     * @return refuels
+ t    * @return refuels
      */
     public static Refuel[] getRefuelsBetweenDates(Vector<Refuel> refuels, LocalDateTime startDate, LocalDateTime endDate) {
         Vector<Refuel> refuelsBetween = new Vector<>();

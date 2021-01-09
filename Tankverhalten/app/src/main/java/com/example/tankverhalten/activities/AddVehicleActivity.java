@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.tankverhalten.R;
 import com.example.tankverhalten.datastructure.Vehicle;
@@ -82,9 +83,9 @@ public class AddVehicleActivity extends AppCompatActivity {
         EditText inspection = findViewById(R.id.inspection_edit);
 
         //vehicleType selection-options
-        RadioButton car = findViewById(R.id.car_radio_btn);
-        RadioButton motorcycle = findViewById(R.id.motorcycle_radio_btn);
-        RadioButton transporter = findViewById(R.id.transporter_radio_btn);
+        RadioButton car = (RadioButton) findViewById(R.id.car_radio_btn);
+        RadioButton motorcycle = (RadioButton) findViewById(R.id.motorcycle_radio_btn);
+        RadioButton transporter = (RadioButton) findViewById(R.id.transporter_radio_btn);
 
         //Buttons
         Button confirmButton = findViewById(R.id.confirm_editing_vehicle);
@@ -126,17 +127,18 @@ public class AddVehicleActivity extends AppCompatActivity {
             vehicleType = GarageActivity.vehicles.elementAt(vehicleIndex).vehicleType;
             switch (vehicleType) {
                 case VehicleType.CAR:
-                    car.isChecked();
+                    car.setChecked(true);
                     break;
                 case VehicleType.MOTORCYCLE:
-                    motorcycle.isChecked();
+                    motorcycle.setChecked(true);
                     break;
                 case VehicleType.TRANSPORTER:
-                    transporter.isChecked();
+                    transporter.setChecked(true);
                     break;
             }
         } else {
             getSupportActionBar().setTitle("Fahrzeug anlegen");
+            car.setChecked(true);
         }
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -249,83 +251,64 @@ public class AddVehicleActivity extends AppCompatActivity {
                     markError(emissions, emissionsTxt);
                 }
 
-                if (car.isChecked()) {
-                    vehicleType = VehicleType.CAR;
-                    selectVehicleTypeTxt.setTextColor(Color.BLACK);
-                    car.setTextColor(Color.BLACK);
-                    motorcycle.setTextColor(Color.BLACK);
-                    transporter.setTextColor(Color.BLACK);
+                if (car.isChecked() || transporter.isChecked() || motorcycle.isChecked()) {
+                    selectVehicleTypeTxt.setTextColor(ResourcesCompat.getColor(getResources(), R.color.FHGreen, null));
                     selectVehicleTypeTxt.setError(null);
-
-                } else if (motorcycle.isChecked()) {
-                    vehicleType = VehicleType.MOTORCYCLE;
-                    selectVehicleTypeTxt.setTextColor(Color.BLACK);
-                    car.setTextColor(Color.BLACK);
-                    motorcycle.setTextColor(Color.BLACK);
-                    transporter.setTextColor(Color.BLACK);
-                    selectVehicleTypeTxt.setError(null);
-
-                } else if (transporter.isChecked()) {
-                    vehicleType = VehicleType.TRANSPORTER;
-                    selectVehicleTypeTxt.setTextColor(Color.BLACK);
-                    car.setTextColor(Color.BLACK);
-                    motorcycle.setTextColor(Color.BLACK);
-                    transporter.setTextColor(Color.BLACK);
-                    selectVehicleTypeTxt.setError(null);
-
                 } else {
                     error = true;
                     selectVehicleTypeTxt.setTextColor(Color.RED);
                     selectVehicleTypeTxt.setError("erforderlich");
-                    car.setTextColor(Color.RED);
-                    motorcycle.setTextColor(Color.RED);
-                    transporter.setTextColor(Color.RED);
                 }
 
                 if (permission.getText().length() == 10) {
                     try {
                         String s = permission.getText().toString();
-                        permissionDate = LocalDate.parse(s,formatter1);
+                        permissionDate = LocalDate.parse(s, formatter1);
                         markOk(permission, permissionTxt);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         markError(permission, permissionTxt);
                     }
-                } else if(permission.getText().length() != 0){
+                } else if (permission.getText().length() != 0) {
                     markError(permission, permissionTxt);
                 }
 
                 if (inspection.getText().length() == 10) {
                     try {
                         String s = inspection.getText().toString();
-                        inspectionDate = LocalDate.parse(s,formatter1);
+                        inspectionDate = LocalDate.parse(s, formatter1);
                         markOk(inspection, inspectionTxt);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         markError(inspection, inspectionTxt);
                     }
-                } else if(inspection.getText().length() != 0) {
+                } else if (inspection.getText().length() != 0) {
                     markError(inspection, inspectionTxt);
                 }
 
 
                 // When no error was found, make a new vehicle with data of the input-fields and add it to vehicles-vector. Then go to the vehicle-overview-activity
                 if (!error) {
-                    Vehicle newVehicle = new Vehicle(name, license, volume, co2, mile, fuel, urbanConsumption, outsideConsumption, combinedConsumption, vehicleType);
-
-                    if (permissionDate != null)
-                        newVehicle.permission = permissionDate;
-                    if (inspectionDate != null)
-                        newVehicle.inspection = inspectionDate;
+                    Vehicle newVehicle = null;
 
                     //When vehicle is new / no vehicle was selected before ^= -1
                     //-> Add vehicle to vehicles-vector
                     if (vehicleIndex < 0) {
+                        //Create new Vehicle
+                        newVehicle = new Vehicle(name, license, volume, co2, mile, fuel, urbanConsumption, outsideConsumption, combinedConsumption, vehicleType);
+                        newVehicle.calcRemainingRange();
+                        if (permissionDate != null)
+                            newVehicle.permission = permissionDate;
+                        if (inspectionDate != null)
+                            newVehicle.inspection = inspectionDate;
+
+                        //Update Garage vehicles
                         GarageActivity.vehicles.add(newVehicle);
                         Vehicle.save(GarageActivity.vehicles, c);
 
                         int pos = GarageActivity.vehicles.indexOf(newVehicle);
                         if (pos >= 0) {
+                            // Go to menu
                             Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
                             vIntent.putExtra("pos", pos);
                             GarageActivity.vehicleData.putInt("pos", pos);
@@ -334,12 +317,24 @@ public class AddVehicleActivity extends AppCompatActivity {
                         }
                     } else {
                         //replace vehicle in vehicles-vector with a new vehicle with data of inputs
+                        newVehicle = GarageActivity.vehicles.elementAt(vehicleIndex);
+                        newVehicle.name = name;
+                        newVehicle.licensePlate = license;
+                        newVehicle.urbanConsumption = urbanConsumption;
+                        newVehicle.outsideConsumption = outsideConsumption;
+                        newVehicle.combinedConsumption = combinedConsumption;
+                        newVehicle.mileAge = mile;
+                        newVehicle.fuelLevel = fuel;
+                        newVehicle.volume = volume;
+                        newVehicle.co2emissions = co2;
+                        newVehicle.vehicleType = vehicleType;
+                        if (permissionDate != null)
+                            newVehicle.permission = permissionDate;
+                        if (inspectionDate != null)
+                            newVehicle.inspection = inspectionDate;
 
                         newVehicle.calcRemainingRange();
-                        GarageActivity.vehicles.set(vehicleIndex, newVehicle);
-                        System.gc();
-
-                        Vehicle.save(GarageActivity.vehicles,context);
+                        Vehicle.save(GarageActivity.vehicles, context);
                         finish();
                     }
                 }
@@ -365,7 +360,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     //marks a Input-fields as accepted
     private void markOk(EditText input, TextView description) {
-        description.setTextColor(Color.BLACK);
+        description.setTextColor(ResourcesCompat.getColor(getResources(), R.color.FHGreen, null));
         description.setError(null);
     }
 }

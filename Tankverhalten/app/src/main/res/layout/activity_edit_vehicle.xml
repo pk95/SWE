@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Anzeigename"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/license_plate_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/consumption_city_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/consumption_combined_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/consumption_country_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
 
                     android:text="@string/mileage_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -165,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/fuelLevel_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -185,7 +185,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/volume_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -225,7 +225,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/vehicleType_header"
-                    android:textColor="@color/FHGreen" />
+                    android:textColor="@color/FHGreen"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/vehicle_select_block"
@@ -236,19 +238,21 @@
                         android:id="@+id/car_radio_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="true"
+                        android:checked="false"
                         android:text="@string/vehicleType_car" />
 
                     <RadioButton
                         android:id="@+id/motorcycle_radio_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:checked="false"
                         android:text="@string/vehicleType_motorcycle" />
 
                     <RadioButton
                         android:id="@+id/transporter_radio_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:checked="false"
                         android:text="@string/vehicleType_transporter" />
                 </RadioGroup>
 
@@ -257,7 +261,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/permission_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -277,7 +281,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/inspection_header"
-                    android:textColor="#00ACA2"
+                    android:textColor="@color/FHGreen"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 

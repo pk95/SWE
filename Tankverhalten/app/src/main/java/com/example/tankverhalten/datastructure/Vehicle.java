@@ -47,7 +47,6 @@ public class Vehicle implements Serializable {
     public float fuelLevel = 100;
     public int co2emissions = 0;
 
-
     private Vector<Ride> rides;
     private Vector<Refuel> refuels;
 
@@ -169,6 +168,10 @@ public class Vehicle implements Serializable {
     /**
      * Calculates averageCosts of vehicle's rides and refuels.
      * The rides until a next refuels are categorized by RoatTypes. So each roadType has an average consumption at the end.
+     * Calculates averageConsumption, averageCosts, refuelbreaks and emissions
+     * <p>
+     * The calculation needs two rides to compare usages.
+     * If the vehicles has less wides,the calculator uses the manufactorer information for calculation
      * <p>
      *
      * @param distance      in kilometres
@@ -177,7 +180,7 @@ public class Vehicle implements Serializable {
      * @param outsideRatio  in percent
      * @return a float[4] with [averageConsumption, price, refuelBreaks, emissions]
      */
-    public float[] getPrediction(int distance, int urbanRatio, int combinedRatio, int outsideRatio) {
+    public float[] getPrediction(int distance, int urbanRatio, int combinedRatio, int outsideRatio, float literprice) {
         //Prices per 100km
         Vector<Float> urbanPricePer100km = new Vector<Float>();
         Vector<Float> combinedPricePer100Km = new Vector<Float>();
@@ -193,7 +196,7 @@ public class Vehicle implements Serializable {
         int[] roadTypesKilometres = new int[3];
 
         int refuelEntities = this.refuels.size();
-        float pricePerLiter = 1.5f;
+        float pricePerLiter = literprice;
         Refuel lastRefuel;
         Refuel refuel;
         Ride[] ridesSinceLastRefuel;
@@ -277,18 +280,19 @@ public class Vehicle implements Serializable {
             averageCost += this.outsideConsumption * distance / 100 * outsideRatio / 100 * pricePerLiter;
             averageCost += this.combinedConsumption * distance / 100 * combinedRatio / 100 * pricePerLiter;
 
-            averageConsumption += this.urbanConsumption * distance / 100 * urbanRatio / 100;
-            averageConsumption += this.combinedConsumption * distance / 100 * combinedRatio / 100;
-            averageConsumption += this.outsideConsumption * distance / 100 * outsideRatio / 100;
+            //averageConsumption of manufacturer information proportionately to roadType-ratio
+            averageConsumption += this.urbanConsumption * urbanRatio / 100;
+            averageConsumption += this.combinedConsumption * combinedRatio / 100;
+            averageConsumption += this.outsideConsumption * outsideRatio / 100;
         }
 
         float emission = distance * this.co2emissions;
 
         //Calc refuelBreaks
-        int kilometresToDrive = distance;
+        float kilometresToDrive = (float) distance;
         int refuelBreaks = 0;
         //check if remaining fuel is enough
-        kilometresToDrive -= (fuelLevel * volume) / averageConsumption * 100;
+        kilometresToDrive -= (fuelLevel / 100 * volume) / averageConsumption * 100;
         //then check how much complete fuel volumes are also needed
         while (kilometresToDrive > 0) {
             ++refuelBreaks;
@@ -391,6 +395,8 @@ public class Vehicle implements Serializable {
     public void add(Refuel refuel) {
         refuels.add(refuel);
         this.fuelLevel += (refuel.refueled / (float) volume) * 100;
+        if (this.fuelLevel > 100)
+            this.fuelLevel = 100;
     }
 
     /**
@@ -440,7 +446,6 @@ public class Vehicle implements Serializable {
 
     /**
      * Updates remainingRange. Calculates remainingRange  from vehicle's rides and refuels
-     *
      */
     public void calcRemainingRange() {
         float litersPer100km = 0; // liters per 100km
@@ -491,10 +496,4 @@ public class Vehicle implements Serializable {
 
         this.remainingRange = Math.round(fuelLevel / 100 * volume / litersPer100km * 100);
     }
-
-
-//    public float calcAverageConsumption(Vector<Vehicle> vehicles) {
-//        return 0;
-//    }
-
 }

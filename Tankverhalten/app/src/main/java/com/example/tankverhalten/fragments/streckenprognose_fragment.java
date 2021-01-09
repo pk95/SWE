@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.tankverhalten.R;
@@ -22,6 +23,8 @@ import com.example.tankverhalten.datastructure.Vehicle;
 import com.gregacucnik.EditableSeekBar;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class streckenprognose_fragment extends Fragment {
 
@@ -34,6 +37,7 @@ public class streckenprognose_fragment extends Fragment {
     int urbanRatio = 0;
     int combinedRatio = 0;
     int outsideRatio = 0;
+    float literprice = 1.5f;
 
     //variables out
     float consumption;
@@ -47,9 +51,11 @@ public class streckenprognose_fragment extends Fragment {
     TextView urbanFieldDescription;
     TextView combinedFieldDescription;
     TextView outsideFieldDescription;
+    TextView fuelpriceFieldDescription;
 
     //Inputs
     EditText distanceField;
+    EditText fuelpriceField;
     EditableSeekBar urbanField;
     EditableSeekBar combinedField;
     EditableSeekBar outsideField;
@@ -86,16 +92,21 @@ public class streckenprognose_fragment extends Fragment {
         }
 
         //Assign viewElementDescription
+        fuelpriceFieldDescription = (TextView) view.findViewById(R.id.literprice_stat);
         distanceFieldDescription = (TextView) view.findViewById(R.id.ride_length_stat);
         urbanFieldDescription = (TextView) view.findViewById(R.id.ride_type_innercity);
         combinedFieldDescription = (TextView) view.findViewById(R.id.ride_type_combined);
         outsideFieldDescription = (TextView) view.findViewById(R.id.ride_type_outercity);
 
         //Assign viewElements InputFields
+        fuelpriceField = (EditText) view.findViewById(R.id.literprice_stat_edit);
         distanceField = (EditText) view.findViewById(R.id.ride_length_stat_edit);
         urbanField = (EditableSeekBar) view.findViewById(R.id.ride_type_innercity_edit);
         combinedField = (EditableSeekBar) view.findViewById(R.id.ride_type_combined_edit);
         outsideField = (EditableSeekBar) view.findViewById(R.id.ride_type_outercity_edit);
+
+//        fuelpriceField.addTextChangedListener(new MoneyTextWatcher(fuelpriceField));
+//        fuelpriceField.setFilters(new InputFilter[] {new MoneyValueFilter()});
 
         //Assign viewElements Results
         consumptionReport = (TextView) view.findViewById(R.id.used_gas_calc);
@@ -113,14 +124,22 @@ public class streckenprognose_fragment extends Fragment {
                 //check inputFields
                 if (distanceField.length() > 0)
                     markOk(distanceField, distanceFieldDescription);
-                else
+                else {
                     markError(distanceField, distanceFieldDescription);
+                }
+                if (fuelpriceField.length() > 0)
+                    markOk(fuelpriceField, fuelpriceFieldDescription);
+                else {
+                    markError(fuelpriceField, fuelpriceFieldDescription);
+                }
 
                 //No input errors? -> process inputs
                 if (!inputError) {
                     try {
                         //Get textInput into variableInputs
                         distance = Integer.parseInt(distanceField.getText().toString());
+                        literprice = Float.parseFloat(fuelpriceField.getText().toString());
+
                         //urbanRatio = Integer.parseInt(urbanField.toString());
                         //combinedRatio = Integer.parseInt(combinedField.toString());
                         //outsideRatio = Integer.parseInt(outsideField.toString());
@@ -141,20 +160,25 @@ public class streckenprognose_fragment extends Fragment {
                             //Calc results
                             prediction();
 
-                            //write text to show results
-                            DecimalFormat consumptionDf = new DecimalFormat();
-                            consumptionDf.setMaximumFractionDigits(1);
-                            consumptionReport.setText(consumptionDf.format(consumption).replace('.', ','));
-
-                            DecimalFormat priceDf = new DecimalFormat();
+                            //Set Formats
+                            //Set value Format
+                            NumberFormat gerValueF = NumberFormat.getNumberInstance(Locale.GERMANY);
+                            DecimalFormat valueDF = (DecimalFormat) gerValueF;
+                            valueDF.setMinimumFractionDigits(1);
+                            valueDF.setMaximumFractionDigits(1);
+                            valueDF.setMaximumIntegerDigits(13);
+                            //Set price Format
+                            NumberFormat gerPriceF = NumberFormat.getNumberInstance(Locale.GERMANY);
+                            DecimalFormat priceDf = (DecimalFormat) gerPriceF;
+                            priceDf.setMinimumFractionDigits(2);
                             priceDf.setMaximumFractionDigits(2);
-                            costReport.setText(priceDf.format(price).replace('.', ','));
+                            priceDf.setMaximumIntegerDigits(10);
 
+                            //write text to show results
+                            consumptionReport.setText(valueDF.format(consumption));
+                            costReport.setText(priceDf.format(price));
                             refuelsReport.setText(String.valueOf(refuelBreaks));
-
-                            DecimalFormat emissionDf = new DecimalFormat();
-                            emissionDf.setMaximumFractionDigits(0);
-                            emissionReport.setText(emissionDf.format(Math.round(emission)).replace('.', ','));
+                            emissionReport.setText(valueDF.format(Math.round(emission)));
                         } else {
                             //Mark rideRatios as error/markError(urbanField, urbanFieldDescription);
                             //markError(combinedField, combinedFieldDescription);
@@ -179,7 +203,7 @@ public class streckenprognose_fragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void prediction() {
-        float[] prediction = vehicle.getPrediction(distance, urbanRatio, combinedRatio, outsideRatio);
+        float[] prediction = vehicle.getPrediction(distance, urbanRatio, combinedRatio, outsideRatio, literprice);
         consumption = prediction[0];
         price = prediction[1];
         refuelBreaks = (int) prediction[2];
@@ -196,7 +220,10 @@ public class streckenprognose_fragment extends Fragment {
 
     //marks a Input-fields as accepted
     private void markOk(EditText input, TextView description) {
-        description.setTextColor(Color.BLACK);
+        description.setTextColor(ResourcesCompat.getColor(getResources(), R.color.FHGreen, null));
         description.setError(null);
     }
+
 }
+
+
