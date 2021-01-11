@@ -445,7 +445,9 @@ public class Vehicle implements Serializable {
 
 
     /**
-     * Updates remainingRange. Calculates remainingRange  from vehicle's rides and refuels
+     * Updates remainingRange.
+     * If rides have at least two ride to compare, the method calculates remainingRange from vehicle's rides and refuels.
+     * If less the method calculates remainingRange from manufacturer information.
      */
     public void calcRemainingRange() {
         float litersPer100km = 0; // liters per 100km
@@ -487,13 +489,10 @@ public class Vehicle implements Serializable {
                 lastRide = ride;
             }
             litersPer100km /= entries - 1;
-        } else if (entries == 1) {
-            ride = this.rides.elementAt(0);
-            litersPer100km = (ride.fuelLevel) / 100 * volume / (ride.mileAge / 100f);
         } else {
             litersPer100km = (combinedConsumption + urbanConsumption + outsideConsumption) / 3;
         }
-
-        this.remainingRange = Math.round(fuelLevel / 100 * volume / litersPer100km * 100);
+        //
+        this.remainingRange = Math.round((this.fuelLevel / 100) * this.volume / litersPer100km * 100);
     }
 }
