@@ -2,6 +2,7 @@ package com.example.tankverhalten.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_edit_vehicle);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar_vehicle);
+        toolbar = findViewById(R.id.toolbar_vehicle);
         setSupportActionBar(toolbar);
 
         //All hints above input-fields
@@ -82,9 +83,9 @@ public class AddVehicleActivity extends AppCompatActivity {
         EditText inspection = findViewById(R.id.inspection_edit);
 
         //vehicleType selection-options
-        RadioButton car = (RadioButton) findViewById(R.id.car_radio_btn);
-        RadioButton motorcycle = (RadioButton) findViewById(R.id.motorcycle_radio_btn);
-        RadioButton transporter = (RadioButton) findViewById(R.id.transporter_radio_btn);
+        RadioButton car = findViewById(R.id.car_radio_btn);
+        RadioButton motorcycle = findViewById(R.id.motorcycle_radio_btn);
+        RadioButton transporter = findViewById(R.id.transporter_radio_btn);
 
         //Buttons
         Button confirmButton = findViewById(R.id.confirm_editing_vehicle);
@@ -251,8 +252,17 @@ public class AddVehicleActivity extends AppCompatActivity {
                 }
 
                 if (car.isChecked() || transporter.isChecked() || motorcycle.isChecked()) {
+                    //VehicleType Error clearing/ marking
                     selectVehicleTypeTxt.setTextColor(ResourcesCompat.getColor(getResources(), R.color.FHGreen, null));
                     selectVehicleTypeTxt.setError(null);
+
+                    //Set vehicleTYpe
+                    if (car.isChecked())
+                        vehicleType = VehicleType.CAR;
+                    else if (transporter.isChecked())
+                        vehicleType = VehicleType.TRANSPORTER;
+                    else if (motorcycle.isChecked())
+                        vehicleType = VehicleType.MOTORCYCLE;
                 } else {
                     error = true;
                     selectVehicleTypeTxt.setTextColor(Color.RED);
@@ -308,11 +318,11 @@ public class AddVehicleActivity extends AppCompatActivity {
                         int pos = GarageActivity.vehicles.indexOf(newVehicle);
                         if (pos >= 0) {
                             // Go to menu
-//                            Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
-//                            vIntent.putExtra("pos", pos);
+                            Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
+                            vIntent.putExtra("pos", pos);
                             GarageActivity.vehicleData.putInt("pos", pos);
                             finish();
-//                            startActivity(vIntent);
+                            startActivity(vIntent);
                         }
                     } else {
                         //replace vehicle in vehicles-vector with a new vehicle with data of inputs
@@ -334,6 +344,8 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                         newVehicle.calcRemainingRange();
                         Vehicle.save(GarageActivity.vehicles, context);
+
+                        MenuActivity.fa.finish();
                         finish();
                     }
                 }

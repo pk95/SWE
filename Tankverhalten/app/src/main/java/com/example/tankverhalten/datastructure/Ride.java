@@ -144,4 +144,28 @@ public class Ride implements Serializable {
     public Date getDateCreation() {
         return dateCreation;
     }
+
+
+    /**
+     *Search for last Refuel until a DateTime and returns it.
+     *
+     * @param vector to get last Refuel from
+     * @param dateTime until a Refuel is accepted
+     * @return last Refuel of a vector<Refuel>
+     */
+    public static Ride getLastRideOfRideUntil(Vector<Ride> vector, LocalDateTime dateTime) {
+        //Refuel to return
+        Ride lastR = null;
+
+        //Look through all rides
+        for (Ride r : vector) {
+            // if first, set first to lastR for further camparisons
+            if (lastR == null)
+                lastR = r;
+            //Ride is after already compared rides, but not later than the deadline of dateTime
+            if (r.getCreationDateTime().isBefore(dateTime) && r.getCreationDateTime().isAfter(lastR.getCreationDateTime()))
+                lastR = r;
+        }
+        return lastR;
+    }
 }

@@ -177,20 +177,53 @@ public class VehicleTest extends TestCase {
     }
 
     @Test
-    public void testPrediction2() {
+    public void testPrediction2() throws InterruptedException {
         // 2 rides, 2 refuels
         // determined data
         //
         Vehicle v = new Vehicle("Test", "TEST_001", 40, 10, 0, 100, 7, 3, 5, VehicleType.CAR);
-        v.add(new Ride(100, 75, RoadType.CITY));     // 40 * 25 / 100 = 10l/100km
-        v.add(new Refuel(60, 20, ""));      // fuelLevel = 80
-        v.add(new Ride(200, 50, RoadType.COUNTRY));  // 40 * 10 /100 = 4l/100km
-        v.add(new Refuel(20, 20, ""));      // fuelLevel = 100
+
+        v.add(new Ride(100, 75, RoadType.CITY));
+        Thread.sleep(100);
+
+        v.add(new Refuel(10, 15, ""));      //  40l * 10/100 /100km = 4l/100km
+        Thread.sleep(100);
+
+        v.add(new Ride(200, 50, RoadType.COUNTRY));
+        Thread.sleep(100);
+
+        v.add(new Refuel(20, 20, ""));      //  40l * 20/100 /200km = 10l/100km
 
         // ( 7l/100km  * 0.3 + 5l/100km * 0.5 + 3l/100km * 0.2 ) *100/100 * 1.5 = 5.2 * 1.5 = 7.8
-        float[] result = v.getPrediction(100, 30, 50, 20, 1.5f);
-        assertEquals(5.2f, result[0]);
-        assertEquals(7.8f, result[1]);
+        float[] result = v.getPrediction(100, 0, 0, 100, 1.5f);
+        assertEquals(3f, result[0]);
+        assertEquals(4.5f, result[1]);
+        assertEquals(0f, result[2]);
+        assertEquals(1000f, result[3]);
+    }
+
+    @Test
+    public void testPrediction3() throws InterruptedException {
+        // 2 rides, 2 refuels
+        // determined data
+        //
+        Vehicle v = new Vehicle("Test", "TEST_001", 40, 10, 1000, 100, 7, 3, 5, VehicleType.CAR);
+
+        v.add(new Ride(100, 75, RoadType.COUNTRY));  // 40l* 0.25 /100km = 10l/100km
+        Thread.sleep(100);
+
+        v.add(new Refuel(10, 25, ""));      // 85%   40l * 25/100 /100km = 10l/100km
+        Thread.sleep(100);
+
+        v.add(new Ride(200, 50, RoadType.COUNTRY)); //   40l * 0.35 /100km =
+        Thread.sleep(100);
+
+        v.add(new Refuel(50, 20, ""));      //  40l * 20/100 /200km = 7l/100km
+
+        // ( 7l/100km  * 0.3 + 5l/100km * 0.5 + 3l/100km * 0.2 ) *100/100 * 1.5 = 5.2 * 1.5 = 7.8
+        float[] result = v.getPrediction(100, 0, 0, 100, 1.5f);
+        assertEquals(7f, result[0]);
+        assertEquals(10.5f, result[1]);
         assertEquals(0f, result[2]);
         assertEquals(1000f, result[3]);
     }

@@ -216,81 +216,102 @@ public class Vehicle implements Serializable {
 
                 //get refuels since lastRefuel
                 ridesSinceLastRefuel = Ride.getRidesBetweenDates(this.rides, lastRefuel.getCreationDate(), refuel.getCreationDate());
-                int milesSinceLastRefuel = 0;
                 int urbanKilometresSinceLastRefuel = 0;
                 int outsideKilometresSinceLastRefuel = 0;
                 int combinedKilometresSinceLastRefuel = 0;
+
+                int urbanConsumedFuelLevel = 0;
+                int combinedConsumedFuelLevel = 0;
+                int outsideonsumedFuelLevel = 0;
+
 
                 boolean containsUrban = false;
                 boolean containsCombined = false;
                 boolean containsOutside = false;
 
-
-                //Get all miles since last refuel
-                for (Ride ride : ridesSinceLastRefuel) {
-                    milesSinceLastRefuel += ride.mileAge;
-                }
-
+                Ride lastRide = null;
                 //categorize miles of rides by RoadTypes
-                for (Ride ride : ridesSinceLastRefuel) {
-                    if (ride.roadType == RoadType.CITY) {
-                        urbanKilometresSinceLastRefuel += ride.mileAge;
-                        containsUrban = true;
-                    } else if (ride.roadType == RoadType.COMBINED) {
-                        combinedKilometresSinceLastRefuel += ride.mileAge;
-                        containsCombined = true;
-                    } else if (ride.roadType == RoadType.COUNTRY) {
-                        outsideKilometresSinceLastRefuel += ride.mileAge;
-                        containsOutside = true;
+                if (ridesSinceLastRefuel.length > 0) {
+                    for (Ride ride : ridesSinceLastRefuel) {
+                        //At start need old mileAge before Refuel
+                        float fuelDifference = 0;
+                        int kilometresDifference = 0;
+                        if (lastRide == null) {
+                            //Get lastRide's fuelLevel before refueled
+                            lastRide = Ride.getLastRideOfRideUntil(rides, lastRefuel.getCreationDate());
+                            fuelDifference = (lastRide.fuelLevel + lastRefuel.refueled) - ride.fuelLevel;
+                        } else
+                            fuelDifference = lastRide.fuelLevel - ride.fuelLevel;
+
+                        if (fuelDifference > 0) {
+                            if (ride.roadType == RoadType.CITY) {
+                                urbanKilometresSinceLastRefuel += ride.mileAge;
+                                urbanConsumedFuelLevel += fuelDifference;
+                                containsUrban = true;
+                            } else if (ride.roadType == RoadType.COMBINED) {
+                                combinedKilometresSinceLastRefuel += ride.mileAge;
+                                combinedConsumedFuelLevel += fuelDifference;
+                                containsCombined = true;
+                            } else if (ride.roadType == RoadType.COUNTRY) {
+                                outsideKilometresSinceLastRefuel += ride.mileAge;
+                                outsideonsumedFuelLevel += fuelDifference;
+                                containsOutside = true;
+                            }
+                        }
+
+                        lastRide = ride;
+                    }
+                    //sum all kilometres of each roadType
+                    //urban, combined, outside
+                    roadTypesKilometres[0] += urbanKilometresSinceLastRefuel;
+                    roadTypesKilometres[1] += combinedKilometresSinceLastRefuel;
+                    roadTypesKilometres[2] += outsideKilometresSinceLastRefuel;
+
+                    int kilometresSinceLastRefuel = roadTypesKilometres[0] + roadTypesKilometres[1] + roadTypesKilometres[2];
+
+                    //Add Prices
+                    // Formula: Price/100km * (roadTypeKilometres/KilometresSinceLastRefuel)
+                    if (containsUrban) {
+                        // fuellDifference = (kilometresPart / allKilometres) * (refueled / max fuel)
+                        urbanLPer100km.add(lPer100km(roadTypesKilometres[0], urbanConsumedFuelLevel));
+//                    urbanPricePer100km.add(refuel.cost / 100 * urbanKilometresSinceLastRefuel / milesSinceLastRefuel);
+                    }
+                    if (containsCombined) {
+                        //(roadTypesKilometres[1] / kilometresSinceLastRefuel) * (refuel.refueled / this.volume) * 100)
+                        combinedLPer100km.add(lPer100km(roadTypesKilometres[1], combinedConsumedFuelLevel));
+//                    outsidePricePer100Km.add(refuel.cost / 100 * combinedKilometresSinceLastRefuel / milesSinceLastRefuel);
+                    }
+                    if (containsOutside) {
+                        outsideLPer100km.add(lPer100km(roadTypesKilometres[2], outsideonsumedFuelLevel));
+//                    combinedPricePer100Km.add(refuel.cost / 100 * outsideKilometresSinceLastRefuel / milesSinceLastRefuel);
                     }
                 }
-                //sum all kilometres of each roadType
-                //urban, combined, outside
-                roadTypesKilometres[0] += urbanKilometresSinceLastRefuel;
-                roadTypesKilometres[1] += combinedKilometresSinceLastRefuel;
-                roadTypesKilometres[2] += outsideKilometresSinceLastRefuel;
-
-
-                //Are data missing ? -> use manufacturer information
-                if (urbanPricePer100km.size() == 0)
-                    urbanPricePer100km.add(this.urbanConsumption * pricePerLiter);
-                if (combinedPricePer100Km.size() == 0)
-                    combinedPricePer100Km.add(this.combinedConsumption * pricePerLiter);
-                if (outsidePricePer100Km.size() == 0)
-                    outsidePricePer100Km.add(this.outsideConsumption * pricePerLiter);
-
-                //Add Prices
-                // Formula: Price/100km * (roadTypeKilometres/KilometresSinceLastRefuel)
-                if (containsUrban)
-                    urbanPricePer100km.add(refuel.cost / 100 * urbanKilometresSinceLastRefuel / milesSinceLastRefuel);
-                if (containsCombined)
-                    outsidePricePer100Km.add(refuel.cost / 100 * combinedKilometresSinceLastRefuel / milesSinceLastRefuel);
-                if (containsOutside)
-                    combinedPricePer100Km.add(refuel.cost / 100 * outsideKilometresSinceLastRefuel / milesSinceLastRefuel);
             }
-            //Calc whole cost of all roadTypes by ratios
-//            averageCost += getAverage(urbanPricePer100km) * distance / 100f * (urbanRatio / 100f) * pricePerLiter;
-//            averageCost += getAverage(urbanPricePer100km) * distance / 100f * (urbanRatio / 100f) * pricePerLiter;
-//            averageCost += getAverage(combinedPricePer100Km) * distance / 100f * (combinedRatio / 100f) * pricePerLiter;
 
             //Calc whole consumption
             // Formular ^= averagae = 4l/100km * 1000km * (30/100)
             // code     ^=  avergae =  4 * (100km/100km) * (30/100)
-            averageConsumption += getAverage(urbanLPer100km) * (distance / 100f) * (urbanRatio / 100f);
-            averageConsumption += getAverage(combinedLPer100km) * (distance / 100f) * (combinedRatio / 100f);
-            averageConsumption += getAverage(outsideLPer100km) * (distance / 100f) * (outsideRatio / 100f);
-
-        } else {
-            // Not even two refuels to compare with-> use manufacturer information
-//            averageCost += this.urbanConsumption * distance / 100 * urbanRatio / 100 * pricePerLiter;
-//            averageCost += this.outsideConsumption * distance / 100 * outsideRatio / 100 * pricePerLiter;
-//            averageCost += this.combinedConsumption * distance / 100 * combinedRatio / 100 * pricePerLiter;
+            if (urbanLPer100km.size() > 0)
+                averageConsumption += getAverage(urbanLPer100km) * (distance / 100f) * (urbanRatio / 100f);
+            else
+                averageConsumption += this.urbanConsumption * urbanRatio / 100;
+            if (combinedLPer100km.size() > 0)
+                averageConsumption += getAverage(combinedLPer100km) * (distance / 100f) * (combinedRatio / 100f);
+            else
+                averageConsumption += this.combinedConsumption * combinedRatio / 100;
+            if (outsideLPer100km.size() > 0)
+                averageConsumption += getAverage(outsideLPer100km) * (distance / 100f) * (outsideRatio / 100f);
+            else
+                averageConsumption += this.outsideConsumption * outsideRatio / 100;
         }
-        if (averageConsumption == 0) {
+        //ErrorCase
+        if (averageConsumption <= 0) {
             //averageConsumption of manufacturer information proportionately to roadType-ratio
-            averageConsumption += this.urbanConsumption * urbanRatio / 100;
-            averageConsumption += this.combinedConsumption * combinedRatio / 100;
-            averageConsumption += this.outsideConsumption * outsideRatio / 100;
+            float newAvergaeConsumption = 0;
+            newAvergaeConsumption += this.urbanConsumption * urbanRatio / 100;
+            newAvergaeConsumption += this.combinedConsumption * combinedRatio / 100;
+            newAvergaeConsumption += this.outsideConsumption * outsideRatio / 100;
+            averageConsumption = newAvergaeConsumption;
         }
         float emission = distance * this.co2emissions;
 
@@ -300,13 +321,14 @@ public class Vehicle implements Serializable {
         //check if remaining fuel is enough
         kilometresToDrive -= (fuelLevel / 100 * volume) / averageConsumption * 100;
         //then check how much complete fuel volumes are also needed
-        while (kilometresToDrive > 0) {
+        int maxRefuelBReaks = 0;
+        while (kilometresToDrive > 0 && maxRefuelBReaks++ < 100) {
             ++refuelBreaks;
             kilometresToDrive -= volume / averageConsumption * 100;
         }
 
         //round value to 2 digits after dot
-        return new float[]{averageConsumption, Math.round(averageConsumption*pricePerLiter * 100f) / 100f, refuelBreaks, emission};
+        return new float[]{averageConsumption, Math.round(averageConsumption * pricePerLiter * 100f) / 100f, refuelBreaks, emission};
     }
 
 
@@ -314,7 +336,7 @@ public class Vehicle implements Serializable {
      * Calculates a 'liter per 100km' value of this vehicle
      *
      * @param kilometre
-     * @param fuelDifference
+     * @param fuelDifference in % like 80% for 40l/50l
      * @return value of liters per 100 km
      */
     public float lPer100km(int kilometre, float fuelDifference) {
@@ -481,14 +503,14 @@ public class Vehicle implements Serializable {
                 refuelsBetween = Refuel.getRefuelsBetweenDates(this.refuels, lastRide.getCreationDateTime(), ride.getCreationDateTime());
                 refuelDifference = 0;
                 for (Refuel r : refuelsBetween) {
-                    refuelDifference += r.refueled / volume;
+                    refuelDifference += (r.refueled / volume) * 100;
                 }
 
                 //calculate km per fuelLevel
                 // if no division with zero
-                if (ride.mileAge - lastRide.mileAge != 0)
+                if (ride.mileAge > 0)
                     //e.g. (2100 -2000) / ( 60 + 0 - 40 )
-                    rideProportion = (lastRide.fuelLevel + refuelDifference - ride.fuelLevel) / 100 * volume / ((ride.mileAge - lastRide.mileAge) / 100f);
+                    rideProportion = (lastRide.fuelLevel + refuelDifference - ride.fuelLevel) / 100 * volume / (ride.mileAge / 100f);
 //                    rideProportion = (ride.mileAge - lastRide.mileAge) / (lastRide.fuelLevel + refuelDifference - ride.fuelLevel);
                 litersPer100km += rideProportion;
 
@@ -497,9 +519,9 @@ public class Vehicle implements Serializable {
             }
             litersPer100km /= entries - 1;
         } else {
-            litersPer100km = (combinedConsumption + urbanConsumption + outsideConsumption) / 3;
+            litersPer100km = (combinedConsumption + urbanConsumption + outsideConsumption) / 3f;
         }
         //
-        this.remainingRange = Math.round((this.fuelLevel / 100) * this.volume / litersPer100km * 100);
+        this.remainingRange = Math.round((this.fuelLevel / 100f) * this.volume / litersPer100km * 100);
     }
 }

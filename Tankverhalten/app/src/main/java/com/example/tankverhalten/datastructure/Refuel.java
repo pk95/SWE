@@ -50,8 +50,7 @@ public class Refuel implements Serializable {
      *
      * @param refuels
      * @param startDate
-     * @param endDate
- t    * @return refuels
+     * @param endDate   t    * @return refuels
      */
     public static Refuel[] getRefuelsBetweenDates(Vector<Refuel> refuels, LocalDateTime startDate, LocalDateTime endDate) {
         Vector<Refuel> refuelsBetween = new Vector<>();
@@ -87,6 +86,29 @@ public class Refuel implements Serializable {
 
     public LocalTime getCreationTime() {
         return creationTime;
+    }
+
+
+    /**
+     *Search for last Refuel until a DateTime and returns it.
+     *
+     * @param vector to get last Refuel from
+     * @param dateTime until a Refuel is accepted
+     * @return last Refuel of a vector<Refuel>
+     */
+    public Refuel getLastRefuel(Vector<Refuel> vector, LocalDateTime dateTime) {
+        //Refuel to return
+        Refuel lastR = null;
+
+        //Look through all rides
+        for (Refuel r : vector) {
+            // if first, set first to lastR for further camparisons
+            if (lastR == null)
+                lastR = r;
+            if (r.getCreationDate().isBefore(dateTime) && r.getCreationDate().isAfter(lastR.getCreationDate()))
+                lastR = r;
+        }
+        return lastR;
     }
 }
 
