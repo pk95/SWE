@@ -2,7 +2,6 @@ package com.example.tankverhalten.activities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -309,11 +308,11 @@ public class AddVehicleActivity extends AppCompatActivity {
                         int pos = GarageActivity.vehicles.indexOf(newVehicle);
                         if (pos >= 0) {
                             // Go to menu
-                            Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
-                            vIntent.putExtra("pos", pos);
+//                            Intent vIntent = new Intent(AddVehicleActivity.this, MenuActivity.class);
+//                            vIntent.putExtra("pos", pos);
                             GarageActivity.vehicleData.putInt("pos", pos);
                             finish();
-                            startActivity(vIntent);
+//                            startActivity(vIntent);
                         }
                     } else {
                         //replace vehicle in vehicles-vector with a new vehicle with data of inputs

@@ -131,7 +131,7 @@ public class fahrzeuguebersicht_fragment extends Fragment {
         if (date.isBefore(LocalDate.now()))
             //Date is already over
             textview.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.dateExceeded, null));
-        else if (date.isAfter(LocalDate.now()) && Period.between(LocalDate.now(), date).getMonths() > 0) {
+        else if (date.isAfter(LocalDate.now()) && (Period.between(LocalDate.now(), date).getMonths() > 0 || Period.between(LocalDate.now(), date).getYears() > 0)) {
             //Date is in the future above a month
             textview.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.FHGreen, null));
         } else

@@ -162,7 +162,10 @@ public class Vehicle implements Serializable {
         float r = 0;
         for (float f : vector)
             r += f;
-        return r / vector.size();
+        if (vector.size() > 0)
+            return r / vector.size();
+        else
+            return 0;
     }
 
     /**
@@ -201,7 +204,7 @@ public class Vehicle implements Serializable {
         Refuel refuel;
         Ride[] ridesSinceLastRefuel;
 
-        float averageCost = 0;
+//        float averageCost = 0;
         float averageConsumption = 0;
 
         if (refuelEntities > 1) {
@@ -212,7 +215,7 @@ public class Vehicle implements Serializable {
                 refuel = this.refuels.elementAt(i);
 
                 //get refuels since lastRefuel
-                ridesSinceLastRefuel = Ride.getRidesBetweenDates(this.rides, refuel.getCreationDate(), this.refuels.elementAt(i + 1).getCreationDate());
+                ridesSinceLastRefuel = Ride.getRidesBetweenDates(this.rides, lastRefuel.getCreationDate(), refuel.getCreationDate());
                 int milesSinceLastRefuel = 0;
                 int urbanKilometresSinceLastRefuel = 0;
                 int outsideKilometresSinceLastRefuel = 0;
@@ -242,6 +245,7 @@ public class Vehicle implements Serializable {
                     }
                 }
                 //sum all kilometres of each roadType
+                //urban, combined, outside
                 roadTypesKilometres[0] += urbanKilometresSinceLastRefuel;
                 roadTypesKilometres[1] += combinedKilometresSinceLastRefuel;
                 roadTypesKilometres[2] += outsideKilometresSinceLastRefuel;
@@ -250,42 +254,44 @@ public class Vehicle implements Serializable {
                 //Are data missing ? -> use manufacturer information
                 if (urbanPricePer100km.size() == 0)
                     urbanPricePer100km.add(this.urbanConsumption * pricePerLiter);
-                if (outsidePricePer100Km.size() == 0)
-                    outsidePricePer100Km.add(this.outsideConsumption * pricePerLiter);
                 if (combinedPricePer100Km.size() == 0)
                     combinedPricePer100Km.add(this.combinedConsumption * pricePerLiter);
+                if (outsidePricePer100Km.size() == 0)
+                    outsidePricePer100Km.add(this.outsideConsumption * pricePerLiter);
 
                 //Add Prices
                 // Formula: Price/100km * (roadTypeKilometres/KilometresSinceLastRefuel)
                 if (containsUrban)
-                    urbanPricePer100km.add(refuel.cost / 100 * outsideKilometresSinceLastRefuel / milesSinceLastRefuel);
+                    urbanPricePer100km.add(refuel.cost / 100 * urbanKilometresSinceLastRefuel / milesSinceLastRefuel);
                 if (containsCombined)
-                    outsidePricePer100Km.add(refuel.cost / 100 * urbanKilometresSinceLastRefuel / milesSinceLastRefuel);
+                    outsidePricePer100Km.add(refuel.cost / 100 * combinedKilometresSinceLastRefuel / milesSinceLastRefuel);
                 if (containsOutside)
-                    combinedPricePer100Km.add(refuel.cost / 100 * combinedKilometresSinceLastRefuel / milesSinceLastRefuel);
+                    combinedPricePer100Km.add(refuel.cost / 100 * outsideKilometresSinceLastRefuel / milesSinceLastRefuel);
             }
             //Calc whole cost of all roadTypes by ratios
-            averageCost += getAverage(urbanPricePer100km) * distance / 100 * urbanRatio * pricePerLiter;
-            averageCost += getAverage(urbanPricePer100km) * distance / 100 * urbanRatio * pricePerLiter;
-            averageCost += getAverage(combinedPricePer100Km) * distance / 100 * combinedRatio * pricePerLiter;
+//            averageCost += getAverage(urbanPricePer100km) * distance / 100f * (urbanRatio / 100f) * pricePerLiter;
+//            averageCost += getAverage(urbanPricePer100km) * distance / 100f * (urbanRatio / 100f) * pricePerLiter;
+//            averageCost += getAverage(combinedPricePer100Km) * distance / 100f * (combinedRatio / 100f) * pricePerLiter;
 
             //Calc whole consumption
-            averageConsumption += getAverage(urbanLPer100km) * distance / 100 * urbanRatio;
-            averageConsumption += getAverage(combinedLPer100km) * distance / 100 * combinedRatio;
-            averageConsumption += getAverage(outsideLPer100km) * distance / 100 * outsideRatio;
+            // Formular ^= averagae = 4l/100km * 1000km * (30/100)
+            // code     ^=  avergae =  4 * (100km/100km) * (30/100)
+            averageConsumption += getAverage(urbanLPer100km) * (distance / 100f) * (urbanRatio / 100f);
+            averageConsumption += getAverage(combinedLPer100km) * (distance / 100f) * (combinedRatio / 100f);
+            averageConsumption += getAverage(outsideLPer100km) * (distance / 100f) * (outsideRatio / 100f);
 
         } else {
             // Not even two refuels to compare with-> use manufacturer information
-            averageCost += this.urbanConsumption * distance / 100 * urbanRatio / 100 * pricePerLiter;
-            averageCost += this.outsideConsumption * distance / 100 * outsideRatio / 100 * pricePerLiter;
-            averageCost += this.combinedConsumption * distance / 100 * combinedRatio / 100 * pricePerLiter;
-
+//            averageCost += this.urbanConsumption * distance / 100 * urbanRatio / 100 * pricePerLiter;
+//            averageCost += this.outsideConsumption * distance / 100 * outsideRatio / 100 * pricePerLiter;
+//            averageCost += this.combinedConsumption * distance / 100 * combinedRatio / 100 * pricePerLiter;
+        }
+        if (averageConsumption == 0) {
             //averageConsumption of manufacturer information proportionately to roadType-ratio
             averageConsumption += this.urbanConsumption * urbanRatio / 100;
             averageConsumption += this.combinedConsumption * combinedRatio / 100;
             averageConsumption += this.outsideConsumption * outsideRatio / 100;
         }
-
         float emission = distance * this.co2emissions;
 
         //Calc refuelBreaks
@@ -300,7 +306,7 @@ public class Vehicle implements Serializable {
         }
 
         //round value to 2 digits after dot
-        return new float[]{averageConsumption, Math.round(averageCost * 100f) / 100f, refuelBreaks, emission};
+        return new float[]{averageConsumption, Math.round(averageConsumption*pricePerLiter * 100f) / 100f, refuelBreaks, emission};
     }
 
 
@@ -341,11 +347,11 @@ public class Vehicle implements Serializable {
     }
 
     public Ride[] getRides() {
-        Ride[] rides = new Ride[this.rides.size()];
-        for (int i = 0; i < this.rides.size(); i++) {
-            rides[i] = this.rides.elementAt(i).clone();
-        }
-        return rides;
+//        Ride[] rides = new Ride[this.rides.size()];
+//        for (int i = 0; i < this.rides.size(); i++) {
+//            rides[i] = this.rides.elementAt(i).clone();
+//        }
+        return this.rides.toArray(new Ride[0]);
     }
 
 
@@ -368,11 +374,12 @@ public class Vehicle implements Serializable {
      * @return refuels
      */
     public Refuel[] getRefuels() {
-        Refuel[] refuels = new Refuel[this.refuels.size()];
-        for (int i = 0; i < this.refuels.size(); i++) {
-            refuels[i] = this.refuels.elementAt(i).clone();
-        }
-        return refuels;
+//        Refuel[] refuels = new Refuel[this.refuels.size()];
+//        for (int i = 0; i < this.refuels.size(); i++) {
+//            refuels[i] = this.refuels.elementAt(i).clone();
+//        }
+//        return refuels;
+        return this.refuels.toArray(new Refuel[0]);
     }
 
     /**
@@ -382,7 +389,7 @@ public class Vehicle implements Serializable {
      */
     public void add(Ride ride) {
         rides.add(ride);
-        this.mileAge = ride.mileAge;
+        this.mileAge += ride.mileAge;
         this.fuelLevel = ride.fuelLevel;
         calcRemainingRange();
     }

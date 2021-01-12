@@ -157,19 +157,42 @@ public class VehicleTest extends TestCase {
 
     @Test
     public void testPrediction() {
+        // 2 rides, 1 rides
         // determined data
         //
         Vehicle v = new Vehicle("Test", "TEST_001", 40, 10, 0, 100, 7, 3, 5, VehicleType.CAR);
         v.add(new Ride(100, 75, RoadType.CITY));      // 40 * 0.25 / 100 = 10l/100km
         v.add(new Ride(200, 50, RoadType.COUNTRY));   // 40 * 0.25 /100 = 10l/100km
         v.add(new Refuel(20, 20, ""));
+        v.add(new Ride(100, 10, RoadType.COMBINED));
+        v.add(new Ride(100, 5, RoadType.COMBINED));
+        v.add(new Refuel(20, 20, ""));
 
         // ( 7l/100km  * 0.3 + 5l/100km * 0.5 + 3l/100km * 0.2 ) *100/100 * 1.5 = 5.2 * 1.5 = 7.8
-        float[] result = v.getPrediction(100, 30, 50, 20);
+        float[] result = v.getPrediction(100, 30, 50, 20, 1.5f);
         assertEquals(5.2f, result[0]);
         assertEquals(7.80f, result[1]);
         assertEquals(0f, result[2]);
-        assertEquals(10f, result[3]);
+        assertEquals(1000f, result[3]);
+    }
+
+    @Test
+    public void testPrediction2() {
+        // 2 rides, 2 refuels
+        // determined data
+        //
+        Vehicle v = new Vehicle("Test", "TEST_001", 40, 10, 0, 100, 7, 3, 5, VehicleType.CAR);
+        v.add(new Ride(100, 75, RoadType.CITY));     // 40 * 25 / 100 = 10l/100km
+        v.add(new Refuel(60, 20, ""));      // fuelLevel = 80
+        v.add(new Ride(200, 50, RoadType.COUNTRY));  // 40 * 10 /100 = 4l/100km
+        v.add(new Refuel(20, 20, ""));      // fuelLevel = 100
+
+        // ( 7l/100km  * 0.3 + 5l/100km * 0.5 + 3l/100km * 0.2 ) *100/100 * 1.5 = 5.2 * 1.5 = 7.8
+        float[] result = v.getPrediction(100, 30, 50, 20, 1.5f);
+        assertEquals(5.2f, result[0]);
+        assertEquals(7.8f, result[1]);
+        assertEquals(0f, result[2]);
+        assertEquals(1000f, result[3]);
     }
 
 
