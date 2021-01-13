@@ -358,7 +358,6 @@
                         android:id="@+id/text_nextPermission"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/FU_height"
-                        android:background="@color/white"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/permission"
