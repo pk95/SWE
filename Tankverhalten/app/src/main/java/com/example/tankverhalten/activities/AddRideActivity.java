@@ -174,9 +174,19 @@ public class AddRideActivity extends AppCompatActivity {
 
                 if (mode.equals("edit")) {
                     // Edit ride
+
+                    // set vehicle values back to before the values were added
+                    active.mileAge -= ride.mileAge;
+
+                    //Update this ride's values
                     ride.fuelLevel = fuellevel;
                     ride.mileAge = mileage;
                     ride.roadType = road_type;
+
+                    //Update vehicle
+                    active.mileAge += mileage;
+                    active.fuelLevel = fuellevel;
+
                 } else if (mode.equals("new")) {
                     // Add a new Ride to vehicle
                     Ride temp = new Ride(mileage, fuellevel, road_type);
