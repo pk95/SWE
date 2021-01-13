@@ -219,14 +219,14 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
                         refuel.costImageSrc = date + "_fuelreceipt.jpg";
                     }
                     // set vehicle values back to before the values were added
-                    active.fuelLevel -= active.getLastRefuel().refueled;
+                    active.fuelLevel -= ((active.getLastRefuel().refueled/ (float)volume)*100);
 
                     //Update Refuel
                     refuel.cost = price;
                     refuel.refueled = fuel;
 
                     //Update vehicle data
-                    active.fuelLevel = fuel;
+                    active.fuelLevel =active.fuelLevel + (fuel / (float)volume)*100 ;
                 } else if (mode.equals("new")) {
                     //Add a new Refuel to vehicle
                     saveToInternalStorage(captureImage);
