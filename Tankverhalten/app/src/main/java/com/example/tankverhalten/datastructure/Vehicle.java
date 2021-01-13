@@ -308,9 +308,9 @@ public class Vehicle implements Serializable {
         if (averageConsumption <= 0) {
             //averageConsumption of manufacturer information proportionately to roadType-ratio
             float newAvergaeConsumption = 0;
-            newAvergaeConsumption += this.urbanConsumption * urbanRatio / 100;
-            newAvergaeConsumption += this.combinedConsumption * combinedRatio / 100;
-            newAvergaeConsumption += this.outsideConsumption * outsideRatio / 100;
+            newAvergaeConsumption += this.urbanConsumption * distance * urbanRatio / 100;
+            newAvergaeConsumption += this.combinedConsumption * distance * combinedRatio / 100;
+            newAvergaeConsumption += this.outsideConsumption * distance * outsideRatio / 100;
             averageConsumption = newAvergaeConsumption;
         }
         float emission = distance * this.co2emissions;
