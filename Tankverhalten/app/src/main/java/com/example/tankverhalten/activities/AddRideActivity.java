@@ -142,8 +142,7 @@ public class AddRideActivity extends AppCompatActivity {
                 fuellevel_edittext.setError("Nicht erlaubte Eingabe");
             }
 
-            // logical verification if unintentional mileage was set
-            if ((mileage < active.mileAge + 2000)) {
+            if ((mileage != 0)) {
                 mileage_error = false;
             } else {
                 mileage_edittext.setError("Nicht erlaubte Eingabe");
