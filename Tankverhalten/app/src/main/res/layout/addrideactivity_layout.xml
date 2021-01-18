@@ -22,21 +22,20 @@
 
     <TextView
         android:id="@+id/km"
-        android:layout_width="wrap_content"
+        android:layout_width="203dp"
         android:layout_height="wrap_content"
         android:text="gefahrene Strecke [km]"
         android:textColor="@color/FHGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
+        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.095" />
-
+        app:layout_constraintVertical_bias="0.119" />
 
     <EditText
         android:id="@+id/mileAgeE"
-        android:layout_width="143dp"
+        android:layout_width="wrap_content"
         android:layout_height="39dp"
         android:ems="10"
         android:hint="gefahrene Strecke"
@@ -50,7 +49,7 @@
 
     <EditText
         android:id="@+id/fuelLevelE"
-        android:layout_width="143dp"
+        android:layout_width="wrap_content"
         android:layout_height="42dp"
         android:ems="10"
         android:hint="Tankstand"
@@ -64,7 +63,7 @@
 
     <TextView
         android:id="@+id/fuellvl"
-        android:layout_width="wrap_content"
+        android:layout_width="203dp"
         android:layout_height="wrap_content"
         android:text="Tankstand [%]"
         android:textColor="@color/FHGreen"
