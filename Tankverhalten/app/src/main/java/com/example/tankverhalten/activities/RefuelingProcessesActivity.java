@@ -227,6 +227,9 @@ public class RefuelingProcessesActivity extends AppCompatActivity {
 
                     //Update vehicle data
                     active.fuelLevel =active.fuelLevel + (fuel / (float)volume)*100 ;
+                    if (active.fuelLevel >100) {
+                        active.fuelLevel = 100;
+                    }
                 } else if (mode.equals("new")) {
                     //Add a new Refuel to vehicle
                     saveToInternalStorage(captureImage);
