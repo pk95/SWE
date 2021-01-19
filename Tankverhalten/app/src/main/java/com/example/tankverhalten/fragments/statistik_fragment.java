@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Queue;
 import java.util.Vector;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -178,14 +179,30 @@ public class statistik_fragment extends Fragment {
                     for(int o = 0; o < 7; o++)
                         s[o] = "";
                     Ride[] r = vehicle.getRides();
-                    int z = 0;
-                    if (r.length > 7)
-                        z = r.length - 7;
-                    for(int i = 0; i < 7 && r.length - 1 >= i; i++)
+
+                    int zz = r.length - 1;
+                    LocalDate d = r[zz].getCreationDate();
+                    d = d.minusDays(7);
+                    while (r[zz].getCreationDate() != d && zz > 0){
+                        zz--;
+                    }
+                    if(r[zz].getCreationDate() == d)
+                        zz++;
+
+                    for(int i = 0; i < 7 && zz < r.length; i++)
                     {
-                        entries.add(new BarEntry((float) i, (float) r[z].mileAge));
-                        s[i] = "" + r[z].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-                        z++;
+                        int miles = 0;
+                        s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                        d = r[zz].getCreationDate();
+                        while (d.equals(r[zz].getCreationDate())){
+                            miles += r[zz].mileAge;
+                            zz++;
+                            if(zz > r.length - 1)
+                                break;
+                        }
+
+                        entries.add(new BarEntry((float) i, (float) miles));
                     }
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
@@ -211,14 +228,30 @@ public class statistik_fragment extends Fragment {
                     for(int o = 0; o < 7; o++)
                         s[o] = "";
                     Refuel[] r = vehicle.getRefuels();
-                    int z = 0;
-                    if (r.length > 7)
-                        z = r.length - 7;
-                    for(int i = 0; i < 7 && r.length - 1 >= i; i++)
+
+                    int zz = r.length - 1;
+                    LocalDate d = r[zz].getcDate();
+                    d = d.minusDays(7);
+                    while (r[zz].getcDate() != d && zz > 0){
+                        zz--;
+                    }
+                    if(r[zz].getcDate() == d)
+                        zz++;
+
+                    for(int i = 0; i < 7 && zz < r.length; i++)
                     {
-                        entries.add(new BarEntry((float) i, r[z].refueled));
-                        s[i] = "" + r[z].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-                        z++;
+                        int fuel = 0;
+                        s[i] = "" + r[zz].getcDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                        d = r[zz].getcDate();
+                        while (d.equals(r[zz].getcDate())){
+                            fuel += r[zz].refueled;
+                            zz++;
+                            if(zz > r.length - 1)
+                                break;
+                        }
+
+                        entries.add(new BarEntry((float) i, (float) fuel));
                     }
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
@@ -244,14 +277,30 @@ public class statistik_fragment extends Fragment {
                     for(int o = 0; o < 7; o++)
                         s[o] = "";
                     Refuel[] r = vehicle.getRefuels();
-                    int z = 0;
-                    if (r.length > 7)
-                        z = r.length - 7;
-                    for(int i = 0; i < 7 && r.length - 1 >= i; i++)
+
+                    int zz = r.length - 1;
+                    LocalDate d = r[zz].getcDate();
+                    d = d.minusDays(7);
+                    while (r[zz].getcDate() != d && zz > 0){
+                        zz--;
+                    }
+                    if(r[zz].getcDate() == d)
+                        zz++;
+
+                    for(int i = 0; i < 7 && zz < r.length; i++)
                     {
-                        entries.add(new BarEntry((float) i, r[z].cost));
-                        s[i] = "" + r[z].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-                        z++;
+                        int euro = 0;
+                        s[i] = "" + r[zz].getcDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                        d = r[zz].getcDate();
+                        while (d.equals(r[zz].getcDate())){
+                            euro += r[zz].cost;
+                            zz++;
+                            if(zz > r.length - 1)
+                                break;
+                        }
+
+                        entries.add(new BarEntry((float) i, (float) euro));
                     }
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
@@ -277,14 +326,30 @@ public class statistik_fragment extends Fragment {
                     for(int o = 0; o < 7; o++)
                         s[o] = "";
                     Ride[] r = vehicle.getRides();
-                    int z = 0;
-                    if (r.length > 7)
-                        z = r.length - 7;
-                    for(int i = 0; i < 7 && r.length - 1 >= i; i++)
+
+                    int zz = r.length - 1;
+                    LocalDate d = r[zz].getCreationDate();
+                    d = d.minusDays(7);
+                    while (r[zz].getCreationDate() != d && zz > 0){
+                        zz--;
+                    }
+                    if(r[zz].getCreationDate() == d)
+                        zz++;
+
+                    for(int i = 0; i < 7 && zz < r.length; i++)
                     {
-                        entries.add(new BarEntry((float) i, (float) r[z].mileAge * vehicle.co2emissions));
-                        s[i] = "" + r[z].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-                        z++;
+                        int co2 = 0;
+                        s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                        d = r[zz].getCreationDate();
+                        while (d.equals(r[zz].getCreationDate())){
+                            co2 += r[zz].mileAge * vehicle.co2emissions;
+                            zz++;
+                            if(zz > r.length - 1)
+                                break;
+                        }
+
+                        entries.add(new BarEntry((float) i, (float) co2));
                     }
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
@@ -339,15 +404,34 @@ public class statistik_fragment extends Fragment {
 
         //RECHNUNG
         Ride[] r = vehicle.getRides();
-        int z = 0;
-        if (r.length > 7)
-            z = r.length - 7;
-        for(int i = 0; i < 7 && r.length - 1 >= i; i++)
-        {
-            entries.add(new BarEntry((float) i, (float) r[z].mileAge));
-            s[i] = "" + r[z].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-            z++;
+
+        int zz = r.length - 1;
+        LocalDate d = r[zz].getCreationDate();
+        d = d.minusDays(7);
+        while (r[zz].getCreationDate() != d && zz > 0){
+            zz--;
         }
+        if(r[zz].getCreationDate() == d)
+            zz++;
+
+        for(int i = 0; i < 7 && zz < r.length; i++)
+        {
+            int miles = 0;
+            s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+            d = r[zz].getCreationDate();
+            while (d.equals(r[zz].getCreationDate())){
+                miles += r[zz].mileAge;
+                zz++;
+                if(zz > r.length - 1)
+                    break;
+            }
+
+            entries.add(new BarEntry((float) i, (float) miles));
+        }
+
+
+
 
 
 

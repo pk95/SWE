@@ -20,6 +20,7 @@ import java.util.Vector;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Refuel implements Serializable {
 
+    private final LocalDate cDate = LocalDate.now();
     private final LocalDateTime creationDate = java.time.LocalDateTime.now();
     private final LocalTime creationTime = LocalTime.now();
     public float refueled = 0;
@@ -68,6 +69,7 @@ public class Refuel implements Serializable {
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
+    public LocalDate getcDate() { return cDate; }
 
 
     @Override
