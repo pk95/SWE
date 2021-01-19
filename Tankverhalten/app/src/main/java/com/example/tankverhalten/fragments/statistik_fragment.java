@@ -167,30 +167,33 @@ public class statistik_fragment extends Fragment {
                         s[o] = "";
                     Ride[] r = vehicle.getRides();
 
-                    int zz = r.length - 1;
-                    LocalDate d = r[zz].getCreationDate();
-                    d = d.minusDays(7);
-                    while (r[zz].getCreationDate() != d && zz > 0){
-                        zz--;
-                    }
-                    if(r[zz].getCreationDate() == d)
-                        zz++;
-
-                    for(int i = 0; i < 7 && zz < r.length; i++)
-                    {
-                        int miles = 0;
-                        s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-
-                        d = r[zz].getCreationDate();
-                        while (d.equals(r[zz].getCreationDate())){
-                            miles += r[zz].mileAge;
-                            zz++;
-                            if(zz > r.length - 1)
-                                break;
+                    if (r.length > 0){
+                        int zz = r.length - 1;
+                        LocalDate d = r[zz].getCreationDate();
+                        d = d.minusDays(7);
+                        while (r[zz].getCreationDate() != d && zz > 0){
+                            zz--;
                         }
+                        if(r[zz].getCreationDate() == d)
+                            zz++;
 
-                        entries.add(new BarEntry((float) i, (float) miles));
+                        for(int i = 0; i < 7 && zz < r.length; i++)
+                        {
+                            int miles = 0;
+                            s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                            d = r[zz].getCreationDate();
+                            while (d.equals(r[zz].getCreationDate())){
+                                miles += r[zz].mileAge;
+                                zz++;
+                                if(zz > r.length - 1)
+                                    break;
+                            }
+
+                            entries.add(new BarEntry((float) i, (float) miles));
+                        }
                     }
+
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
                     colorFH = ColorTemplate.rgb("0c9a9a");
@@ -216,30 +219,33 @@ public class statistik_fragment extends Fragment {
                         s[o] = "";
                     Refuel[] r = vehicle.getRefuels();
 
-                    int zz = r.length - 1;
-                    LocalDate d = r[zz].getcDate();
-                    d = d.minusDays(7);
-                    while (r[zz].getcDate() != d && zz > 0){
-                        zz--;
-                    }
-                    if(r[zz].getcDate() == d)
-                        zz++;
-
-                    for(int i = 0; i < 7 && zz < r.length; i++)
-                    {
-                        int fuel = 0;
-                        s[i] = "" + r[zz].getcDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-
-                        d = r[zz].getcDate();
-                        while (d.equals(r[zz].getcDate())){
-                            fuel += r[zz].refueled;
-                            zz++;
-                            if(zz > r.length - 1)
-                                break;
+                    if (r.length > 0){
+                        int zz = r.length - 1;
+                        LocalDate d = r[zz].getcDate();
+                        d = d.minusDays(7);
+                        while (r[zz].getcDate() != d && zz > 0){
+                            zz--;
                         }
+                        if(r[zz].getcDate() == d)
+                            zz++;
 
-                        entries.add(new BarEntry((float) i, (float) fuel));
+                        for(int i = 0; i < 7 && zz < r.length; i++)
+                        {
+                            int fuel = 0;
+                            s[i] = "" + r[zz].getcDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                            d = r[zz].getcDate();
+                            while (d.equals(r[zz].getcDate())){
+                                fuel += r[zz].refueled;
+                                zz++;
+                                if(zz > r.length - 1)
+                                    break;
+                            }
+
+                            entries.add(new BarEntry((float) i, (float) fuel));
+                        }
                     }
+
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
                     colorFH = ColorTemplate.rgb("0c9a9a");
@@ -265,30 +271,33 @@ public class statistik_fragment extends Fragment {
                         s[o] = "";
                     Refuel[] r = vehicle.getRefuels();
 
-                    int zz = r.length - 1;
-                    LocalDate d = r[zz].getcDate();
-                    d = d.minusDays(7);
-                    while (r[zz].getcDate() != d && zz > 0){
-                        zz--;
-                    }
-                    if(r[zz].getcDate() == d)
-                        zz++;
-
-                    for(int i = 0; i < 7 && zz < r.length; i++)
-                    {
-                        int euro = 0;
-                        s[i] = "" + r[zz].getcDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-
-                        d = r[zz].getcDate();
-                        while (d.equals(r[zz].getcDate())){
-                            euro += r[zz].cost;
-                            zz++;
-                            if(zz > r.length - 1)
-                                break;
+                    if (r.length > 0){
+                        int zz = r.length - 1;
+                        LocalDate d = r[zz].getcDate();
+                        d = d.minusDays(7);
+                        while (r[zz].getcDate() != d && zz > 0){
+                            zz--;
                         }
+                        if(r[zz].getcDate() == d)
+                            zz++;
 
-                        entries.add(new BarEntry((float) i, (float) euro));
+                        for(int i = 0; i < 7 && zz < r.length; i++)
+                        {
+                            int euro = 0;
+                            s[i] = "" + r[zz].getcDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                            d = r[zz].getcDate();
+                            while (d.equals(r[zz].getcDate())){
+                                euro += r[zz].cost;
+                                zz++;
+                                if(zz > r.length - 1)
+                                    break;
+                            }
+
+                            entries.add(new BarEntry((float) i, (float) euro));
+                        }
                     }
+
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
                     colorFH = ColorTemplate.rgb("0c9a9a");
@@ -314,30 +323,33 @@ public class statistik_fragment extends Fragment {
                         s[o] = "";
                     Ride[] r = vehicle.getRides();
 
-                    int zz = r.length - 1;
-                    LocalDate d = r[zz].getCreationDate();
-                    d = d.minusDays(7);
-                    while (r[zz].getCreationDate() != d && zz > 0){
-                        zz--;
-                    }
-                    if(r[zz].getCreationDate() == d)
-                        zz++;
-
-                    for(int i = 0; i < 7 && zz < r.length; i++)
-                    {
-                        int co2 = 0;
-                        s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-
-                        d = r[zz].getCreationDate();
-                        while (d.equals(r[zz].getCreationDate())){
-                            co2 += r[zz].mileAge * vehicle.co2emissions;
-                            zz++;
-                            if(zz > r.length - 1)
-                                break;
+                    if (r.length > 0){
+                        int zz = r.length - 1;
+                        LocalDate d = r[zz].getCreationDate();
+                        d = d.minusDays(7);
+                        while (r[zz].getCreationDate() != d && zz > 0){
+                            zz--;
                         }
+                        if(r[zz].getCreationDate() == d)
+                            zz++;
 
-                        entries.add(new BarEntry((float) i, (float) co2));
+                        for(int i = 0; i < 7 && zz < r.length; i++)
+                        {
+                            int co2 = 0;
+                            s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                            d = r[zz].getCreationDate();
+                            while (d.equals(r[zz].getCreationDate())){
+                                co2 += r[zz].mileAge * vehicle.co2emissions;
+                                zz++;
+                                if(zz > r.length - 1)
+                                    break;
+                            }
+
+                            entries.add(new BarEntry((float) i, (float) co2));
+                        }
                     }
+
                     BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
                     colorFH = ColorTemplate.rgb("0c9a9a");
@@ -371,30 +383,33 @@ public class statistik_fragment extends Fragment {
         //Standard: Rides
         Ride[] r = vehicle.getRides();
 
-        int zz = r.length - 1;
-        LocalDate d = r[zz].getCreationDate();
-        d = d.minusDays(7);
-        while (r[zz].getCreationDate() != d && zz > 0){
-            zz--;
-        }
-        if(r[zz].getCreationDate() == d)
-            zz++;
-
-        for(int i = 0; i < 7 && zz < r.length; i++)
-        {
-            int miles = 0;
-            s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
-
-            d = r[zz].getCreationDate();
-            while (d.equals(r[zz].getCreationDate())){
-                miles += r[zz].mileAge;
-                zz++;
-                if(zz > r.length - 1)
-                    break;
+        if (r.length > 0){
+            int zz = r.length - 1;
+            LocalDate d = r[zz].getCreationDate();
+            d = d.minusDays(7);
+            while (r[zz].getCreationDate() != d && zz > 0){
+                zz--;
             }
+            if(r[zz].getCreationDate() == d)
+                zz++;
 
-            entries.add(new BarEntry((float) i, (float) miles));
+            for(int i = 0; i < 7 && zz < r.length; i++)
+            {
+                int miles = 0;
+                s[i] = "" + r[zz].getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM"));
+
+                d = r[zz].getCreationDate();
+                while (d.equals(r[zz].getCreationDate())){
+                    miles += r[zz].mileAge;
+                    zz++;
+                    if(zz > r.length - 1)
+                        break;
+                }
+
+                entries.add(new BarEntry((float) i, (float) miles));
+            }
         }
+
 
         // standard on Create
         class Formatter extends ValueFormatter {
