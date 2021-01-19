@@ -55,28 +55,16 @@ import java.util.Vector;
 public class statistik_fragment extends Fragment {
 
     View view;
-    Button before;
-    Button later;
     BarChart chart;
-    TabLayout tabLayoutTime;
     TabLayout tabLayoutValue;
     Vehicle vehicle;
     TextView value;
     TextView time;
-    int selTime = 0;
     int selValue = 0;
     int iconColor;
     int colorFH;
-    int before_later = 0; // negative -> more in the past
     List<BarEntry> entries;
     int pos = -1;
-
-    private LocalDateTime currentTime = java.time.LocalDateTime.now();
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-
-    private Vector<Ride> distance;      //Vector for distance of an vehicle
-    private Vector<Refuel> costs;       //Vector for costs of refueling operations of an vehicle
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -167,7 +155,6 @@ public class statistik_fragment extends Fragment {
                  *      1 = month
                  *      2 = year
                  */
-                distance = new Vector(Arrays.asList(vehicle.getRides()));
                 if (selValue == 0) {
 
                     /********************************* Start Mileage ********************************************/
@@ -364,7 +351,6 @@ public class statistik_fragment extends Fragment {
 
                     /********************************* End Emissions ********************************************/
                 }
-                BarDataSet set = new BarDataSet(entries, "BarDataSet");
                 chart.notifyDataSetChanged();
                 chart.invalidate();
             }
@@ -382,27 +368,7 @@ public class statistik_fragment extends Fragment {
 
         rightAxis.setEnabled(false);
 
-        /*
-        String[] dates = {};
-        distance = new Vector(Arrays.asList(vehicle.getRides()));
-        int here = distance.size() - 1;
-        for(int i = 6; i >= 0; i--)
-        {
-            int miles = 0;
-            LocalDate d = distance.elementAt(here).getCreationDate();
-            while (d == distance.elementAt(here).getCreationDate())
-            {
-                miles += distance.elementAt(here).mileAge;
-                here--;
-            }
-            entries.add(new BarEntry(0f, (float) miles));
-            dates[6 - i] = "" + d.getDayOfMonth() + d.getMonthValue();
-        }
-        */
-
-        //distance = new Vector(Arrays.asList(vehicle.getRides()));
-
-        //RECHNUNG
+        //Standard: Rides
         Ride[] r = vehicle.getRides();
 
         int zz = r.length - 1;
@@ -430,11 +396,6 @@ public class statistik_fragment extends Fragment {
             entries.add(new BarEntry((float) i, (float) miles));
         }
 
-
-
-
-
-
         // standard on Create
         class Formatter extends ValueFormatter {
             private String[] days = s;
@@ -445,8 +406,6 @@ public class statistik_fragment extends Fragment {
             }
         }
         botAxis.setValueFormatter(new Formatter());
-
-
 
         // Achsen Anpassen
         leftAxis.setDrawGridLines(true);
